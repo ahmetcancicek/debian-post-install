@@ -7,6 +7,6 @@ This repository contains set of post-installation scripts for Debian ant its der
 
 ```
 git clone https://github.com/ahmetcancicek/debian-setup.git
-cd debian-setup
+cd debian-post-install
 make .INSTALL
 ```

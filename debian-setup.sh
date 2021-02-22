@@ -188,10 +188,12 @@ for choice in $choices; do
   E10)
     echo "Installing Putty"
     # Install Putty
+    # TODO: Install Putty
     ;;
   E11)
     echo "Installing Vim"
     # Install Vim
+    apt install vim
     ;;
 
     # F: Utility

@@ -6,19 +6,23 @@ if [ "$(id -u)" != 0 ]; then
   exit 1
 fi
 
+function print_line() {
+  echo "---------------------------------------------------------------"
+}
+
 cd ~
 
 # Update
 echo "Update"
-apt-get -y update
+apt -y update
 
 # Install wget
 echo "Installing Wget"
-apt-get install wget
+apt install wget
 
 # Install Dialog
 echo "Installing Dialog"
-apt-get install dialog
+apt install dialog
 
 cmd=(dialog --title "Debian 10 Installer" --separate-output --checklist 'Please choose: ' 22 76 16)
 options=(
@@ -43,7 +47,7 @@ options=(
   E3 "Microsoft Visual Studio Code (Snap)" off
   E4 "IntelliJ IDEA Ultimate (Snap)" off
   E5 "Postman (Snap)" off
-  E6 "GO (Snap)" off
+  E6 "Go (Snap)" off
   E7 "GoLand (Snap)" off
   E8 "Docker (Snap)" off
   E9 "Maven" off
@@ -57,24 +61,15 @@ options=(
   F5: "Terminator" off
   # G: Image, Video and Audio
   G1 "GIMP" off
-  G2: "OBS Studio" off
   # H: For Notebook
   H1: "LIBINPUT-GESTURES" off
-  # I: Gnome Tweak Extensions
-  I1: "" off
-  I2: "" off
-  I3: "" off
-  I4: "" off
-  I5: "" off
-  I6: "" off
-  I7: "" off
-  I8: "" off
-  I9: "" off
 )
 
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 clear
 for choice in $choices; do
+  # Print line after each installation
+  print_line
   case $choice in
   # A: Software Repositories
   A1)
@@ -169,8 +164,8 @@ for choice in $choices; do
     snap install postman
     ;;
   E6)
-    # Install GO
-    echo "Installing GO (Snap)"
+    # Install Go
+    echo "Installing Go (Snap)"
     snap install go --classic
     ;;
   E7)
@@ -206,7 +201,15 @@ for choice in $choices; do
     # Install Powerline
     echo "Installing Powerline"
     apt -y install powerline && apt -y install fonts-powerline
-    # TODO: Powerline Settings
+    echo "# Powerline configuration
+if [ -f /usr/share/powerline/bindings/bash/powerline.sh ]; then
+  powerline-daemon -q
+  POWERLINE_BASH_CONTINUATION=1
+  POWERLINE_BASH_SELECT=1
+  source /usr/share/powerline/bindings/bash/powerline.sh
+# shellcheck disable=SC2086
+fi" >>~/.bashrc
+    source ~/.bashrc
     ;;
   F3)
     # Install KeePassXC
@@ -215,32 +218,31 @@ for choice in $choices; do
     ;;
   F4)
     # Install Virtualbox
-    echo "Installling Virtualbox"
-    # TODO:
+    echo "Installing Virtualbox"
+    deb http://download.virtualbox.org/virtualbox/debian buster contrib
+    wget https://www.virtualbox.org/download/oracle_vbox_2016.asc
+    apt-key add oracle_vbox_2016.asc
+    apt update
+    apt install virtualbox-6.1
     ;;
   F5)
     # Install Terminator
     echo "Installing Terminator"
-    # TODO:
+    apt install terminator
     ;;
 
     # G: Image, Video and Audio
   G1)
     # Install GIMP
     echo "Installing GIMP"
-    apt-get -y install gimp
-    ;;
-  G2)
-    # Install OBS Studio
-    echo "Installing OBS Studio"
-    # TODO:
+    apt -y install gimp
     ;;
 
     # H: For Notebook
   H1)
     # Install LIBINPUT-GESTURES
     echo "Installing LIBINPUT-GESTURES"
-    apt-get -y install libinput-tools
+    apt -y install libinput-tools
     git clone https://github.com/bulletmark/libinput-gestures.git
     cd libinput-gestures
     ./libinput-gestures-setup install
@@ -248,42 +250,13 @@ for choice in $choices; do
     libinput-gestures-setup start
     cd ..
     ;;
-
-    # I: Gnome Tweak Extensions
-  I1)
-    # TODO:
-    ;;
-  I2)
-    # TODO:
-    ;;
-  I3)
-    # TODO:
-    ;;
-  I4)
-    # TODO:
-    ;;
-  I5)
-    # TODO:
-    ;;
-  I6)
-    # TODO:
-    ;;
-  I7)
-    # TODO:
-    ;;
-  I8)
-    # TODO:
-    ;;
-  I9)
-    # TODO:
-    ;;
-
   *) ;;
   esac
 done
 
 # End
 cat <<EOL
+
 ---------------------------------------------------------------
 Congratulations, everything you wanted to install is installed!
 ---------------------------------------------------------------

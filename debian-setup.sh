@@ -38,6 +38,7 @@ options=(
   C2 "Discord (Snap)" off
   C3 "Thunderbird Mail" off
   C4 "Skype" off
+  C5 "Zoom Meeting Client (Snap)" off
   # D: Gnome Tweaks
   D1 "Gnome Tweak Tool" off
   D2 "Gnome Shell Extensions" off
@@ -124,7 +125,11 @@ for choice in $choices; do
     echo "Installing Skype (Snap)"
     sudo snap install skype
     ;;
-
+  C5)
+    # Install Zoom Meeting Client (Snap)
+    echo "Install Zoom Meeting Client (Snap)"
+    sudo snap install zoom-client
+    ;;
     # D: Gnome Tweaks
   D1)
     # Install Gnome Tweak Tool

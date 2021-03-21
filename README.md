@@ -10,6 +10,6 @@ cd debian-post-install
 make .INSTALL
 ```
 
-# Contribute
+# Contributions
 
 If you want, you can contribute this repository. Also, you can modify this post-installation script under license of the GNU.

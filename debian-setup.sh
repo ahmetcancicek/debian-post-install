@@ -10,11 +10,19 @@ function print_line() {
   echo "---------------------------------------------------------------"
 }
 
-cd ~
+cd ~ || exit
 
 # Update
 echo "Update"
 apt -y update
+
+# Install
+apt-get install \
+  apt-transport-https \
+  ca-certificates \
+  curl \
+  gnupg \
+  lsb-release
 
 # Install wget
 echo "Installing Wget"
@@ -35,25 +43,23 @@ options=(
   B3 "Spotify (Snap)" off
   # C: Chat Application
   C1 "Zoom Meeting Client" off
-  C2 "Discord (Snap)" off
   C3 "Thunderbird Mail" off
   C4 "Skype" off
-  C5 "Zoom Meeting Client (Snap)" off
   # D: Gnome Tweaks
   D1 "Gnome Tweak Tool" off
   D2 "Gnome Shell Extensions" off
   # E: Development
   E1 "GIT" off
   E2 "JAVA" off
-  E3 "Microsoft Visual Studio Code (Snap)" off
-  E4 "IntelliJ IDEA Ultimate (Snap)" off
-  E5 "Postman (Snap)" off
-  E6 "Go (Snap)" off
-  E7 "GoLand (Snap)" off
-  E8 "Docker (Snap)" off
-  E9 "Maven" off
-  E10 "Putty" off
-  E11 "Vim" off
+  E3 "GO" off
+  E4 "Microsoft Visual Studio Code (Snap)" off
+  E5 "IntelliJ IDEA Ultimate (Snap)" off
+  E6 "GoLand (Snap)" off
+  E7 "Postman (Snap)" off
+  E8 "Docker" off
+  E10 "Maven" off
+  E11 "Putty" off
+  E12 "Vim" off
   # F: Utility
   F1: "Dropbox" off
   F2: "Powerline" off
@@ -110,11 +116,6 @@ for choice in $choices; do
     apt -y install ./zoom_amd64.deb
     apt policy zoom
     ;;
-  C2)
-    # Install Discord (Snap)
-    echo "Installing Discord (Snap)"
-    snap install discord
-    ;;
   C3)
     # Install Thunderbird
     echo "Installing Thunderbird"
@@ -124,11 +125,6 @@ for choice in $choices; do
     # Install Skype (Snap)
     echo "Installing Skype (Snap)"
     sudo snap install skype
-    ;;
-  C5)
-    # Install Zoom Meeting Client (Snap)
-    echo "Install Zoom Meeting Client (Snap)"
-    sudo snap install zoom-client
     ;;
     # D: Gnome Tweaks
   D1)
@@ -154,48 +150,54 @@ for choice in $choices; do
     apt -y install default-jdk
     ;;
   E3)
+    # Install GO
+    # TODO: Install GO
+    ;;
+  E4)
     # Install Microsoft Visual Studio Code
     echo "Installing Microsoft Visual Studio Code (Snap)"
     snap install --classic code
     ;;
-  E4)
+  E5)
     # Install IntelliJ IDEA Ultimate
     echo "Installing IntelliJ IDEA Ultimate (Snap)"
     snap install intellij-idea-ultimate --classic
     ;;
-  E5)
+  E6)
+    # Install GoLand
+    # TODO: Install GoLand
+    ;;
+  E7)
     # Install Postman
     echo "Installing Postman (Snap)"
     snap install postman
     ;;
-  E6)
-    # Install Go
-    echo "Installing Go (Snap)"
-    snap install go --classic
-    ;;
-  E7)
-    # Install GoLand
-    echo "Installing GoLand (Snap)"
-    snap install goland --classic
-    ;;
   E8)
     # Install Docker
-    echo "Installing Docker (Snap)"
-    snap install docker
-    snap start docker
-    snap stop docker
-    ;;
-  E9)
-    # Install Maven
-    echo "Installing Maven"
-    apt -y install maven
+    echo "Installing Docker"
+    curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+    apt -y install docker-ce docker-ce-cli containerd.io
     ;;
   E10)
+    # Install Maven
+    echo "Installing Maven"
+    wget https://www-us.apache.org/dist/maven/maven-3/3.6.0/binaries/apache-maven-3.6.0-bin.tar.gz -P /tmp
+    tar xf /tmp/apache-maven-*.tar.gz -C /opt
+    sudo ln -s /opt/apache-maven-3.6.0 /opt/maven
+    echo "export JAVA_HOME=/usr/lib/jvm/default-java
+export M2_HOME=/opt/maven
+export MAVEN_HOME=/opt/maven
+export PATH=${M2_HOME}/bin:${PATH}" >>~/etc/profile.d/maven.sh
+    chmod +x /etc/profile.d/maven.sh
+    source /etc/profile.d/maven.sh
+    mvn -version
+    ;;
+  E11)
     echo "Installing Putty"
     # Install Putty
     # TODO: Install Putty
     ;;
-  E11)
+  E12)
     echo "Installing Vim"
     # Install Vim
     apt install vim
@@ -251,7 +253,7 @@ fi" >>~/.bashrc
     echo "Installing LIBINPUT-GESTURES"
     apt -y install libinput-tools
     git clone https://github.com/bulletmark/libinput-gestures.git
-    cd libinput-gestures
+    cd libinput-gestures || exit
     ./libinput-gestures-setup install
     libinput-gestures-setup autostart
     libinput-gestures-setup start

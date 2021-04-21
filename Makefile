@@ -1,5 +1,5 @@
 .INSTALL: build run
-build: 
+build:
 	chmod +x debian-setup.sh
 run:
 	./debian-setup.sh

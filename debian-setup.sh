@@ -6,31 +6,35 @@ if [ "$(id -u)" != 0 ]; then
   exit 1
 fi
 
+#
 function print_line() {
-  echo "---------------------------------------------------------------"
+  echo "----------------------------------------------------------------------------------------"
 }
 
+# Root Directory
 cd ~ || exit
+
+# Create temporary folder
+mkdir setup
+cd setup
+
+# TODO: Free Repository
 
 # Update
 echo "Update"
-apt -y update
+apt-get -y update
 
 # Install
+echo "Installing Standard Package"
 apt-get install \
   apt-transport-https \
   ca-certificates \
   curl \
   gnupg \
-  lsb-release
+  lsb-release \
+  wget \
+  dialog
 
-# Install wget
-echo "Installing Wget"
-apt install wget
-
-# Install Dialog
-echo "Installing Dialog"
-apt install dialog
 
 cmd=(dialog --title "Debian 10 Installer" --separate-output --checklist 'Please choose: ' 22 76 16)
 options=(
@@ -43,8 +47,9 @@ options=(
   B3 "Spotify (Snap)" off
   # C: Chat Application
   C1 "Zoom Meeting Client" off
+  C2 "Discord" off
   C3 "Thunderbird Mail" off
-  C4 "Skype" off
+  C4 "Skype (Snap)" off
   # D: Gnome Tweaks
   D1 "Gnome Tweak Tool" off
   D2 "Gnome Shell Extensions" off
@@ -62,14 +67,12 @@ options=(
   E12 "Vim" off
   # F: Utility
   F1: "Dropbox" off
-  F2: "Powerline" off
-  F3: "KeePassXC" off
-  F4: "Virtualbox" off
-  F5: "Terminator" off
+  F2: "KeePassXC" off
+  F3: "Virtualbox" off
+  F4: "Terminator" off
   # G: Image, Video and Audio
   G1 "GIMP" off
-  # H: For Notebook
-  H1: "LIBINPUT-GESTURES" off
+  G2 "Droidcam" off
 )
 
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
@@ -91,6 +94,7 @@ for choice in $choices; do
     apt -y install gnome-software-plugin-flatpak
     flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
     ;;
+
   # B: Internet
   B1)
     # Install Google Chrome
@@ -108,6 +112,7 @@ for choice in $choices; do
     echo "Installing Spotify (Snap)"
     snap install spotify
     ;;
+
     # C: Chat Application
   C1)
     # Install Zoom Meeting Client
@@ -115,6 +120,12 @@ for choice in $choices; do
     wget https://zoom.us/client/latest/zoom_amd64.deb
     apt -y install ./zoom_amd64.deb
     apt policy zoom
+    ;;
+  C2)
+    # Install Discord
+    echo "Installing Discord"
+    wget -O discord.deb "https://discordapp.com/api/download?platform=linux&format=deb"
+    dpkg -i discord.deb
     ;;
   C3)
     # Install Thunderbird
@@ -126,6 +137,7 @@ for choice in $choices; do
     echo "Installing Skype (Snap)"
     sudo snap install skype
     ;;
+
     # D: Gnome Tweaks
   D1)
     # Install Gnome Tweak Tool
@@ -175,57 +187,46 @@ for choice in $choices; do
   E8)
     # Install Docker
     echo "Installing Docker"
+    apt-get remove docker docker-engine docker.io containerd runc
+    apt-get update
     curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-    apt -y install docker-ce docker-ce-cli containerd.io
+    echo \
+      "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian \
+      $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+    apt-get update
+    apt-get install docker-ce docker-ce-cli containerd.io
+    groupadd docker
+    usermod -aG docker $USER
+    newgrp docker
     ;;
   E10)
     # Install Maven
     echo "Installing Maven"
-    wget https://www-us.apache.org/dist/maven/maven-3/3.6.0/binaries/apache-maven-3.6.0-bin.tar.gz -P /tmp
-    tar xf /tmp/apache-maven-*.tar.gz -C /opt
-    sudo ln -s /opt/apache-maven-3.6.0 /opt/maven
-    echo "export JAVA_HOME=/usr/lib/jvm/default-java
-export M2_HOME=/opt/maven
-export MAVEN_HOME=/opt/maven
-export PATH=${M2_HOME}/bin:${PATH}" >>~/etc/profile.d/maven.sh
-    chmod +x /etc/profile.d/maven.sh
-    source /etc/profile.d/maven.sh
-    mvn -version
+    # TODO: Install Maven
     ;;
   E11)
-    echo "Installing Putty"
     # Install Putty
+    echo "Installing Putty"
     # TODO: Install Putty
     ;;
   E12)
-    echo "Installing Vim"
     # Install Vim
+    echo "Installing Vim"
     apt install vim
     ;;
 
     # F: Utility
-  F1) ;;
-
-  F2)
-    # Install Powerline
-    echo "Installing Powerline"
-    apt -y install powerline && apt -y install fonts-powerline
-    echo "# Powerline configuration
-if [ -f /usr/share/powerline/bindings/bash/powerline.sh ]; then
-  powerline-daemon -q
-  POWERLINE_BASH_CONTINUATION=1
-  POWERLINE_BASH_SELECT=1
-  source /usr/share/powerline/bindings/bash/powerline.sh
-# shellcheck disable=SC2086
-fi" >>~/.bashrc
-    source ~/.bashrc
+  F1)
+    # Install Dropbox
+    wget -O dropbox.deb https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2020.03.04_amd64.deb
+    dpkg -i dropbox.deb
     ;;
-  F3)
+  F2)
     # Install KeePassXC
     echo "Installing KeePassXC (Snap)"
     snap install keepassxc
     ;;
-  F4)
+  F3)
     # Install Virtualbox
     echo "Installing Virtualbox"
     deb http://download.virtualbox.org/virtualbox/debian buster contrib
@@ -246,19 +247,15 @@ fi" >>~/.bashrc
     echo "Installing GIMP"
     apt -y install gimp
     ;;
-
-    # H: For Notebook
-  H1)
-    # Install LIBINPUT-GESTURES
-    echo "Installing LIBINPUT-GESTURES"
-    apt -y install libinput-tools
-    git clone https://github.com/bulletmark/libinput-gestures.git
-    cd libinput-gestures || exit
-    ./libinput-gestures-setup install
-    libinput-gestures-setup autostart
-    libinput-gestures-setup start
-    cd ..
-    ;;
+  G2)
+    # Install Droidcam
+    wget -O droidcam_latest.zip https://files.dev47apps.net/linux/droidcam_1.7.2.zip
+    unzip droidcam_latest.zip -d droidcam
+    cd droidcam && sudo ./install-client
+    # shellcheck disable=SC2046
+    apt install linux-headers-`uname -r` gcc make
+    sudo ./install-video
+  ;;
   *) ;;
   esac
 done

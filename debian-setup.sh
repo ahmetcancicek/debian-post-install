@@ -11,14 +11,13 @@ function print_line() {
   echo "----------------------------------------------------------------------------------------"
 }
 
-# Root Directory
-cd ~ || exit
-
 # Create temporary folder
 mkdir setup
-cd setup
+cd setup || exit
 
-# TODO: Free Repository
+# Repository
+apt-add-repository non-free
+
 
 # Update
 echo "Update"

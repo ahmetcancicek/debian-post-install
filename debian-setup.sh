@@ -72,6 +72,7 @@ options=(
   # G: Image, Video and Audio
   G1 "GIMP" off
   G2 "Droidcam" off
+  G3 "VeraCrypt" off
 )
 
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
@@ -162,7 +163,10 @@ for choice in $choices; do
     ;;
   E3)
     # Install GO
-    # TODO: Install GO
+    wget https://golang.org/dl/go1.16.3.linux-amd64.tar.gz
+    rm -rf /usr/local/go && tar -C /usr/local -xzf go1.16.3.linux-amd64.tar.gz
+    export PATH=$PATH:/usr/local/go/bin
+    go version    
     ;;
   E4)
     # Install Microsoft Visual Studio Code
@@ -255,9 +259,21 @@ for choice in $choices; do
     apt install linux-headers-`uname -r` gcc make
     sudo ./install-video
   ;;
+  G3)
+    # Install VeraCrypt
+    mkdir veracrypt-installer
+    cd veracrypt-installer
+    wget https://launchpad.net/veracrypt/trunk/1.24-update7/+download/veracrypt-1.24-Update7-setup.tar.bz2
+    tar xjpf veracrypt-1.24-Update7-setup.tar.bz2
+    chmod -R +x .
+   ./veracrypt-1.24-Update7-setup-gui-x64
+   cd ..
   *) ;;
   esac
 done
+
+cd ..
+rm -rf setup
 
 # End
 cat <<EOL

@@ -66,14 +66,14 @@ options=(
   E6 "GoLand (Snap)" off
   E7 "Postman (Snap)" off
   E8 "Docker" off
-  E10 "Maven" off
-  E11 "Putty" off
-  E12 "Vim" off
+  E9 "Maven" off
+  E10 "Putty" off
+  E11 "Vim" off
   # F: Utility
-  F1: "Dropbox" off
-  F2: "KeePassXC" off
-  F3: "Virtualbox" off
-  F4: "Terminator" off
+  F1 "Dropbox" off
+  F2 "KeePassXC" off
+  F3 "Virtualbox" off
+  F4 "Terminator" off
   # G: Image, Video and Audio
   G1 "GIMP" off
   G2 "Droidcam" off
@@ -210,7 +210,7 @@ for choice in $choices; do
     usermod -aG docker $USER
     newgrp docker
     ;;
-  E10)
+  E9)
     # Install Maven
     echo "Installing Maven"
     wget https://downloads.apache.org/maven/maven-3/3.8.1/binaries/apache-maven-3.8.1-bin.tar.gz -P /tmp
@@ -221,12 +221,12 @@ for choice in $choices; do
     echo "export MAVEN_HOME=/opt/maven" >>  ~/etc/profile.d/maven.sh
     echo "export PATH=${M2_HOME}/bin:${PATH}" >>  ~/etc/profile.d/maven.sh
     ;;
-  E11)
+  E10)
     # Install Putty
     echo "Installing Putty"
     sudo apt install -y putty
     ;;
-  E12)
+  E11)
     # Install Vim
     echo "Installing Vim"
     apt install vim
@@ -235,6 +235,7 @@ for choice in $choices; do
     # F: Utility
   F1)
     # Install Dropbox
+    echo "Installing Dropbox"
     wget -O dropbox.deb https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2020.03.04_amd64.deb
     dpkg -i dropbox.deb
     ;;
@@ -246,13 +247,14 @@ for choice in $choices; do
   F3)
     # Install Virtualbox
     echo "Installing Virtualbox"
-    deb http://download.virtualbox.org/virtualbox/debian buster contrib
+    add-apt-repository "deb http://download.virtualbox.org/virtualbox/debian buster contrib"
+    # deb http://download.virtualbox.org/virtualbox/debian buster contrib
     wget https://www.virtualbox.org/download/oracle_vbox_2016.asc
     apt-key add oracle_vbox_2016.asc
     apt update
-    apt install virtualbox-6.1
+    apt install -y virtualbox-6.1
     ;;
-  F5)
+  F4)
     # Install Terminator
     echo "Installing Terminator"
     apt install terminator
@@ -282,7 +284,8 @@ for choice in $choices; do
     chmod -R +x .
    ./veracrypt-1.24-Update7-setup-gui-x64
    cd ..
-  *) ;;
+   ;;
+  *) 
   esac
 done
 
@@ -300,6 +303,8 @@ EOL
 
 # Dependencies
 apt-get install -f
+
+print_line
 
 # Reboot
 read -p "Are you going to reboot this machine for stability? (y/n) " -n 1 answer

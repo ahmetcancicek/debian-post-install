@@ -297,6 +297,9 @@ Congratulations, everything you wanted to install is installed!
 
 EOL
 
+# Dependencies
+apt-get install -f
+
 # Reboot
 read -p "Are you going to reboot this machine for stability? (y/n) " -n 1 answer
 echo

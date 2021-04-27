@@ -187,7 +187,8 @@ for choice in $choices; do
     ;;
   E6)
     # Install GoLand
-    # TODO: Install GoLand
+    echo "Installing GoLand (Snap)"
+    sudo snap install goland --classic
     ;;
   E7)
     # Install Postman
@@ -223,7 +224,7 @@ for choice in $choices; do
   E11)
     # Install Putty
     echo "Installing Putty"
-    # TODO: Install Putty
+    sudo apt install -y putty
     ;;
   E12)
     # Install Vim

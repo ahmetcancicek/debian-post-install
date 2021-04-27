@@ -6,14 +6,19 @@ if [ "$(id -u)" != 0 ]; then
   exit 1
 fi
 
+# HOME 
+USER=$(logname) 
+eval cd ~$USER
+
+# Create temporary folder
+mkdir setup
+cd setup || exit
+
 #
 function print_line() {
   echo "----------------------------------------------------------------------------------------"
 }
 
-# Create temporary folder
-mkdir setup
-cd setup || exit
 
 # Repository
 apt-add-repository non-free
@@ -165,7 +170,9 @@ for choice in $choices; do
     # Install GO
     wget https://golang.org/dl/go1.16.3.linux-amd64.tar.gz
     rm -rf /usr/local/go && tar -C /usr/local -xzf go1.16.3.linux-amd64.tar.gz
-    export PATH=$PATH:/usr/local/go/bin
+    echo "export PATH=$PATH:/usr/local/go/bin" >>  ../bashrc
+    source ~/.bashrc
+    echo $PATH
     go version    
     ;;
   E4)
@@ -205,7 +212,13 @@ for choice in $choices; do
   E10)
     # Install Maven
     echo "Installing Maven"
-    # TODO: Install Maven
+    wget https://downloads.apache.org/maven/maven-3/3.8.1/binaries/apache-maven-3.8.1-bin.tar.gz -P /tmp
+    tar xf /tmp/apache-maven-*.tar.gz -C /opt
+    ln -s /opt/apache-maven-3.8.1 /opt/maven
+    echo "export JAVA_HOME=/usr/lib/jvm/default-java" >>  ~/etc/profile.d/maven.sh
+    echo "export M2_HOME=/opt/maven" >>  ~/etc/profile.d/maven.sh
+    echo "export MAVEN_HOME=/opt/maven" >>  ~/etc/profile.d/maven.sh
+    echo "export PATH=${M2_HOME}/bin:${PATH}" >>  ~/etc/profile.d/maven.sh
     ;;
   E11)
     # Install Putty

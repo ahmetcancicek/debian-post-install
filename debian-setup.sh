@@ -10,6 +10,9 @@ fi
 USER=$(logname) 
 eval cd ~$USER
 
+HOME=/home/$USER
+
+
 # Create temporary folder
 mkdir setup
 cd setup || exit

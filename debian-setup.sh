@@ -86,6 +86,10 @@ options=(
   G1 "GIMP" off
   G2 "Droidcam" off
   G3 "VeraCrypt" off
+  # H: Hardware
+  H1 "Atheros" off
+  H2 "Realtek" off
+  H3 "Nvidia" off
 )
 
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
@@ -304,6 +308,25 @@ for choice in $choices; do
     # ./veracrypt-1.24-Update7-setup-gui-x64
     # cd ..
    ;;
+
+  # H: Hardware
+  H1)
+    # Install Atheros
+    echo "Installing Atheros Driver"
+    apt-get install -y firmware-atheros
+   ;;
+  H2)
+    # Install Realtek
+    echo "Installing Realtek Driver"
+    apt-get install -y firmware-realtek
+   ;;
+  H3)
+    # Install Nvidia
+    echo "Installing Nvidia Driver"
+    apt install -y nvidia-detect
+    apt install -y nvidia-driver
+    apt install -y nvidia-settings
+  ;;
   *) 
   esac
 done

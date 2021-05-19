@@ -313,7 +313,7 @@ Congratulations, everything you wanted to install is installed!
 EOL
 
 # Dependencies
-apt-get install -f
+apt-get install -y -f
 
 print_line
 

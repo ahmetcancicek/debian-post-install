@@ -176,15 +176,16 @@ for choice in $choices; do
     ;;
   E3)
     # Install GO
+    echo "Installing GO"
     wget https://golang.org/dl/go1.16.3.linux-amd64.tar.gz
     rm -rf /usr/local/go && tar -C /usr/local -xzf go1.16.3.linux-amd64.tar.gz
     echo "export PATH=$PATH:/usr/local/go/bin" >>  $HOME/.bashrc
     echo 'export GOPATH=$HOME/go' >> $HOME/.bashrc
     # echo 'export GOPATH=$HOME/code/go' >> $HOME/.profile
     # echo 'export PATH=$PATH:/usr/local/go/bin' >> $HOME/.profile
-    source ~/.bashrc
-    echo $PATH
-    go version    
+    source $HOME/.bashrc
+    # echo $PATH
+    # go version    
     ;;
   E4)
     # Install Microsoft Visual Studio Code

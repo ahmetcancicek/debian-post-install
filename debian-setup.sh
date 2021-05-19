@@ -11,7 +11,7 @@ USER=$(logname)
 eval cd ~$USER
 
 HOME=/home/$USER
-
+ROOT=/
 
 # Create temporary folder
 mkdir setup
@@ -19,7 +19,7 @@ cd setup || exit
 
 #
 function print_line() {
-  echo "----------------------------------------------------------------------------------------"
+  echo "========================================================================="
 }
 
 
@@ -224,14 +224,18 @@ for choice in $choices; do
     ;;
   E9)
     # Install Maven
+    cd $ROOT
     echo "Installing Maven"
     wget https://downloads.apache.org/maven/maven-3/3.8.1/binaries/apache-maven-3.8.1-bin.tar.gz -P /tmp
     tar xf /tmp/apache-maven-*.tar.gz -C /opt
     ln -s /opt/apache-maven-3.8.1 /opt/maven
-    echo "export JAVA_HOME=/usr/lib/jvm/default-java" >>  ~/etc/profile.d/maven.sh
-    echo "export M2_HOME=/opt/maven" >>  ~/etc/profile.d/maven.sh
-    echo "export MAVEN_HOME=/opt/maven" >>  ~/etc/profile.d/maven.sh
-    echo "export PATH=${M2_HOME}/bin:${PATH}" >>  ~/etc/profile.d/maven.sh
+    echo "export JAVA_HOME=/usr/lib/jvm/default-java" >>  /etc/profile.d/maven.sh
+    echo "export M2_HOME=/opt/maven" >>  /etc/profile.d/maven.sh
+    echo "export MAVEN_HOME=/opt/maven" >>  /etc/profile.d/maven.sh
+    echo "export PATH=${M2_HOME}/bin:${PATH}" >>  /etc/profile.d/maven.sh
+    chmod +x /etc/profile.d/maven.sh
+    source /etc/profile.d/maven.sh
+    cd $HOME/setup
     ;;
   E10)
     # Install Putty

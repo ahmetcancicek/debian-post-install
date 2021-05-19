@@ -6,6 +6,12 @@ if [ "$(id -u)" != 0 ]; then
   exit 1
 fi
 
+if [ -z "$1" ]
+then
+  echo "Hostname must not be null"
+  exit 1
+fi
+
 hostnamectl set-hostname $1
 
 

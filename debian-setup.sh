@@ -167,6 +167,7 @@ for choice in $choices; do
   E1)
     # Install GIT
     echo "Installing GIT"
+    apt-get -y build-dep git
     apt -y install git
     ;;
   E2)
@@ -284,6 +285,7 @@ for choice in $choices; do
     ;;
   G2)
     # Install Droidcam
+    echo "Installing Droidcam"
     wget -O droidcam_latest.zip https://files.dev47apps.net/linux/droidcam_1.7.2.zip
     unzip droidcam_latest.zip -d droidcam
     cd droidcam && sudo ./install-client
@@ -293,13 +295,14 @@ for choice in $choices; do
   ;;
   G3)
     # Install VeraCrypt
-    mkdir veracrypt-installer
-    cd veracrypt-installer
-    wget https://launchpad.net/veracrypt/trunk/1.24-update7/+download/veracrypt-1.24-Update7-setup.tar.bz2
-    tar xjpf veracrypt-1.24-Update7-setup.tar.bz2
-    chmod -R +x .
-   ./veracrypt-1.24-Update7-setup-gui-x64
-   cd ..
+    # echo "Installing VeraCrypt"    
+    # mkdir veracrypt-installer
+    # cd veracrypt-installer
+    # wget https://launchpad.net/veracrypt/trunk/1.24-update7/+download/veracrypt-1.24-Update7-setup.tar.bz2
+    # tar xjpf veracrypt-1.24-Update7-setup.tar.bz2
+    # chmod -R +x .
+    # ./veracrypt-1.24-Update7-setup-gui-x64
+    # cd ..
    ;;
   *) 
   esac

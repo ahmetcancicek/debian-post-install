@@ -25,11 +25,16 @@ function print_line() {
 
 # Repository
 apt-add-repository non-free
-
+apt-add-repository main
+apt-add-repository contrib
 
 # Update
 echo "Update"
 apt-get -y update
+
+# Upgared
+echo "Upgrade"
+apt-get -y upgrade
 
 # Install
 echo "Installing Standard Package"

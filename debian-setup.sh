@@ -38,7 +38,7 @@ apt-get -y upgrade
 
 # Install
 echo "Installing Standard Package"
-apt-get install \
+apt-get install -y \
   apt-transport-https \
   ca-certificates \
   curl \

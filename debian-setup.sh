@@ -82,6 +82,7 @@ options=(
   F2 "KeePassXC" off
   F3 "Virtualbox" off
   F4 "Terminator" off
+  F5 "Powerline" off
   # G: Image, Video and Audio
   G1 "GIMP" off
   G2 "Droidcam" off
@@ -103,6 +104,7 @@ for choice in $choices; do
     # Install Snap Repository
     echo "Installing Snap Repository"
     apt -y install snapd
+    snap -y install snap-store
     ;;
   A2)
     # Install Flatpak repository
@@ -147,7 +149,7 @@ for choice in $choices; do
   C3)
     # Install Thunderbird
     echo "Installing Thunderbird"
-    apt install -y thunderbird
+    apt -y install thunderbird
     ;;
   C4)
     # Install Skype (Snap)
@@ -279,6 +281,21 @@ for choice in $choices; do
     # Install Terminator
     echo "Installing Terminator"
     apt install terminator
+    ;;
+  F5)
+    # Install Powerline
+    echo "Installing Powerline"
+    apt build-dep powerline
+    apt -y install powerline
+    echo " " >> $HOME/.bashrc
+    echo "# Powerline configuration" >> $HOME/.bashrc
+    echo "if [ -f /usr/share/powerline/bindings/bash/powerline.sh ]; then" >> $HOME/.bashrc
+    echo "powerline-daemon -q" >> $HOME/.bashrc
+    echo "POWERLINE_BASH_CONTINUATION=1" >> $HOME/.bashrc
+    echo "POWERLINE_BASH_SELECT=1" >> $HOME/.bashrc
+    echo "source /usr/share/powerline/bindings/bash/powerline.sh" >> $HOME/.bashrc
+    echo "fi" >> $HOME/.bashrc
+    source $HOME/.bashrc
     ;;
 
     # G: Image, Video and Audio

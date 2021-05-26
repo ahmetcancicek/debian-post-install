@@ -147,7 +147,7 @@ for choice in $choices; do
   C3)
     # Install Thunderbird
     echo "Installing Thunderbird"
-    apt -y thunderbird
+    apt install -y thunderbird
     ;;
   C4)
     # Install Skype (Snap)

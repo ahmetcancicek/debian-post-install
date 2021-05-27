@@ -292,7 +292,7 @@ for choice in $choices; do
     # Install Powerline
     echo "Installing Powerline"
     apt build-dep powerline
-    apt -y install powerline
+    apt -y install powerline fonts-powerline
     echo " " >> $HOME/.bashrc
     echo "# Powerline configuration" >> $HOME/.bashrc
     echo "if [ -f /usr/share/powerline/bindings/bash/powerline.sh ]; then" >> $HOME/.bashrc

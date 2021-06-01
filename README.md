@@ -4,7 +4,7 @@ This repository contains set of post-installation scripts for Debian ant its der
 
 # Install
 
-Firstly, If you do not install sudo, you can use this commands to install sudo
+Firstly, If you do not have installation sudo, you can use this commands to install sudo
 
 ```
 git clone https://github.com/ahmetcancicek/debian-post-install.git
@@ -20,8 +20,6 @@ git clone https://github.com/ahmetcancicek/debian-post-install.git
 cd debian-post-install
 sudo make .INSTALL
 ```
-
-
 
 # Contributions
 

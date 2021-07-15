@@ -1,8 +1,8 @@
 .INSTALL: build run
 .INSTALLSUDO: addsudo
 build:
-	chmod +x debian-setup.sh
+	chmod +x setup.sh
 run:
-	./debian-setup.sh
+	./setup.sh
 addsudo:
 	chmod +x addsudousers.sh && ./addsudousers.sh

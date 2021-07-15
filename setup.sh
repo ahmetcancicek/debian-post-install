@@ -112,6 +112,8 @@ options=(
   H1 "Atheros" off
   H2 "Realtek" off
   H3 "Nvidia" off
+  # I: Settings
+  I1 "Bluetooth Visible (Off)" off
 )
 
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
@@ -442,6 +444,17 @@ for choice in $choices; do
     TITLE="END: INSTALLING NVIDIA DRIVER"
     print_line
   ;;
+
+  # I: Settings
+  I1)
+    TITLE="START: BLUETOOTH VISIBLE OFF"
+    print_line
+    echo "Bluetooth Visible: Off"
+    hciconfig hci0 noscan
+    TITLE="END: INSTALLING VISIBLE OFF"
+    print_line
+    ;;
+
   *) 
   esac
 done

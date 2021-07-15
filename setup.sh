@@ -378,7 +378,6 @@ for choice in $choices; do
     # Install Powerline
     TITLE="START: INSTALLING POWERLINE"
     print_line
-    apt build-dep powerline
     apt -y install powerline fonts-powerline
     echo " " >> $HOME/.bashrc
     echo "# Powerline configuration" >> $HOME/.bashrc

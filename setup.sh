@@ -222,7 +222,6 @@ for choice in $choices; do
     # Install GIT
     TITLE="START: INSTALLING GIT"
     print_line
-    apt-get -y build-dep git
     apt -y install git
     TITLE="END: INSTALLING GIT"
     print_line

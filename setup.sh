@@ -1,0 +1,270 @@
+#!/bin/bash
+
+# For root control
+if [ "$(id -u)" != 0 ]; then
+  echo "You are not root! This script must be run as root"
+  exit 1
+fi
+
+# Get USER name
+USER=$(logname)
+
+# Get HOME folder path
+HOME=/home/$USER
+
+# Go TEMP folder
+cd /tmp
+
+# Add Repository
+apt-add-repository non-free
+apt-add-repository main
+apt-add-repository contrib
+
+# Update
+apt-get -y update
+
+# Upgrade
+apt-get -y upgrade
+
+# Install standard package
+apt-get install -y \
+  apt-transport-https \
+  ca-certificates \
+  curl \
+  gnupg \
+  lsb-release \
+  wget \
+  dialog
+
+cmd=(dialog --title "Debian 11 Installer" --separate-output --checklist 'Please choose: ' 27 76 16)
+options=(
+  # A: Software Repositories
+  A1 "Install Snap Repository" on
+  A2 "Install Flatpak Repository" on
+  # B: Internet
+  B1 "Google Chrome" off
+  B2 "Chromium" off
+  B3 "Spotify (Snap)" off
+  # C: Chat Application
+  C1 "Zoom Meeting Client" off
+  C2 "Discord" off
+  C3 "Thunderbird Mail" off
+  C4 "Skype (Snap)" off
+  # D: Development
+  D1 "GIT" off
+  D2 "JAVA" off
+  D3 "GO" off
+  D4 "Microsoft Visual Studio Code" off
+  D5 "IntelliJ IDEA Ultimate (Snap)" off
+  D6 "GoLand (Snap)" off
+  D7 "Postman (Snap)" off
+  D8 "Docker" off
+  D9 "Maven" off
+  D10 "Putty" off
+  D11 "Vim" off
+  # E: Gnome Tweaks
+  E1 "Gnome Tweak Tool" off
+  E2 "Gnome Shell Extensions" off
+  # F: Utility
+  F1 "Dropbox" off
+  F2 "KeePassXC" off
+  F3 "Virtualbox" off
+  F4 "Terminator" off
+  F5 "Powerline" off
+  # G: Image, Video and Audio
+  G1 "GIMP" off
+  G2 "Droidcam" off
+  # H: Hardware
+  H1 "Atheros" off
+  H2 "Realtek" off
+  H3 "Nvidia" off
+  # I: Settings
+  I1  "Bluetooth Visible (off)" off
+)
+
+choices=$("${cmd[@]}" "${options[@]}" 2>&1 > /dev/tty)
+clear
+for choice in $choices; do
+  case $choice in
+  A1)
+    apt -y install snapd
+    snap install snap-store
+    ;;
+  A2)
+    apt -y install flatpak
+    apt -y install gnome-software-plugin-flatpak
+    flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+    ;;
+
+  B1)
+    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    apt -y install ./google-chrome-stable_current_amd64.deb
+    ;;
+  B2)
+    apt -y chromium
+    ;;
+  B3)
+    snap install spotify
+    ;;
+
+  C1)
+    whet https://zoom.us/client/lates/zoom_amd64.deb
+    apt -y install ./zoom_amd64.deb
+    ;;
+  C2)
+    wget -O discord.deb "https://discordapp.com/api/download?platform=linux&format=deb"
+    dpkg -i discord.deb
+    ;;
+  C3)
+    apt -y install thunderbird
+    ;;
+  C4)
+    sudo snap install skype
+    ;;
+  D1)
+    apt -y install git
+    ;;
+  D2)
+    apt -y install default-jdk
+    ;;
+  D3)
+    wget https://golang.org/dl/go1.17.1.linux-amd64.tar.gz
+    rm -rf /usr/local/go && tar -C /usr/local -xzf go1.17.1.linux-amd64.tar.gz
+    echo ' ' >> $HOME/.bashrc
+    echo '# GoLang configuration ' >> $HOME/.bashrc
+    echo 'export PATH=$PATH:/usr/local/go/bin' >> $HOME/.bashrc
+    echo 'export GOPATH=$HOME/go' >> $HOME/.bashrc
+    source $HOME/.bashrc
+    ;;
+  D4)
+    wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+    install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
+    sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
+    rm -f packages.microsoft.gpg
+    apt install apt-transport-https
+    apt update
+    apt install code # or code-insiders
+    ;;
+  D5)
+    snap install intellij-idea-ultimate --classic
+    ;;
+  D6)
+    sudo snap install goland --classic
+    ;;
+  D7)
+    snap install postman
+    ;;
+  D8)
+    apt-get install \
+        apt-transport-https \
+        ca-certificates \
+        curl \
+        gnupg \
+        lsb-release
+    curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+    echo \
+      "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian \
+      $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+    apt-get update
+    apt-get -y install docker-ce docker-ce-cli containerd.io
+    docker run hello-world
+
+    groupadd docker
+    usermod -aG docker $USER
+    curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    chmod +x /usr/local/bin/docker-compose
+    ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+    docker-compose --version
+    ;;
+  D9)
+    wget https://downloads.apache.org/maven/maven-3/3.8.1/binaries/apache-maven-3.8.1-bin.tar.gz -P /tmp
+    rm -rf /opt/apache-maven-3.8.1 /opt/maven
+    tar xf /tmp/apache-maven-*.tar.gz -C /opt
+    ln -s /opt/apache-maven-3.8.1 /opt/maven
+    echo ' ' >> $HOME/.bashrc
+    echo '# Maven Configuration' >> $HOME/.bashrc
+    echo 'export M2_HOME=/opt/maven' >> $HOME/.bashrc
+    echo 'export MAVEN_HOME=/opt/maven' >> $HOME/.bashrc
+    echo 'export PATH=$PATH:/opt/maven/bin' >> $HOME/.bashrc
+    source $HOME/.bashrc
+    ;;
+  D10)
+    apt -y install putty
+    ;;
+  D11)
+    apt -y install vim
+    ;;
+
+  E1)
+    apt -y install gnome-tweak-tool
+    ;;
+  E2)
+    apt -y install gnome-shell-extensions
+    ;;
+
+  F1)
+    wget https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2020.03.04_amd64.deb
+    dpkg -i dropbox.deb
+    ;;
+  F2)
+    snap install keepassxc
+    ;;
+  F3)
+    add-apt-repository "deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian bullseye contrib"
+    wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | apt-key add -
+    wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | apt-key add -
+    apt-get update
+    apt-get -y install virtualbox-6.1
+    ;;
+  F4)
+    apt install terminator
+    ;;
+  F5)
+    apt -y instal powerline fonts-powerline
+    # TODO: Fix configuration
+    ;;
+
+  G1)
+    apt -y install gimp
+    ;;
+  G2)
+    cd /tmp/
+    wget -O droidcam_latest.zip https://files.dev47apps.net/linux/droidcam_1.8.0.zip
+    unzip droidcam_latest.zip -d droidcam
+    cd droidcam && sudo ./install-client
+    apt install linux-headers-`uname -r` gcc make
+    ./install-video
+    ;;
+
+  H1)
+    apt-get install -y firmware-atheros
+    ;;
+  H2)
+    apt-get install -y firmware-realtek
+    ;;
+  H3)
+    apt install -y nvidia-detect
+    apt install -y nvidia-driver
+    apt install -y nvidia-settings
+    ;;
+
+  I1)
+    hiconfig hci0 noscan
+    ;;
+  *)
+  esac
+done
+
+# Install dependencies
+apt-get -f install
+
+cat <<EOL
+Congratulations, everything you wanted to install is installed!
+EOL
+
+cat <<EOL
+EOL
+read -p "Are you going to reboot this machine for stability? (y/n) " -n 1 answer
+if [[ $answer = ~^[Yy]$ ]];then
+  reboot
+fi

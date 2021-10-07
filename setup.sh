@@ -108,7 +108,7 @@ for choice in $choices; do
     ;;
 
   C1)
-    whet https://zoom.us/client/lates/zoom_amd64.deb
+    wget https://zoom.us/client/latest/zoom_amd64.deb
     apt -y install ./zoom_amd64.deb
     ;;
   C2)

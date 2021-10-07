@@ -177,16 +177,16 @@ for choice in $choices; do
     docker-compose --version
     ;;
   D9)
-    wget https://downloads.apache.org/maven/maven-3/3.8.1/binaries/apache-maven-3.8.1-bin.tar.gz -P /tmp
-    rm -rf /opt/apache-maven-3.8.1 /opt/maven
-    tar xf /tmp/apache-maven-*.tar.gz -C /opt
-    ln -s /opt/apache-maven-3.8.1 /opt/maven
-    echo ' ' >> $HOME/.bashrc
-    echo '# Maven Configuration' >> $HOME/.bashrc
-    echo 'export M2_HOME=/opt/maven' >> $HOME/.bashrc
-    echo 'export MAVEN_HOME=/opt/maven' >> $HOME/.bashrc
-    echo 'export PATH=$PATH:/opt/maven/bin' >> $HOME/.bashrc
-    source $HOME/.bashrc
+    wget https://dlcdn.apache.org/maven/maven-3/3.8.3/binaries/apache-maven-3.8.3-bin.tar.gz
+    tar -xvf apache-maven-3.8.3-bin.tar.gz
+    rm -rf /opt/apache-maven-3.8.3
+    mv /apache-maven-3.8.3 /opt/
+    echo ' ' >> $HOME/.profile
+    echo '# Maven Configuration' >> $HOME/.profile
+    echo 'JAVA_HOME=/usr/lib/jvm/default-java' >> $HOME/.profile
+    echo 'M2_HOME=/opt/apache-maven-3.8.3' >> $HOME/.profile
+    echo "export PATH" >> $HOME/.profile
+    source $HOME/.profile
     ;;
   D10)
     apt -y install putty

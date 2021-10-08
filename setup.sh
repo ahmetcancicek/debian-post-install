@@ -130,11 +130,11 @@ for choice in $choices; do
   D3)
     wget https://golang.org/dl/go1.17.1.linux-amd64.tar.gz
     rm -rf /usr/local/go && tar -C /usr/local -xzf go1.17.1.linux-amd64.tar.gz
-    echo ' ' >> $HOME/.bashrc
-    echo '# GoLang configuration ' >> $HOME/.bashrc
-    echo 'export PATH=$PATH:/usr/local/go/bin' >> $HOME/.bashrc
-    echo 'export GOPATH=$HOME/go' >> $HOME/.bashrc
-    source $HOME/.bashrc
+    echo ' ' >> $HOME/.profile
+    echo '# GoLang configuration ' >> $HOME/.profile
+    echo 'export PATH="$PATH:/usr/local/go/bin"' >> $HOME/.profile
+    echo 'export GOPATH="$HOME/go"' >> $HOME/.profile
+    source $HOME/.profile
     ;;
   D4)
     wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg

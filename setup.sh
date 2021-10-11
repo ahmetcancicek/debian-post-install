@@ -217,7 +217,7 @@ for choice in $choices; do
     apt-get -y install virtualbox-6.1
     ;;
   F4)
-    apt install terminator
+    apt -y install terminator
     ;;
   F5)
     apt -y instal powerline fonts-powerline
@@ -266,5 +266,5 @@ cat <<EOL
 EOL
 read -p "Are you going to reboot this machine for stability? (y/n) " -n 1 answer
 if [[ $answer = ~^[Yy]$ ]];then
-  reboot
+  systemctl reboot
 fi

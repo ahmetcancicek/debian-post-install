@@ -178,14 +178,12 @@ for choice in $choices; do
     ;;
   D9)
     wget https://dlcdn.apache.org/maven/maven-3/3.8.3/binaries/apache-maven-3.8.3-bin.tar.gz
-    tar -xvf apache-maven-3.8.3-bin.tar.gz
-    rm -rf /opt/apache-maven-3.8.3
-    mv /apache-maven-3.8.3 /opt/
+    tar -zxvf apache-maven-3.8.3-bin.tar.gz
     echo ' ' >> $HOME/.profile
     echo '# Maven Configuration' >> $HOME/.profile
     echo 'JAVA_HOME=/usr/lib/jvm/default-java' >> $HOME/.profile
-    echo 'M2_HOME=/opt/apache-maven-3.8.3' >> $HOME/.profile
-    echo "export PATH" >> $HOME/.profile
+    echo 'export M2_HOME=/opt/apache-maven-3.8.3' >> $HOME/.profile
+    echo 'export PATH=${M2_HOME}/bin:${PATH}' >> $HOME/.profile
     source $HOME/.profile
     ;;
   D10)
@@ -266,5 +264,5 @@ cat <<EOL
 EOL
 read -p "Are you going to reboot this machine for stability? (y/n) " -n 1 answer
 if [[ $answer = ~^[Yy]$ ]];then
-  systemctl reboot
+  reboot
 fi

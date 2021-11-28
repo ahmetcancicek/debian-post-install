@@ -45,11 +45,13 @@ options=(
   B1 "Google Chrome" off
   B2 "Chromium" off
   B3 "Spotify (Snap)" off
+  B4 "Opera" off
   # C: Chat Application
   C1 "Zoom Meeting Client" off
   C2 "Discord" off
   C3 "Thunderbird Mail" off
   C4 "Skype (Snap)" off
+  C5 "Slack" off
   # D: Development
   D1 "GIT" off
   D2 "JAVA" off
@@ -62,6 +64,9 @@ options=(
   D9 "Maven" off
   D10 "Putty" off
   D11 "Vim" off
+  D12 "PyCharm" off
+  D13 "Robo 3T" off
+  D14 "DataGrid" off
   # E: Gnome Tweaks
   E1 "Gnome Tweak Tool" off
   E2 "Gnome Shell Extensions" off
@@ -101,10 +106,13 @@ for choice in $choices; do
     apt -y install ./google-chrome-stable_current_amd64.deb
     ;;
   B2)
-    apt -y chromium
+    apt -y install chromium
     ;;
   B3)
     snap install spotify
+    ;;
+  B4)
+    snap install opera
     ;;
 
   C1)
@@ -119,8 +127,12 @@ for choice in $choices; do
     apt -y install thunderbird
     ;;
   C4)
-    sudo snap install skype
+    snap install skype
     ;;
+  C5)
+    snap install slack --classic
+    ;;
+
   D1)
     apt -y install git
     ;;
@@ -191,6 +203,15 @@ for choice in $choices; do
     ;;
   D11)
     apt -y install vim
+    ;;
+  D12)
+    snap install pycharm-community --classic
+    ;;
+  D13)
+    snap install robo3t-snap
+    ;;
+  D14)
+    snap install datagrip --classic
     ;;
 
   E1)

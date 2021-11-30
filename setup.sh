@@ -52,6 +52,7 @@ options=(
   C3 "Thunderbird Mail" off
   C4 "Skype (Snap)" off
   C5 "Slack" off
+  C6 "Microsoft Teams (Snap)" off
   # D: Development
   D1 "GIT" off
   D2 "JAVA" off
@@ -131,6 +132,9 @@ for choice in $choices; do
     ;;
   C5)
     snap install slack --classic
+    ;;
+  C6)
+    snap install teams
     ;;
 
   D1)

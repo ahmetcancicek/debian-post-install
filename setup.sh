@@ -195,10 +195,12 @@ for choice in $choices; do
   D9)
     wget https://dlcdn.apache.org/maven/maven-3/3.8.3/binaries/apache-maven-3.8.3-bin.tar.gz
     tar -zxvf apache-maven-3.8.3-bin.tar.gz
+    mkdir /opt/maven
+    mv ./apache-maven-3.8.3 /opt/maven/
     echo ' ' >> $HOME/.profile
     echo '# Maven Configuration' >> $HOME/.profile
     echo 'JAVA_HOME=/usr/lib/jvm/default-java' >> $HOME/.profile
-    echo 'export M2_HOME=/opt/apache-maven-3.8.3' >> $HOME/.profile
+    echo 'export M2_HOME=/opt/maven/apache-maven-3.8.3' >> $HOME/.profile
     echo 'export PATH=${M2_HOME}/bin:${PATH}' >> $HOME/.profile
     source $HOME/.profile
     ;;

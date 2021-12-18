@@ -193,10 +193,10 @@ for choice in $choices; do
     docker-compose --version
     ;;
   D9)
-    wget https://dlcdn.apache.org/maven/maven-3/3.8.3/binaries/apache-maven-3.8.3-bin.tar.gz
-    tar -zxvf apache-maven-3.8.3-bin.tar.gz
+    wget https://dlcdn.apache.org/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
+    tar -zxvf apache-maven-3.6.3-bin.tar.gz
     mkdir /opt/maven
-    mv ./apache-maven-3.8.3 /opt/maven/
+    mv ./apache-maven-3.6.3 /opt/maven/
     echo ' ' >> $HOME/.profile
     echo '# Maven Configuration' >> $HOME/.profile
     echo 'JAVA_HOME=/usr/lib/jvm/default-java' >> $HOME/.profile

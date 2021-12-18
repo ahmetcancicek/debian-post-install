@@ -200,7 +200,7 @@ for choice in $choices; do
     echo ' ' >> $HOME/.profile
     echo '# Maven Configuration' >> $HOME/.profile
     echo 'JAVA_HOME=/usr/lib/jvm/default-java' >> $HOME/.profile
-    echo 'export M2_HOME=/opt/maven/apache-maven-3.8.3' >> $HOME/.profile
+    echo 'export M2_HOME=/opt/maven/apache-maven-3.6.3' >> $HOME/.profile
     echo 'export PATH=${M2_HOME}/bin:${PATH}' >> $HOME/.profile
     source $HOME/.profile
     ;;

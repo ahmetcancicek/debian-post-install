@@ -257,8 +257,11 @@ for choice in $choices; do
     wget -O droidcam_latest.zip https://files.dev47apps.net/linux/droidcam_1.8.1.zip
     unzip droidcam_latest.zip -d droidcam
     cd droidcam && sudo ./install-client
-    apt install linux-headers-`uname -r` gcc make
+    apt -y install linux-headers-`uname -r` gcc make
     ./install-video
+
+    wget https://files.dev47apps.net/linux/libindicator3-7_0.5.0-4_amd64.deb
+    sudo dpkg -i libindicator3-7_0.5.0-4_amd64.deb
 
     wget https://files.dev47apps.net/linux/libappindicator3-1_0.4.92-7_amd64.deb
     sudo dpkg -i libappindicator3-1_0.4.92-7_amd64.deb

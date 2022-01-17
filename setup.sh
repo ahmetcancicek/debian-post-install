@@ -296,6 +296,6 @@ EOL
 cat <<EOL
 EOL
 read -p "Are you going to reboot this machine for stability? (y/n) " -n 1 answer
-if [[ $answer = ~^[Yy]$ ]];then
+if [[ $answer =~ ^[Yy]$ ]];then
   reboot
 fi

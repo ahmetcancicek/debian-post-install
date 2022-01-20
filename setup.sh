@@ -290,12 +290,21 @@ done
 apt-get -f install
 
 cat <<EOL
+---------------------------------------------------------------
 Congratulations, everything you wanted to install is installed!
+---------------------------------------------------------------
 EOL
 
 cat <<EOL
+
 EOL
-read -p "Are you going to reboot this machine for stability? (y/n) " -n 1 answer
+
+read -p "Are you going to reboot this machine for stability? (y/n): " -n 1 answer
 if [[ $answer =~ ^[Yy]$ ]];then
   reboot
 fi
+
+
+cat <<EOL
+
+EOL

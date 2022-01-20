@@ -77,6 +77,7 @@ options=(
   F3 "Virtualbox" off
   F4 "Terminator" off
   F5 "Powerline" off
+  F6 "Htop" off
   # G: Image, Video and Audio
   G1 "GIMP" off
   G2 "Droidcam" off
@@ -229,7 +230,7 @@ for choice in $choices; do
 
   F1)
     wget -O dropbox.deb https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2020.03.04_amd64.deb
-    dpkg -i dropbox.deb
+    yes | dpkg -i dropbox.deb
     ;;
   F2)
     snap install keepassxc
@@ -247,6 +248,9 @@ for choice in $choices; do
   F5)
     apt -y instal powerline fonts-powerline
     # TODO: Fix configuration
+    ;;
+  F6)
+    apt -y install htop
     ;;
 
   G1)

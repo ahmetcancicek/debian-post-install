@@ -78,6 +78,7 @@ options=(
   F4 "Terminator" off
   F5 "Powerline" off
   F6 "Htop" off
+  F7 "vimrc" off
   # G: Image, Video and Audio
   G1 "GIMP" off
   G2 "Droidcam" off
@@ -251,6 +252,10 @@ for choice in $choices; do
     ;;
   F6)
     apt -y install htop
+    ;;
+  F7)
+    git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime
+    sh ~/.vim_runtime/install_awesome_vimrc.sh
     ;;
 
   G1)

@@ -124,11 +124,11 @@ for choice in $choices; do
     ;;
   C2)
     wget -O discord.deb "https://discordapp.com/api/download?platform=linux&format=deb"
-    dpkg -i discord.deb
+    dpkg -i ./discord.deb
     ;;
   C3)
-    apt -y install thunderbird
-    ;;
+     apt -y install thunderbird
+     ;;
   C4)
     snap install skype
     ;;
@@ -231,7 +231,7 @@ for choice in $choices; do
 
   F1)
     wget -O dropbox.deb https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2020.03.04_amd64.deb
-    yes | dpkg -i dropbox.deb
+    apt -y install ./dropbox.deb
     ;;
   F2)
     snap install keepassxc

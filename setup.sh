@@ -124,7 +124,7 @@ for choice in $choices; do
     ;;
   C2)
     wget -O discord.deb "https://discordapp.com/api/download?platform=linux&format=deb"
-    dpkg -i ./discord.deb
+    dpkg -i discord.deb
     ;;
   C3)
      apt -y install thunderbird

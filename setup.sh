@@ -68,7 +68,7 @@ options=(
   D12 "PyCharm" off
   D13 "Robo 3T" off
   D14 "DataGrid" off
-  D15 "Mongo Shell" off
+  D15 "Mongo Shell & MongoDB Database Tools" off
   # E: Gnome Tweaks
   E1 "Gnome Tweak Tool" off
   E2 "Gnome Shell Extensions" off
@@ -225,6 +225,9 @@ for choice in $choices; do
   D15)
     wget -O mongosh.deb https://downloads.mongodb.com/compass/mongodb-mongosh_1.2.2_amd64.deb
     dpkg -i ./mongosh.deb
+
+    wget -O mongodb-database-tools.deb https://fastdl.mongodb.org/tools/db/mongodb-database-tools-debian92-x86_64-100.5.2.deb
+    dpkg -i ./mongodb-database-tools.deb
     ;;
 
   E1)

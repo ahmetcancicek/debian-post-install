@@ -147,8 +147,8 @@ for choice in $choices; do
     apt -y install default-jdk
     ;;
   D3)
-    wget https://golang.org/dl/go1.17.1.linux-amd64.tar.gz
-    rm -rf /usr/local/go && tar -C /usr/local -xzf go1.17.1.linux-amd64.tar.gz
+    wget https://go.dev/dl/go1.18.linux-amd64.tar.gz
+    rm -rf /usr/local/go && tar -C /usr/local -xzf go1.18.linux-amd64.tar.gz
     echo ' ' >> $HOME/.profile
     echo '# GoLang configuration ' >> $HOME/.profile
     echo 'export PATH="$PATH:/usr/local/go/bin"' >> $HOME/.profile

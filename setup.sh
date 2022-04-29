@@ -34,7 +34,8 @@ apt-get install -y \
   gnupg \
   lsb-release \
   wget \
-  dialog
+  dialog \
+  tree
 
 cmd=(dialog --title "Debian 11 Installer" --separate-output --checklist 'Please choose: ' 27 76 16)
 options=(
@@ -166,6 +167,21 @@ for choice in $choices; do
     ;;
   D5)
     snap install intellij-idea-ultimate --classic
+    # wget -O https://download.jetbrains.com/idea/ideaIU-2021.3.3.tar.gz
+    # tar -xzf ideaIU-2021.3.3.tar.gz -C /opt 
+    # ln -s /opt/idea-IU-213.7172.25/bin/idea.sh /usr/local/bin/idea  
+    # mkdir /usr/share/applications/intellij.desktop  
+    # echo '[Desktop Entry]' >> /usr/share/applications/intellij.desktop 
+    # echo 'Version=13.0' >> /usr/share/applications/intellij.desktop
+    # echo 'Type=Application' >> /usr/share/applications/intellij.desktop
+    # echo 'Terminal=false' >> /usr/share/applications/intellij.desktop
+    # echo 'Icon[en_US]=/opt/idea-IU-213.7172.25/bin/idea.png' >> /usr/share/applications/intellij.desktop
+    # echo 'Name[en_US]=IntelliJ Idea Ultimate' >> /usr/share/applications/intellij.desktop
+    # echo 'Exec=/opt/idea-IU-213.7172.25/bin/idea.sh' >> /usr/share/applications/intellij.desktop
+    # echo 'Name=IntelliJ Idea Ultimate' >> /usr/share/applications/intellij.desktop
+    # echo 'Icon=/opt/idea-IU-213.7172.25/bin/idea.png' >> /usr/share/applications/intellij.desktop
+    # chmod 644 /usr/share/applications/intellij.desktop
+    # chown root:root /usr/share/applications/intellij.desktop
     ;;
   D6)
     sudo snap install goland --classic

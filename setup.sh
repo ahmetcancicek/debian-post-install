@@ -84,6 +84,7 @@ options=(
   # G: Image, Video and Audio
   G1 "GIMP" off
   G2 "Droidcam" off
+  G3 "TLP" off
   # H: Hardware
   H1 "Atheros" off
   H2 "Realtek" off
@@ -299,6 +300,9 @@ for choice in $choices; do
     wget https://files.dev47apps.net/linux/libappindicator3-1_0.4.92-7_amd64.deb
     sudo dpkg -i libappindicator3-1_0.4.92-7_amd64.deb
     ;;
+  G3)
+  apt -y install tlp
+  ;;
 
   H1)
     apt-get install -y firmware-atheros

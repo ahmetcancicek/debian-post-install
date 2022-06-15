@@ -259,7 +259,7 @@ for choice in $choices; do
     apt -y install ./dropbox.deb
     ;;
   F2)
-    snap install keepassxc
+    apt-get -y install keepassxc
     ;;
   F3)
     add-apt-repository "deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian bullseye contrib"

@@ -170,7 +170,7 @@ for choice in $choices; do
     wget https://download.jetbrains.com/idea/ideaIU-2021.3.3.tar.gz
     tar -xzf ideaIU-2021.3.3.tar.gz -C /opt
     ln -s /opt/idea-IU-213.7172.25/bin/idea.sh /usr/local/bin/idea
-    cd /opt/idea-IU-213.7172.25/bin/
+    cd /opt/idea-IU-213.7172.25/bin
     ./idea.sh
     ;;
   D6)
@@ -226,7 +226,11 @@ for choice in $choices; do
     snap install robo3t-snap
     ;;
   D14)
-    snap install datagrip --classic
+    wget https://download.jetbrains.com/datagrip/datagrip-2022.1.5.tar.gz
+    tar -xzf datagrip-2022.1.5.tar.gz -C /opt
+    ln -s /opt/DataGrip-2022.1.5/bin/datagrip.sh /usr/local/bin/datagrip
+    cd /opt/DataGrip-2022.1.5/bin
+    ./datagrip.sh
     ;;
   D15)
     wget -O mongosh.deb https://downloads.mongodb.com/compass/mongodb-mongosh_1.2.2_amd64.deb

@@ -11,7 +11,8 @@ Install dependencies
 
 ```bash
 su
-sudo apt -y install git || apt -y install make
+apt -y install git 
+apt -y install make
 exit
 ```
 

@@ -174,7 +174,11 @@ for choice in $choices; do
     ./idea.sh
     ;;
   D6)
-    sudo snap install goland --classic
+    wget https://download.jetbrains.com/go/goland-2022.1.2.tar.gz
+    tar -xzf goland-2022.1.2.tar.gz -C /opt
+    ln -s /opt/GoLand-2022.1.2/bin/goland.sh /usr/local/bin/goland
+    cd /opt/GoLand-2022.1.2/bin
+    ./goland.sh
     ;;
   D7)
     snap install postman

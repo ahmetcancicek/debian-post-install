@@ -181,7 +181,17 @@ for choice in $choices; do
     ./goland.sh
     ;;
   D7)
-    snap install postman
+    curl https://dl.pstmn.io/download/latest/linux64 --output postman-9.20.3-linux-x64.tar.gz
+    tar -xzf postman-9.20.3-linux-x64.tar.gz -C /opt
+    touch $HOME/.local/share/applications/Postman.desktop
+    echo '[Desktop Entry]' >> $HOME/.local/share/applications/Postman.desktop
+    echo 'Encoding=UTF-8' >> $HOME/.local/share/applications/Postman.desktop
+    echo 'Name=Postman' >> $HOME/.local/share/applications/Postman.desktop
+    echo 'Exec=/opt/Postman/app/Postman %U' >> $HOME/.local/share/applications/Postman.desktop
+    echo 'Icon=/opt/Postman/app/resources/app/assets/icon.png' >> $HOME/.local/share/applications/Postman.desktop
+    echo 'Terminal=false' >> $HOME/.local/share/applications/Postman.desktop
+    echo 'Type=Application' >> $HOME/.local/share/applications/Postman.desktop
+    echo 'Categories=Development;' >> $HOME/.local/share/applications/Postman.desktop
     ;;
   D8)
     apt-get install \

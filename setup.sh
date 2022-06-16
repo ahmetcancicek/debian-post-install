@@ -59,9 +59,9 @@ options=(
   D2 "JAVA" off
   D3 "GO" off
   D4 "Microsoft Visual Studio Code" off
-  D5 "IntelliJ IDEA Ultimate (Snap)" off
-  D6 "GoLand (Snap)" off
-  D7 "Postman (Snap)" off
+  D5 "IntelliJ IDEA Ultimate" off
+  D6 "GoLand" off
+  D7 "Postman" off
   D8 "Docker" off
   D9 "Maven" off
   D10 "Putty" off
@@ -81,6 +81,7 @@ options=(
   F5 "Powerline" off
   F6 "Htop" off
   F7 "vimrc" off
+  F8 "Zsh Shell" off
   # G: Image, Video and Audio
   G1 "GIMP" off
   G2 "Droidcam" off
@@ -172,28 +173,42 @@ for choice in $choices; do
     wget https://download.jetbrains.com/idea/ideaIU-2021.3.3.tar.gz
     tar -xzf ideaIU-2021.3.3.tar.gz -C /opt
     ln -s /opt/idea-IU-213.7172.25/bin/idea.sh /usr/local/bin/idea
-    cd /opt/idea-IU-213.7172.25/bin
-    ./idea.sh
+    echo "[Desktop Entry]
+          Version=1.0
+          Type=Application
+          Name=IntelliJ IDEA Ultimate Edition
+          Icon=/opt/idea-IU-213.7172.25/bin/idea.svg
+          Exec=/opt/idea-IU-213.7172.25/bin/idea.sh %f
+          Comment=Capable and Ergonomic IDE for JVM
+          Categories=Development;IDE;
+          Terminal=false
+          StartupWMClass=jetbrains-idea
+          StartupNotify=true" >> /usr/share/applications/jetbrains-idea.desktop
     ;;
   D6)
     wget https://download.jetbrains.com/go/goland-2022.1.2.tar.gz
     tar -xzf goland-2022.1.2.tar.gz -C /opt
     ln -s /opt/GoLand-2022.1.2/bin/goland.sh /usr/local/bin/goland
-    cd /opt/GoLand-2022.1.2/bin
-    ./goland.sh
+    echo "[Desktop Entry]
+          Version=1.0
+          Type=Application
+          Name=GoLand
+          Icon=/opt/GoLand-2022.1.2/bin/goland.png
+          Exec=/opt/GoLand-2022.1.2/bin/goland.sh
+          Terminal=false
+          Categories=Development;IDE;" >> /usr/share/applications/jetbrains-goland.desktop
     ;;
   D7)
     curl https://dl.pstmn.io/download/latest/linux64 --output postman-9.20.3-linux-x64.tar.gz
     tar -xzf postman-9.20.3-linux-x64.tar.gz -C /opt
-    touch $HOME/.local/share/applications/Postman.desktop
-    echo '[Desktop Entry]' >> $HOME/.local/share/applications/Postman.desktop
-    echo 'Encoding=UTF-8' >> $HOME/.local/share/applications/Postman.desktop
-    echo 'Name=Postman' >> $HOME/.local/share/applications/Postman.desktop
-    echo 'Exec=/opt/Postman/app/Postman %U' >> $HOME/.local/share/applications/Postman.desktop
-    echo 'Icon=/opt/Postman/app/resources/app/assets/icon.png' >> $HOME/.local/share/applications/Postman.desktop
-    echo 'Terminal=false' >> $HOME/.local/share/applications/Postman.desktop
-    echo 'Type=Application' >> $HOME/.local/share/applications/Postman.desktop
-    echo 'Categories=Development;' >> $HOME/.local/share/applications/Postman.desktop
+    echo "[Desktop Entry]
+          Encoding=UTF-8
+          Name=Postman
+          Exec=/opt/Postman/app/Postman %U
+          Icon=/opt/Postman/app/resources/app/assets/icon.png
+          Terminal=false
+          Type=Application
+          Categories=Development;" >> /usr/share/applications/Postman.desktop
     ;;
   D8)
     apt-get install \
@@ -290,6 +305,14 @@ for choice in $choices; do
   F7)
     git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime
     sh ~/.vim_runtime/install_awesome_vimrc.sh
+    ;;
+  F8)
+    apt-get install zsh -y
+    chsh -s $(which zsh)
+    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+    # TODO: Set ZSH_THEME="powerlevel10k/powerlevel10k" in ~/.zshrc.
+    source .zshrc
     ;;
 
   G1)

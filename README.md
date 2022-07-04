@@ -48,6 +48,7 @@ sudo make run
 
 ```bash
 sudo make install-fonts
+sudo make install-drivers
 ```
 
 ## License

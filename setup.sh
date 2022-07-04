@@ -447,8 +447,8 @@ for choice in $choices; do
     ;;
   G3)
     writeInstallationMessage TLP
-  apt -y install tlp
-  writeInstallationSuccessfulMessage TLĞ
+    apt -y install tlp
+    writeInstallationSuccessfulMessage TLP
   ;;
   *)
   esac

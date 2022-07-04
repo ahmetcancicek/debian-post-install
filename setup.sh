@@ -6,6 +6,20 @@ if [ "$(id -u)" != 0 ]; then
   exit 1
 fi
 
+setInstallationMessage() {
+printf "\n${BLUE}-------------Installing $1------------- ${ENDCOLOR}\n"
+}
+
+setInstallationSuccessfulMessage(){
+printf "${GREEN}-------------$1 is installed successfully!-------------${ENDCOLOR}\n"
+}
+
+# Set Color
+RED="\e[31m"
+GREEN="\e[32m"
+BLUE='\e[34m'
+ENDCOLOR="\e[0m"
+
 # Set Version
 JETBRAINS_VERSION=2022.1.3
 GO_VERSION=1.18.3
@@ -58,8 +72,8 @@ apt-get install -y \
 cmd=(dialog --title "Debian 11 Installer" --separate-output --checklist 'Please choose: ' 27 76 16)
 options=(
   # A: Software Repositories
-  A1 "Install Snap Repository" on
-  A2 "Install Flatpak Repository" on
+  A1 "Install Snap Repository" off
+  A2 "Install Flatpak Repository" off
   # B: Internet
   B1 "Google Chrome" off
   B2 "Chromium" off
@@ -120,31 +134,39 @@ for choice in $choices; do
     ;;
 
   B1)
+    setInstallationMessage Google-Chrome
     wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
     apt -y install ./google-chrome-stable_current_amd64.deb
+    setInstallationSuccessfulMessage  Google-Chrome
     ;;
   B2)
     apt -y install chromium
     ;;
   B3)
+    setInstallationMessage Spotify
     curl -sS https://download.spotify.com/debian/pubkey_5E3C45D7B312C643.gpg | sudo apt-key add -
     echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
     apt-get update && sudo apt-get install spotify-client
+    setInstallationSuccessfulMessage Spotify
     ;;
   B4)
     snap install opera
     ;;
 
   C1)
+    setInstallationMessage Zoom
     wget https://zoom.us/client/latest/zoom_amd64.deb
     apt -y install ./zoom_amd64.deb
+    setInstallationSuccessfulMessage Zoom
     ;;
   C2)
     wget -O discord.deb "https://discordapp.com/api/download?platform=linux&format=deb"
     dpkg -i discord.deb
     ;;
   C3)
-     apt -y install thunderbird
+    setInstallationMessage Thunderbird
+    apt -y install thunderbird
+    setInstallationSuccessfulMessage Thunderbird
      ;;
   C4)
     snap install skype
@@ -157,7 +179,9 @@ for choice in $choices; do
     ;;
 
   D1)
+    setInstallationMessage GIT
     apt -y install git
+    setInstallationSuccessfulMessage GIT
     ;;
   D2)
     apt -y install default-jdk
@@ -354,25 +378,36 @@ for choice in $choices; do
   esac
 done
 
+printf "\n${BLUE}-------------Installing Dependencies------------- ${ENDCOLOR}\n"
 # Install dependencies
 apt-get -f install
+printf "${GREEN}-------------Dependencies are installed successfully!-------------${ENDCOLOR}\n"
 
+
+printf "\n${GREEN}"
 cat <<EOL
 ---------------------------------------------------------------
 Congratulations, everything you wanted to install is installed!
 ---------------------------------------------------------------
 EOL
+printf "${ENDCOLOR}\n"
+
 
 cat <<EOL
 
 EOL
 
+
+printf ${RED}
 read -p "Are you going to reboot this machine for stability? (y/n): " -n 1 answer
 if [[ $answer =~ ^[Yy]$ ]];then
   reboot
 fi
+printf ${ENDCOLOR}
 
 
 cat <<EOL
 
 EOL
+
+

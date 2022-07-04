@@ -6,19 +6,19 @@ Repository contains simple bash script to installing programs effortless after a
 
 ## Run
 
-You can use below code.
-
-```bash
-wget https://raw.githubusercontent.com/ahmetcancicek/debian-post-install/main/setup.sh -c -O setup.sh && chmod +x setup.sh
-./setup.sh -h
-```
-
 If you want to need installation the sudo, you can use the below code. Otherwise, skip this step.
 
 ```bash
 su
 wget https://raw.githubusercontent.com/ahmetcancicek/debian-post-install/main/install-sudo.sh -c -O install-sudo.sh && chmod +x install-sudo.sh
 ./install-sudo.sh -h
+```
+
+You can use below code.
+
+```bash
+wget https://raw.githubusercontent.com/ahmetcancicek/debian-post-install/main/setup.sh -c -O setup.sh && chmod +x setup.sh
+sudo ./setup.sh -h
 ```
 
 ## Extra

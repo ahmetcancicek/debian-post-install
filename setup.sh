@@ -215,7 +215,7 @@ for choice in $choices; do
     ;;
   D7)
     curl https://dl.pstmn.io/download/latest/linux64 --output postman-${POSTMAN_VERSION}-linux-x64.tar.gz
-    tar -xzf postman-{POSTMAN_VERSION}-linux-x64.tar.gz -C /opt
+    tar -xzf postman-${POSTMAN_VERSION}-linux-x64.tar.gz -C /opt
     echo "[Desktop Entry]
           Encoding=UTF-8
           Name=Postman

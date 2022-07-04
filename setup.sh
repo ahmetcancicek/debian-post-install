@@ -49,7 +49,8 @@ apt-get install -y \
   lsb-release \
   wget \
   dialog \
-  tree
+  tree \
+  font-manager
 
 cmd=(dialog --title "Debian 11 Installer" --separate-output --checklist 'Please choose: ' 27 76 16)
 options=(

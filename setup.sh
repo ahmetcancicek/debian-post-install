@@ -6,11 +6,11 @@ if [ "$(id -u)" != 0 ]; then
   exit 1
 fi
 
-setInstallationMessage() {
+writeInstallationMessage() {
 printf "\n${BLUE}-------------Installing $1------------- ${ENDCOLOR}\n"
 }
 
-setInstallationSuccessfulMessage(){
+writeInstallationSuccessfulMessage(){
 printf "${GREEN}-------------$1 is installed successfully!-------------${ENDCOLOR}\n"
 }
 
@@ -44,20 +44,29 @@ apt-add-repository main
 apt-add-repository contrib
 
 # Update
+printf "\n${BLUE}-------------Updating------------- ${ENDCOLOR}\n"
 apt-get -y update
+printf "${GREEN}-------------Updated successfully!-------------${ENDCOLOR}\n"
 
 # Upgrade
+printf "\n${BLUE}-------------Upgrading------------- ${ENDCOLOR}\n"
 apt-get -y upgrade
+printf "${GREEN}-------------Upgared successfully!-------------${ENDCOLOR}\n"
+
 
 ## Bluetooth visibility
 hiconfig hci0 noscan
 
 # Install fonts
+printf "\n${BLUE}-------------Installing fonts------------- ${ENDCOLOR}\n"
 apt-get install -y \
   fonts-powerline \
   fonts-ubuntu
+printf "\n${BLUE}-------------fonts are installed successfully------------- ${ENDCOLOR}\n"
+
 
 # Install standard package
+printf "\n${BLUE}-------------Installing standard package $1------------- ${ENDCOLOR}\n"
 apt-get install -y \
   apt-transport-https \
   ca-certificates \
@@ -68,6 +77,8 @@ apt-get install -y \
   dialog \
   tree \
   font-manager
+printf "\n${BLUE}-------------standard packages are installed successfully------------- ${ENDCOLOR}\n"
+
 
 cmd=(dialog --title "Debian 11 Installer" --separate-output --checklist 'Please choose: ' 27 76 16)
 options=(
@@ -100,7 +111,7 @@ options=(
   D11 "Vim" off
   D12 "PyCharm" off
   D13 "Robo 3T" off
-  D14 "DataGrid" off
+  D14 "DataGrip" off
   D15 "Mongo Shell & MongoDB Database Tools" off
   # E: Gnome Tweaks
   E1 "Gnome Tweak Tool" off
@@ -124,69 +135,86 @@ clear
 for choice in $choices; do
   case $choice in
   A1)
+    writeInstallationMessage Snap-Repository
     apt -y install snapd
     snap install snap-store
+    writeInstallationSuccessfulMessage Snap-Repository
     ;;
   A2)
+    writeInstallationMessage Flatpak-Repository
     apt -y install flatpak
     apt -y install gnome-software-plugin-flatpak
     flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+    writeInstallationSuccessfulMessage Flatpak-Repository
     ;;
 
   B1)
-    setInstallationMessage Google-Chrome
+    writeInstallationMessage Google-Chrome
     wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
     apt -y install ./google-chrome-stable_current_amd64.deb
-    setInstallationSuccessfulMessage  Google-Chrome
+    writeInstallationSuccessfulMessage  Google-Chrome
     ;;
   B2)
     apt -y install chromium
     ;;
   B3)
-    setInstallationMessage Spotify
+    writeInstallationMessage Spotify
     curl -sS https://download.spotify.com/debian/pubkey_5E3C45D7B312C643.gpg | sudo apt-key add -
     echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
     apt-get update && sudo apt-get install spotify-client
-    setInstallationSuccessfulMessage Spotify
+    writeInstallationSuccessfulMessage Spotify
     ;;
   B4)
+    writeInstallationMessage Opera
     snap install opera
+    writeInstallationSuccessfulMessage Opera
     ;;
 
   C1)
-    setInstallationMessage Zoom
+    writeInstallationMessage Zoom
     wget https://zoom.us/client/latest/zoom_amd64.deb
     apt -y install ./zoom_amd64.deb
-    setInstallationSuccessfulMessage Zoom
+    writeInstallationSuccessfulMessage Zoom
     ;;
   C2)
+    writeInstallationMessage Discord
     wget -O discord.deb "https://discordapp.com/api/download?platform=linux&format=deb"
     dpkg -i discord.deb
+    writeInstallationSuccessfulMessage Discord
     ;;
   C3)
-    setInstallationMessage Thunderbird
+    writeInstallationMessage Thunderbird
     apt -y install thunderbird
-    setInstallationSuccessfulMessage Thunderbird
+    writeInstallationSuccessfulMessage Thunderbird
      ;;
   C4)
+    writeInstallationMessage Skype
     snap install skype
+    writeInstallationSuccessfulMessage Skype
     ;;
   C5)
+    writeInstallationMessage Slack
     snap install slack --classic
+    writeInstallationSuccessfulMessage Slack
     ;;
   C6)
+    writeInstallationMessage Teams
     snap install teams
+    writeInstallationSuccessfulMessage Teams
     ;;
 
   D1)
-    setInstallationMessage GIT
+    writeInstallationMessage GIT
     apt -y install git
-    setInstallationSuccessfulMessage GIT
+    writeInstallationSuccessfulMessage GIT
     ;;
   D2)
+    writeInstallationMessage OpenJDK
     apt -y install default-jdk
+    writeInstallationMessage OpenJDK
     ;;
   D3)
+    writeInstallationMessage Go
     wget https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz
     rm -rf /usr/local/go && tar -C /usr/local -xzf go${GO_VERSION}.linux-amd64.tar.gz
     echo ' ' >> $HOME/.profile
@@ -194,8 +222,10 @@ for choice in $choices; do
     echo 'export PATH="$PATH:/usr/local/go/bin"' >> $HOME/.profile
     echo 'export GOPATH="$HOME/go"' >> $HOME/.profile
     source $HOME/.profile
+    writeInstallationSuccessfulMessage Go
     ;;
   D4)
+    writeInstallationMessage vscode
     wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
     install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
     sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
@@ -203,8 +233,10 @@ for choice in $choices; do
     apt install apt-transport-https
     apt update
     apt install code # or code-insiders
+    writeInstallationSuccessfulMessage vscode
     ;;
   D5)
+    writeInstallationMessage IntelliJ-IDEA
     wget https://download.jetbrains.com/idea/ideaIU-${JETBRAINS_VERSION}.tar.gz -O ideaIU.tar.gz
     tar -xzf ideaIU.tar.gz -C /opt
     mv /opt/idea-IU-* /opt/idea-IU-${JETBRAINS_VERSION}
@@ -219,9 +251,11 @@ for choice in $choices; do
           Categories=Development;IDE;
           Terminal=false
           StartupWMClass=jetbrains-idea
-          StartupNotify=true" >> /usr/share/applications/jetbrains-idea.desktop
+          StartupNotify=true;" >> /usr/share/applications/jetbrains-idea.desktop
+    writeInstallationSuccessfulMessage IntelliJ-IDEA
     ;;
   D6)
+    writeInstallationMessage GoLand
     wget https://download.jetbrains.com/go/goland-${JETBRAINS_VERSION}.tar.gz -O goland.tar.gz
     tar -xzf goland.tar.gz -C /opt
     ln -s /opt/GoLand-${JETBRAINS_VERSION}/bin/goland.sh /usr/local/bin/goland
@@ -233,8 +267,10 @@ for choice in $choices; do
           Exec=/opt/GoLand-${JETBRAINS_VERSION}/bin/goland.sh
           Terminal=false
           Categories=Development;IDE;" >> /usr/share/applications/jetbrains-goland.desktop
+    writeInstallationSuccessfulMessage GoLand
     ;;
   D7)
+    writeInstallationMessage Postman
     curl https://dl.pstmn.io/download/latest/linux64 --output postman-${POSTMAN_VERSION}-linux-x64.tar.gz
     tar -xzf postman-${POSTMAN_VERSION}-linux-x64.tar.gz -C /opt
     echo "[Desktop Entry]
@@ -245,8 +281,10 @@ for choice in $choices; do
           Terminal=false
           Type=Application
           Categories=Development;" >> /usr/share/applications/Postman.desktop
+    writeInstallationSuccessfulMessage Postman
     ;;
   D8)
+    writeInstallationMessage Docker
     apt-get install \
         apt-transport-https \
         ca-certificates \
@@ -260,15 +298,19 @@ for choice in $choices; do
     apt-get update
     apt-get -y install docker-ce docker-ce-cli containerd.io
     docker run hello-world
+    writeInstallationSuccessfulMessage Docker
 
+    writeInstallationMessage docker-compose
     groupadd docker
     usermod -aG docker $USER
     curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
     chmod +x /usr/local/bin/docker-compose
     ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
     docker-compose --version
+    writeInstallationSuccessfulMessage docker-compose
     ;;
   D9)
+    writeInstallationMessage Maven
     wget https://dlcdn.apache.org/maven/maven-${MAVEN}/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz
     tar -zxvf apache-maven-${MAVEN_VERSION}-bin.tar.gz
     mkdir /opt/maven
@@ -279,12 +321,17 @@ for choice in $choices; do
           export M2_HOME=/opt/maven/apache-maven-${MAVEN_VERSION}
           export PATH=${M2_HOME}/bin:${PATH};" >> $HOME/.profile
     source $HOME/.profile
+    writeInstallationSuccessfulMessage Maven
     ;;
   D10)
+    writeInstallationMessage Putty
     apt -y install putty
+    writeInstallationSuccessfulMessage Putty
     ;;
   D11)
+    writeInstallationMessage Vim
     apt -y install vim
+    writeInstallationSuccessfulMessage Vim
     ;;
   D12)
     # TODO:
@@ -293,6 +340,7 @@ for choice in $choices; do
     # TODO:
     ;;
   D14)
+    writeInstallationMessage DataGrip
     wget https://download.jetbrains.com/datagrip/datagrip-${JETBRAINS_VERSION}.tar.gz
     tar -xzf datagrip-${JETBRAINS_VERSION}.tar.gz -C /opt
     ln -s /opt/DataGrip-${JETBRAINS_VERSION}/bin/datagrip.sh /usr/local/bin/datagrip
@@ -304,47 +352,67 @@ for choice in $choices; do
           Exec=/opt/DataGrip-${JETBRAINS_VERSION}/bin/datagrip.sh
           Terminal=false
           Categories=Development;IDE;" >> /usr/share/applications/jetbrains-datagrip.desktop
+    writeInstallationSuccessfulMessage DataGrip
     ;;
   D15)
+    writeInstallationMessage Mongo-Shell
     wget -O mongosh.deb https://downloads.mongodb.com/compass/mongodb-mongosh_1.2.2_amd64.deb
     dpkg -i ./mongosh.deb
+    writeInstallationSuccessfulMessage Mongo-Shell
 
+    writeInstallationMessage MongoDB-Database-Tools
     wget -O mongodb-database-tools.deb https://fastdl.mongodb.org/tools/db/mongodb-database-tools-debian92-x86_64-100.5.2.deb
     dpkg -i ./mongodb-database-tools.deb
+    writeInstallationSuccessfulMessage MongoDB-Database-Tools
     ;;
 
   E1)
+    writeInstallationMessage Gnome-Tweak-Tool
     apt -y install gnome-tweak-tool
+    writeInstallationSuccessfulMessage Gnome-Tweak-Tool
     ;;
   E2)
+    writeInstallationMessage Gnome-Shell-Extensions
     apt -y install gnome-shell-extensions
+    writeInstallationSuccessfulMessage Gnome-Shell-Extensions
     ;;
 
   F1)
+    writeInstallationMessage Dropbox
     wget -O dropbox.deb https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_${DROPBOX_VERSION}_amd64.deb
     apt -y install ./dropbox.deb
+    writeInstallationSuccessfulMessage Dropbox
     ;;
   F2)
+    writeInstallationMessage KeePassXC
     apt-get -y install keepassxc
+    writeInstallationSuccessfulMessage KeePassXC
     ;;
   F3)
+    writeInstallationMessage Virtualbox
     add-apt-repository "deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian bullseye contrib"
     wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | apt-key add -
     wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | apt-key add -
     apt-get update
     apt-get -y install virtualbox-6.1
+    writeInstallationSuccessfulMessage Virtualbox
     ;;
   F4)
+    writeInstallationMessage Terminator
     apt -y install terminator
+    writeInstallationSuccessfulMessage Terminator
     ;;
   F6)
+    writeInstallationMessage Htop
     apt -y install htop
+    writeInstallationSuccessfulMessage Htop
     ;;
   F7)
     git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime
     sh ~/.vim_runtime/install_awesome_vimrc.sh
     ;;
   F8)
+    writeInstallationMessage ZSH
     apt-get install zsh -y
     chsh -s $(which zsh)
     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -352,12 +420,16 @@ for choice in $choices; do
     git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
     source .zshrc
+    writeInstallationSuccessfulMessage ZSH
     ;;
 
   G1)
+    writeInstallationMessage Gimp
     apt -y install gimp
+    writeInstallationSuccessfulMessage Gimp
     ;;
   G2)
+    writeInstallationMessage Droidcam
     cd /tmp/
     wget -O droidcam_latest.zip https://files.dev47apps.net/linux/droidcam_${DROIDCAM_VERSION}.zip
     unzip droidcam_latest.zip -d droidcam
@@ -370,9 +442,12 @@ for choice in $choices; do
 
     wget https://files.dev47apps.net/linux/libappindicator3-1_0.4.92-7_amd64.deb
     sudo dpkg -i libappindicator3-1_0.4.92-7_amd64.deb
+    writeInstallationSuccessfulMessage Droidcam
     ;;
   G3)
+    writeInstallationMessage TLP
   apt -y install tlp
+  writeInstallationSuccessfulMessage TLĞ
   ;;
   *)
   esac

@@ -61,8 +61,9 @@ hiconfig hci0 noscan
 printf "\n${BLUE}-------------Installing fonts------------- ${ENDCOLOR}\n"
 apt-get install -y \
   fonts-powerline \
-  fonts-ubuntu
-printf "\n${BLUE}-------------fonts are installed successfully------------- ${ENDCOLOR}\n"
+  fonts-ubuntu \
+  fonts-manager
+printf "\n${BLUE}-------------Fonts are installed successfully------------- ${ENDCOLOR}\n"
 
 
 # Install standard package
@@ -75,9 +76,9 @@ apt-get install -y \
   lsb-release \
   wget \
   dialog \
-  tree \
-  font-manager
-printf "\n${BLUE}-------------standard packages are installed successfully------------- ${ENDCOLOR}\n"
+  tree
+
+printf "\n${BLUE}-------------Standard packages are installed successfully------------- ${ENDCOLOR}\n"
 
 
 cmd=(dialog --title "Debian 11 Installer" --separate-output --checklist 'Please choose: ' 27 76 16)

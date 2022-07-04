@@ -315,11 +315,11 @@ for choice in $choices; do
     tar -zxvf apache-maven-${MAVEN_VERSION}-bin.tar.gz
     mkdir /opt/maven
     mv ./apache-maven-${MAVEN_VERSION} /opt/maven/
-    echo "
-          # Maven Configuration
-          JAVA_HOME=/usr/lib/jvm/default-java
-          export M2_HOME=/opt/maven/apache-maven-${MAVEN_VERSION}
-          export PATH=${M2_HOME}/bin:${PATH};" >> $HOME/.profile
+    echo ' ' >> $HOME/.profile
+    echo '# Maven Configuration' >> $HOME/.profile
+    echo 'JAVA_HOME=/usr/lib/jvm/default-java' >> $HOME/.profile
+    echo "export M2_HOME=/opt/maven/apache-maven-${MAVEN_VERSION}" >> $HOME/.profile
+    echo 'export PATH=${M2_HOME}/bin:${PATH}' >> $HOME/.profile
     source $HOME/.profile
     writeInstallationSuccessfulMessage Maven
     ;;

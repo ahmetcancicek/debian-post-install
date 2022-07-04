@@ -8,6 +8,12 @@ fi
 
 # Set Version
 JETBRAINS_VERSION=2022.1.3
+GO_VERSION=1.18.3
+POSTMAN_VERSION=9.20.3
+MAVEN=3
+MAVEN_VERSION=3.8.6
+DROIDCAM_VERSION=1.8.1
+DROPBOX_VERSION=2020.03.04
 
 # Get USER name
 USER=$(logname)
@@ -28,6 +34,11 @@ apt-get -y update
 
 # Upgrade
 apt-get -y upgrade
+
+# Install fonts
+apt-get install -y \
+  fonts-powerline \
+  fonts-ubuntu
 
 # Install standard package
 apt-get install -y \
@@ -81,10 +92,9 @@ options=(
   F2 "KeePassXC" off
   F3 "Virtualbox" off
   F4 "Terminator" off
-  F5 "Powerline" off
   F6 "Htop" off
   F7 "vimrc" off
-  F8 "Zsh Shell" off
+  F8 "ZSH" off
   # G: Image, Video and Audio
   G1 "GIMP" off
   G2 "Droidcam" off
@@ -155,8 +165,8 @@ for choice in $choices; do
     apt -y install default-jdk
     ;;
   D3)
-    wget https://go.dev/dl/go1.18.linux-amd64.tar.gz
-    rm -rf /usr/local/go && tar -C /usr/local -xzf go1.18.linux-amd64.tar.gz
+    wget https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz
+    rm -rf /usr/local/go && tar -C /usr/local -xzf go${GO_VERSION}.linux-amd64.tar.gz
     echo ' ' >> $HOME/.profile
     echo '# GoLang configuration ' >> $HOME/.profile
     echo 'export PATH="$PATH:/usr/local/go/bin"' >> $HOME/.profile
@@ -192,19 +202,19 @@ for choice in $choices; do
   D6)
     wget https://download.jetbrains.com/go/goland-${JETBRAINS_VERSION}.tar.gz -O goland.tar.gz
     tar -xzf goland.tar.gz -C /opt
-    ln -s /opt/GoLand-2022.1.2/bin/goland.sh /usr/local/bin/goland
+    ln -s /opt/GoLand-${JETBRAINS_VERSION}/bin/goland.sh /usr/local/bin/goland
     echo "[Desktop Entry]
           Version=1.0
           Type=Application
           Name=GoLand
-          Icon=/opt/GoLand-2022.1.2/bin/goland.png
-          Exec=/opt/GoLand-2022.1.2/bin/goland.sh
+          Icon=/opt/GoLand-${JETBRAINS_VERSION}/bin/goland.png
+          Exec=/opt/GoLand-${JETBRAINS_VERSION}/bin/goland.sh
           Terminal=false
           Categories=Development;IDE;" >> /usr/share/applications/jetbrains-goland.desktop
     ;;
   D7)
-    curl https://dl.pstmn.io/download/latest/linux64 --output postman-9.20.3-linux-x64.tar.gz
-    tar -xzf postman-9.20.3-linux-x64.tar.gz -C /opt
+    curl https://dl.pstmn.io/download/latest/linux64 --output postman-${POSTMAN_VERSION}-linux-x64.tar.gz
+    tar -xzf postman-{POSTMAN_VERSION}-linux-x64.tar.gz -C /opt
     echo "[Desktop Entry]
           Encoding=UTF-8
           Name=Postman
@@ -237,15 +247,15 @@ for choice in $choices; do
     docker-compose --version
     ;;
   D9)
-    wget https://dlcdn.apache.org/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
-    tar -zxvf apache-maven-3.6.3-bin.tar.gz
+    wget https://dlcdn.apache.org/maven/maven-${MAVEN}/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz
+    tar -zxvf apache-maven-${MAVEN_VERSION}-bin.tar.gz
     mkdir /opt/maven
-    mv ./apache-maven-3.6.3 /opt/maven/
-    echo ' ' >> $HOME/.profile
-    echo '# Maven Configuration' >> $HOME/.profile
-    echo 'JAVA_HOME=/usr/lib/jvm/default-java' >> $HOME/.profile
-    echo 'export M2_HOME=/opt/maven/apache-maven-3.6.3' >> $HOME/.profile
-    echo 'export PATH=${M2_HOME}/bin:${PATH}' >> $HOME/.profile
+    mv ./apache-maven-${MAVEN_VERSION} /opt/maven/
+    echo "
+          # Maven Configuration
+          JAVA_HOME=/usr/lib/jvm/default-java
+          export M2_HOME=/opt/maven/apache-maven-${MAVEN_VERSION}
+          export PATH=${M2_HOME}/bin:${PATH};" >> $HOME/.profile
     source $HOME/.profile
     ;;
   D10)
@@ -261,11 +271,17 @@ for choice in $choices; do
     snap install robo3t-snap
     ;;
   D14)
-    wget https://download.jetbrains.com/datagrip/datagrip-2022.1.5.tar.gz
-    tar -xzf datagrip-2022.1.5.tar.gz -C /opt
-    ln -s /opt/DataGrip-2022.1.5/bin/datagrip.sh /usr/local/bin/datagrip
-    cd /opt/DataGrip-2022.1.5/bin
-    ./datagrip.sh
+    wget https://download.jetbrains.com/datagrip/datagrip-${JETBRAINS_VERSION}.tar.gz
+    tar -xzf datagrip-${JETBRAINS_VERSION}.tar.gz -C /opt
+    ln -s /opt/DataGrip-${JETBRAINS_VERSION}/bin/datagrip.sh /usr/local/bin/datagrip
+    echo "[Desktop Entry]
+          Version=1.0
+          Type=Application
+          Name=DataGrip
+          Icon=/opt/DataGrip-${JETBRAINS_VERSION}/bin/datagrip.png
+          Exec=/opt/DataGrip-${JETBRAINS_VERSION}/bin/datagrip.sh
+          Terminal=false
+          Categories=Development;IDE;" >> /usr/share/applications/jetbrains-datagrip.desktop
     ;;
   D15)
     wget -O mongosh.deb https://downloads.mongodb.com/compass/mongodb-mongosh_1.2.2_amd64.deb
@@ -283,7 +299,7 @@ for choice in $choices; do
     ;;
 
   F1)
-    wget -O dropbox.deb https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2020.03.04_amd64.deb
+    wget -O dropbox.deb https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_${DROPBOX_VERSION}_amd64.deb
     apt -y install ./dropbox.deb
     ;;
   F2)
@@ -299,10 +315,6 @@ for choice in $choices; do
   F4)
     apt -y install terminator
     ;;
-  F5)
-    apt -y instal powerline fonts-powerline
-    # TODO: Fix configuration
-    ;;
   F6)
     apt -y install htop
     ;;
@@ -315,7 +327,8 @@ for choice in $choices; do
     chsh -s $(which zsh)
     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
-    # TODO: Set ZSH_THEME="powerlevel10k/powerlevel10k" in ~/.zshrc.
+    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
     source .zshrc
     ;;
 
@@ -324,7 +337,7 @@ for choice in $choices; do
     ;;
   G2)
     cd /tmp/
-    wget -O droidcam_latest.zip https://files.dev47apps.net/linux/droidcam_1.8.1.zip
+    wget -O droidcam_latest.zip https://files.dev47apps.net/linux/droidcam_${DROIDCAM_VERSION}.zip
     unzip droidcam_latest.zip -d droidcam
     cd droidcam && sudo ./install-client
     apt -y install linux-headers-`uname -r` gcc make

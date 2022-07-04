@@ -6,6 +6,9 @@ if [ "$(id -u)" != 0 ]; then
   exit 1
 fi
 
+# Set Version
+JETBRAINS_VERSION=2022.1.3
+
 # Get USER name
 USER=$(logname)
 
@@ -170,15 +173,16 @@ for choice in $choices; do
     apt install code # or code-insiders
     ;;
   D5)
-    wget https://download.jetbrains.com/idea/ideaIU-2021.3.3.tar.gz
-    tar -xzf ideaIU-2021.3.3.tar.gz -C /opt
-    ln -s /opt/idea-IU-213.7172.25/bin/idea.sh /usr/local/bin/idea
+    wget https://download.jetbrains.com/idea/ideaIU-${JETBRAINS_VERSION}.tar.gz -O ideaIU.tar.gz
+    tar -xzf ideaIU.tar.gz -C /opt
+    mv /opt/idea-IU-* /opt/idea-IU-${JETBRAINS_VERSION}
+    ln -s /opt/idea-IU-${JETBRAINS_VERSION}/bin/idea.sh /usr/local/bin/idea
     echo "[Desktop Entry]
           Version=1.0
           Type=Application
           Name=IntelliJ IDEA Ultimate Edition
-          Icon=/opt/idea-IU-213.7172.25/bin/idea.svg
-          Exec=/opt/idea-IU-213.7172.25/bin/idea.sh %f
+          Icon=/opt/idea-IU-${JETBRAINS_VERSION}/bin/idea.svg
+          Exec=/opt/idea-IU-${JETBRAINS_VERSION}/bin/idea.sh %f
           Comment=Capable and Ergonomic IDE for JVM
           Categories=Development;IDE;
           Terminal=false
@@ -186,8 +190,8 @@ for choice in $choices; do
           StartupNotify=true" >> /usr/share/applications/jetbrains-idea.desktop
     ;;
   D6)
-    wget https://download.jetbrains.com/go/goland-2022.1.2.tar.gz
-    tar -xzf goland-2022.1.2.tar.gz -C /opt
+    wget https://download.jetbrains.com/go/goland-${JETBRAINS_VERSION}.tar.gz -O goland.tar.gz
+    tar -xzf goland.tar.gz -C /opt
     ln -s /opt/GoLand-2022.1.2/bin/goland.sh /usr/local/bin/goland
     echo "[Desktop Entry]
           Version=1.0

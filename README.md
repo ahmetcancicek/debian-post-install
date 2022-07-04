@@ -41,7 +41,13 @@ If you want to need installation the sudo, you can use the below code. Otherwise
 Run
 
 ```bash
-    sudo make run
+sudo make run
+```
+
+## Extra
+
+```bash
+sudo make install-fonts
 ```
 
 ## License

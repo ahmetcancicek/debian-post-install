@@ -7,3 +7,6 @@ install-sudo:
 install-fonts:
 	chmod +x ./install-fonts.sh
 	./install-fonts.sh
+install-drivers:
+	chmod +x ./install-drivers.sh
+	./install-drivers

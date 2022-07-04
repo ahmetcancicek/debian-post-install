@@ -35,6 +35,9 @@ apt-get -y update
 # Upgrade
 apt-get -y upgrade
 
+## Bluetooth visibility
+hiconfig hci0 noscan
+
 # Install fonts
 apt-get install -y \
   fonts-powerline \
@@ -100,12 +103,6 @@ options=(
   G1 "GIMP" off
   G2 "Droidcam" off
   G3 "TLP" off
-  # H: Hardware
-  H1 "Atheros" off
-  H2 "Realtek" off
-  H3 "Nvidia" off
-  # I: Settings
-  I1  "Bluetooth Visible (off)" off
 )
 
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 > /dev/tty)
@@ -266,10 +263,10 @@ for choice in $choices; do
     apt -y install vim
     ;;
   D12)
-    snap install pycharm-community --classic
+    # TODO:
     ;;
   D13)
-    snap install robo3t-snap
+    # TODO:
     ;;
   D14)
     wget https://download.jetbrains.com/datagrip/datagrip-${JETBRAINS_VERSION}.tar.gz
@@ -353,22 +350,6 @@ for choice in $choices; do
   G3)
   apt -y install tlp
   ;;
-
-  H1)
-    apt-get install -y firmware-atheros
-    ;;
-  H2)
-    apt-get install -y firmware-realtek
-    ;;
-  H3)
-    apt install -y nvidia-detect
-    apt install -y nvidia-driver
-    apt install -y nvidia-settings
-    ;;
-
-  I1)
-    hiconfig hci0 noscan
-    ;;
   *)
   esac
 done

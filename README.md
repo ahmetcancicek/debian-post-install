@@ -10,25 +10,21 @@ If you want to need installation the sudo, you can use the below code. Otherwise
 
 ```bash
 su
-wget https://raw.githubusercontent.com/ahmetcancicek/debian-post-install/main/install-sudo.sh -c -O install-sudo.sh && chmod +x install-sudo.sh
-./install-sudo.sh -h
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ahmetcancicek/debian-post-install/main/install-sudo.sh)" 
 ```
 
 You can use below code.
 
 ```bash
-wget https://raw.githubusercontent.com/ahmetcancicek/debian-post-install/main/setup.sh -c -O setup.sh && chmod +x setup.sh
-sudo ./setup.sh -h
+sudo sh -c "$(curl -fsSL https://raw.githubusercontent.com/ahmetcancicek/debian-post-install/main/setup.sh)" 
 ```
 
 ## Extra
 
 ```bash
-wget https://raw.githubusercontent.com/ahmetcancicek/debian-post-install/main/install-fonts.sh -c -O install-fonts.sh && chmod +x install-fonts.sh
-./install-fonts.sh -h
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ahmetcancicek/debian-post-install/main/install-fonts.sh)" 
 
-wget https://raw.githubusercontent.com/ahmetcancicek/debian-post-install/main/install-drivers.sh -c -O install-drivers.sh && chmod +x install-drivers.sh
-./install-drivers.sh -h
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ahmetcancicek/debian-post-install/main/install-drivers.sh)" 
 ```
 
 ## License

@@ -76,7 +76,8 @@ apt-get install -y \
   lsb-release \
   wget \
   dialog \
-  tree
+  tree \
+  zsh
 
 printf "\n${BLUE}-------------Standard packages are installed successfully------------- ${ENDCOLOR}\n"
 
@@ -124,7 +125,6 @@ options=(
   F4 "Terminator" off
   F6 "Htop" off
   F7 "vimrc" off
-  F8 "ZSH" off
   # G: Image, Video and Audio
   G1 "GIMP" off
   G2 "Droidcam" off
@@ -411,17 +411,6 @@ for choice in $choices; do
   F7)
     git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime
     sh ~/.vim_runtime/install_awesome_vimrc.sh
-    ;;
-  F8)
-    writeInstallationMessage ZSH
-    apt-get install zsh -y
-    chsh -s $(which zsh)
-    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
-    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-    source .zshrc
-    writeInstallationSuccessfulMessage ZSH
     ;;
 
   G1)

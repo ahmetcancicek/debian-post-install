@@ -7,11 +7,11 @@ if [ "$(id -u)" != 0 ]; then
 fi
 
 writeInstallationMessage() {
-printf "\n${BLUE}-------------Installing $1------------- ${ENDCOLOR}\n"
+printf "\n${BLUE}===============================Installing $1==============================${ENDCOLOR}\n"
 }
 
 writeInstallationSuccessfulMessage(){
-printf "${GREEN}-------------$1 is installed successfully!-------------${ENDCOLOR}\n"
+printf "${GREEN}========================$1 is installed successfully!========================${ENDCOLOR}\n"
 }
 
 # Set Color
@@ -44,30 +44,30 @@ apt-add-repository main
 apt-add-repository contrib
 
 # Update
-printf "\n${BLUE}-------------Updating------------- ${ENDCOLOR}\n"
+printf "\n${BLUE}========================Installing Updating========================${ENDCOLOR}\n"
 apt-get -y update
-printf "${GREEN}-------------Updated successfully!-------------${ENDCOLOR}\n"
+printf "${GREEN}========================Updated successfully!========================${ENDCOLOR}\n"
 
 # Upgrade
-printf "\n${BLUE}-------------Upgrading------------- ${ENDCOLOR}\n"
+printf "\n${BLUE}========================Upgrading========================${ENDCOLOR}\n"
 apt-get -y upgrade
-printf "${GREEN}-------------Upgared successfully!-------------${ENDCOLOR}\n"
+printf "${GREEN}========================Upgared successfully!========================${ENDCOLOR}\n"
 
 
 ## Bluetooth visibility
 hiconfig hci0 noscan
 
 # Install fonts
-printf "\n${BLUE}-------------Installing fonts------------- ${ENDCOLOR}\n"
+printf "\n${BLUE}========================Installing fonts========================${ENDCOLOR}\n"
 apt-get install -y \
   fonts-powerline \
   fonts-ubuntu \
   fonts-manager
-printf "\n${BLUE}-------------Fonts are installed successfully------------- ${ENDCOLOR}\n"
+printf "\n${BLUE}========================Fonts are installed successfully========================${ENDCOLOR}\n"
 
 
 # Install standard package
-printf "\n${BLUE}-------------Installing standard package $1------------- ${ENDCOLOR}\n"
+printf "\n${BLUE}========================Installing standard package $1========================${ENDCOLOR}\n"
 apt-get install -y \
   apt-transport-https \
   ca-certificates \
@@ -79,7 +79,7 @@ apt-get install -y \
   tree \
   zsh
 
-printf "\n${BLUE}-------------Standard packages are installed successfully------------- ${ENDCOLOR}\n"
+printf "\n${BLUE}===============Standard packages are installed successfully=============== ${ENDCOLOR}\n"
 
 
 cmd=(dialog --title "Debian 11 Installer" --separate-output --checklist 'Please choose: ' 27 76 16)
@@ -443,17 +443,17 @@ for choice in $choices; do
   esac
 done
 
-printf "\n${BLUE}-------------Installing Dependencies------------- ${ENDCOLOR}\n"
+printf "\n${BLUE}===============Installing Dependencies========================${ENDCOLOR}\n"
 # Install dependencies
 apt-get -f install
-printf "${GREEN}-------------Dependencies are installed successfully!-------------${ENDCOLOR}\n"
+printf "${GREEN}===============Dependencies are installed successfully!===============${ENDCOLOR}\n"
 
 
 printf "\n${GREEN}"
 cat <<EOL
----------------------------------------------------------------
+===========================================================================
 Congratulations, everything you wanted to install is installed!
----------------------------------------------------------------
+===========================================================================
 EOL
 printf "${ENDCOLOR}\n"
 

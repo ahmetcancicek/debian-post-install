@@ -4,6 +4,15 @@ Repository contains simple bash script to installing programs effortless after a
 
 [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
 
+## Installation
+
+Install dependecies
+
+```bash
+su
+apt -y install curl
+```
+
 ## Run
 
 If you want to need installation the sudo, you can use the below code. Otherwise, skip this step.
@@ -17,14 +26,6 @@ You can use below code.
 
 ```bash
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/ahmetcancicek/debian-post-install/main/setup.sh)" 
-```
-
-## Extra
-
-```bash
-sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/ahmetcancicek/debian-post-install/main/install-fonts.sh)" 
-
-sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/ahmetcancicek/debian-post-install/main/install-drivers.sh)" 
 ```
 
 ## License

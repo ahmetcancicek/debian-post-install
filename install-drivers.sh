@@ -18,11 +18,13 @@ EOL
   exit 1
 fi
 
+printf "${BLUE}"
 cat <<EOL
 ========================================================================
 Drivers is installing!
 ========================================================================
 EOL
+printf "${ENDCOLOR}"
 
 #
 apt-get install -y firmware-atheros

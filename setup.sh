@@ -1,24 +1,30 @@
 #!/bin/bash
 
+# Set Color
+RED="\e[31m"
+GREEN="\e[32m"
+BLUE="\e[34m"
+ENDCOLOR="\e[0m"
+
 # For root control
 if [ "$(id -u)" != 0 ]; then
-  echo "You are not root! This script must be run as root"
+  printf "${RED}"
+  cat <<EOL
+========================================================================
+You are not root! This script must be run as root!
+========================================================================
+EOL
+  printf "${ENDCOLOR}"
   exit 1
 fi
 
 writeInstallationMessage() {
-printf "\n${BLUE}===============================Installing $1==============================${ENDCOLOR}\n"
+  printf "\n${BLUE}===============================Installing $1==============================${ENDCOLOR}\n"
 }
 
-writeInstallationSuccessfulMessage(){
-printf "${GREEN}========================$1 is installed successfully!========================${ENDCOLOR}\n"
+writeInstallationSuccessfulMessage() {
+  printf "${GREEN}========================$1 is installed successfully!========================${ENDCOLOR}\n"
 }
-
-# Set Color
-RED="\e[31m"
-GREEN="\e[32m"
-BLUE='\e[34m'
-ENDCOLOR="\e[0m"
 
 # Set Version
 JETBRAINS_VERSION=2022.1.3
@@ -26,6 +32,7 @@ GO_VERSION=1.18.3
 POSTMAN_VERSION=9.20.3
 MAVEN=3
 MAVEN_VERSION=3.8.6
+GRADLE_VERSION=7.5
 DROIDCAM_VERSION=1.8.1
 DROPBOX_VERSION=2020.03.04
 
@@ -49,10 +56,9 @@ apt-get -y update
 printf "${GREEN}========================Updated successfully!========================${ENDCOLOR}\n"
 
 # Upgrade
-printf "\n${BLUE}========================Upgrading========================${ENDCOLOR}\n"
+printf "\n${BLUE}===========================Upgrading===========================${ENDCOLOR}\n"
 apt-get -y upgrade
-printf "${GREEN}========================Upgared successfully!========================${ENDCOLOR}\n"
-
+printf "${GREEN}==========================Upgared successfully!===========================${ENDCOLOR}\n"
 
 ## Bluetooth visibility
 hiconfig hci0 noscan
@@ -65,7 +71,6 @@ apt-get install -y \
   fonts-manager
 printf "\n${BLUE}========================Fonts are installed successfully========================${ENDCOLOR}\n"
 
-
 # Install standard package
 printf "\n${BLUE}========================Installing standard package $1========================${ENDCOLOR}\n"
 apt-get install -y \
@@ -77,10 +82,10 @@ apt-get install -y \
   wget \
   dialog \
   tree \
-  zsh
+  zsh \
+  Htop
 
 printf "\n${BLUE}===============Standard packages are installed successfully=============== ${ENDCOLOR}\n"
-
 
 cmd=(dialog --title "Debian 11 Installer" --separate-output --checklist 'Please choose: ' 27 76 16)
 options=(
@@ -90,14 +95,14 @@ options=(
   # B: Internet
   B1 "Google Chrome" off
   B2 "Chromium" off
-  B3 "Spotify (Snap)" off
+  B3 "Spotify" off
   B4 "Opera" off
   # C: Chat Application
   C1 "Zoom Meeting Client" off
   C2 "Discord" off
   C3 "Thunderbird Mail" off
   C4 "Skype (Snap)" off
-  C5 "Slack" off
+  C5 "Slack (Snap)" off
   C6 "Microsoft Teams (Snap)" off
   # D: Development
   D1 "GIT" off
@@ -109,12 +114,11 @@ options=(
   D7 "Postman" off
   D8 "Docker" off
   D9 "Maven" off
-  D10 "Putty" off
-  D11 "Vim" off
-  D12 "PyCharm" off
-  D13 "Robo 3T" off
-  D14 "DataGrip" off
-  D15 "Mongo Shell & MongoDB Database Tools" off
+  D10 "Gradle" off
+  D11 "Putty" off
+  D12 "Vim" off
+  D13 "DataGrip" off
+  D14 "Mongo Shell & MongoDB Database Tools" off
   # E: Gnome Tweaks
   E1 "Gnome Tweak Tool" off
   E2 "Gnome Shell Extensions" off
@@ -122,16 +126,16 @@ options=(
   F1 "Dropbox" off
   F2 "KeePassXC" off
   F3 "Virtualbox" off
-  F4 "Terminator" off
+  F4 "Gnome Boxes"
+  F5 "Terminator" off
   F6 "Htop" off
-  F7 "vimrc" off
   # G: Image, Video and Audio
   G1 "GIMP" off
   G2 "Droidcam" off
   G3 "TLP" off
 )
 
-choices=$("${cmd[@]}" "${options[@]}" 2>&1 > /dev/tty)
+choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 clear
 for choice in $choices; do
   case $choice in
@@ -153,10 +157,12 @@ for choice in $choices; do
     writeInstallationMessage Google-Chrome
     wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
     apt -y install ./google-chrome-stable_current_amd64.deb
-    writeInstallationSuccessfulMessage  Google-Chrome
+    writeInstallationSuccessfulMessage Google-Chrome
     ;;
   B2)
+    writeInstallationMessage Chromium
     apt -y install chromium
+    writeInstallationSuccessfulMessage Chromium
     ;;
   B3)
     writeInstallationMessage Spotify
@@ -167,7 +173,10 @@ for choice in $choices; do
     ;;
   B4)
     writeInstallationMessage Opera
-    snap install opera
+    wget -qO- https://deb.opera.com/archive.key | sudo apt-key add –
+    add-apt-repository "deb [arch=i386,amd64] https://deb.opera.com/opera-stable/ stable non-free"
+    apt -y update
+    apt install -y opera-stable
     writeInstallationSuccessfulMessage Opera
     ;;
 
@@ -187,7 +196,7 @@ for choice in $choices; do
     writeInstallationMessage Thunderbird
     apt -y install thunderbird
     writeInstallationSuccessfulMessage Thunderbird
-     ;;
+    ;;
   C4)
     writeInstallationMessage Skype
     snap install skype
@@ -213,27 +222,53 @@ for choice in $choices; do
     writeInstallationMessage OpenJDK
     apt -y install default-jdk
     writeInstallationMessage OpenJDK
+
+    writeInstallationMessage JAVA-JDK-18
+    wget https://download.oracle.com/java/18/latest/jdk-18_linux-x64_bin.tar.gz
+    tar xf jdk-18_linux-x64_bin.tar.gz -C /usr/local/java/
+    update-alternatives --install "/usr/bin/java" "java" "/usr/local/java/jdk-18.0.1.1/bin/java" 1
+    update-alternatives --install "/usr/bin/javac" "javac" "/usr/local/java/jdk-18.0.1.1/bin/javac" 1
+    update-alternatives --set java /usr/local/java/jdk-18.0.1.1/bin/java
+    update-alternatives --set javac /usr/local/java/jdk-18.0.1.1/bin/javac
+    echo -e ' \n"# Java Configuration\nexport JAVA_HOME=/opt/jdk-18.0.1.1\nexport PATH=$PATH:$HOME/bin:$JAVA_HOME/bin' >>$HOME/.profile
+    source $HOME/.profile
+    writeInstallationSuccessfulMessage JAVA-JDK-18
+
+    writeInstallationMessage JAVA-JDK-17
+    wget https://download.oracle.com/java/17/archive/jdk-17_linux-x64_bin.tar.gz
+    tar xf jdk-17_linux-x64_bin.tar.gz -C /usr/local/java
+    update-alternatives --install "/usr/bin/java" "java" "/usr/local/java/jdk-17/bin/java" 2
+    update-alternatives --install "/usr/bin/javac" "javac" "/usr/local/java/jdk-17/bin/javac" 2
+    writeInstallationSuccessfulMessage JAVA-JDK-17
+
+    writeInstallationMessage Spring-Boot-CLI
+    wget https://repo.spring.io/release/org/springframework/boot/spring-boot-cli/2.7.1/spring-boot-cli-2.7.1-bin.tar.gz
+    tar xf spring-boot-cli-2.7.1-bin.tar.gz -C /opt
+    echo -e ' \n# Spring Boot CLI\nexport SPRING_HOME=/opt/spring-2.7.1/\nexport PATH=$PATH:$HOME/bin:$SPRING_HOME/bin' >>$HOME/.profile
+    source $HOME/.profile
+    writeInstallationSuccessfulMessage Spring-Boot-CLI
     ;;
+
   D3)
     writeInstallationMessage Go
     wget https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz
     rm -rf /usr/local/go && tar -C /usr/local -xzf go${GO_VERSION}.linux-amd64.tar.gz
-    echo ' ' >> $HOME/.profile
-    echo '# GoLang configuration ' >> $HOME/.profile
-    echo 'export PATH="$PATH:/usr/local/go/bin"' >> $HOME/.profile
-    echo 'export GOPATH="$HOME/go"' >> $HOME/.profile
+    echo ' ' >>$HOME/.profile
+    echo '# GoLang configuration ' >>$HOME/.profile
+    echo 'export PATH="$PATH:/usr/local/go/bin"' >>$HOME/.profile
+    echo 'export GOPATH="$HOME/go"' >>$HOME/.profile
     source $HOME/.profile
     writeInstallationSuccessfulMessage Go
     ;;
   D4)
     writeInstallationMessage vscode
-    wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+    wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor >packages.microsoft.gpg
     install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
     sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
     rm -f packages.microsoft.gpg
-    apt install apt-transport-https
-    apt update
-    apt install code # or code-insiders
+    apt -y install apt-transport-https
+    apt -y update
+    apt -y install code # or code-insiders
     writeInstallationSuccessfulMessage vscode
     ;;
   D5)
@@ -252,7 +287,7 @@ for choice in $choices; do
           Categories=Development;IDE;
           Terminal=false
           StartupWMClass=jetbrains-idea
-          StartupNotify=true;" >> /usr/share/applications/jetbrains-idea.desktop
+          StartupNotify=true;" >>/usr/share/applications/jetbrains-idea.desktop
     writeInstallationSuccessfulMessage IntelliJ-IDEA
     ;;
   D6)
@@ -267,7 +302,7 @@ for choice in $choices; do
           Icon=/opt/GoLand-${JETBRAINS_VERSION}/bin/goland.png
           Exec=/opt/GoLand-${JETBRAINS_VERSION}/bin/goland.sh
           Terminal=false
-          Categories=Development;IDE;" >> /usr/share/applications/jetbrains-goland.desktop
+          Categories=Development;IDE;" >>/usr/share/applications/jetbrains-goland.desktop
     writeInstallationSuccessfulMessage GoLand
     ;;
   D7)
@@ -281,21 +316,21 @@ for choice in $choices; do
           Icon=/opt/Postman/app/resources/app/assets/icon.png
           Terminal=false
           Type=Application
-          Categories=Development;" >> /usr/share/applications/Postman.desktop
+          Categories=Development;" >>/usr/share/applications/Postman.desktop
     writeInstallationSuccessfulMessage Postman
     ;;
   D8)
     writeInstallationMessage Docker
     apt-get install \
-        apt-transport-https \
-        ca-certificates \
-        curl \
-        gnupg \
-        lsb-release
+      apt-transport-https \
+      ca-certificates \
+      curl \
+      gnupg \
+      lsb-release
     curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
     echo \
       "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian \
-      $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+      $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list >/dev/null
     apt-get update
     apt-get -y install docker-ce docker-ce-cli containerd.io
     docker run hello-world
@@ -313,34 +348,37 @@ for choice in $choices; do
   D9)
     writeInstallationMessage Maven
     wget https://dlcdn.apache.org/maven/maven-${MAVEN}/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz
-    tar -zxvf apache-maven-${MAVEN_VERSION}-bin.tar.gz
-    mkdir /opt/maven
-    mv ./apache-maven-${MAVEN_VERSION} /opt/maven/
-    echo ' ' >> $HOME/.profile
-    echo '# Maven Configuration' >> $HOME/.profile
-    echo 'JAVA_HOME=/usr/lib/jvm/default-java' >> $HOME/.profile
-    echo "export M2_HOME=/opt/maven/apache-maven-${MAVEN_VERSION}" >> $HOME/.profile
-    echo 'export PATH=${M2_HOME}/bin:${PATH}' >> $HOME/.profile
+    tar -zxvf apache-maven-${MAVEN_VERSION}-bin.tar.gz -C /opt
+    ln -s /opt/apache-maven-${MAVEN_VERSION} /opt/maven
+    echo ' ' >>$HOME/.profile
+    echo '# Maven Configuration' >>$HOME/.profile
+    echo 'JAVA_HOME=/usr/lib/jvm/default-java' >>$HOME/.profile
+    echo "export M2_HOME=/opt/maven" >>$HOME/.profile
+    echo 'export PATH=${M2_HOME}/bin:${PATH}' >>$HOME/.profile
     source $HOME/.profile
     writeInstallationSuccessfulMessage Maven
     ;;
   D10)
-    writeInstallationMessage Putty
-    apt -y install putty
-    writeInstallationSuccessfulMessage Putty
+    writeInstallationMessage Gradle
+    wget https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip
+    mkdir /opt/gradle
+    unzip -d /opt/gradle gradle-${MAVEN_VERSION}-bin.zip
+    echo ' ' >>$HOME/.profile
+    echo -e ' \n# Gradle Configuration\nexport PATH=$PATH:/opt/gradle/gradle-${GRADLE_VERSION}/bin' >>$HOME/.profile
+    writeInstallationSuccessfulMessage Gradle
     ;;
+
   D11)
+    writeInstallationMessage PuTTY
+    apt -y install putty
+    writeInstallationSuccessfulMessage PuTTY
+    ;;
+  D12)
     writeInstallationMessage Vim
     apt -y install vim
     writeInstallationSuccessfulMessage Vim
     ;;
-  D12)
-    # TODO:
-    ;;
   D13)
-    # TODO:
-    ;;
-  D14)
     writeInstallationMessage DataGrip
     wget https://download.jetbrains.com/datagrip/datagrip-${JETBRAINS_VERSION}.tar.gz
     tar -xzf datagrip-${JETBRAINS_VERSION}.tar.gz -C /opt
@@ -352,10 +390,10 @@ for choice in $choices; do
           Icon=/opt/DataGrip-${JETBRAINS_VERSION}/bin/datagrip.png
           Exec=/opt/DataGrip-${JETBRAINS_VERSION}/bin/datagrip.sh
           Terminal=false
-          Categories=Development;IDE;" >> /usr/share/applications/jetbrains-datagrip.desktop
+          Categories=Development;IDE;" >>/usr/share/applications/jetbrains-datagrip.desktop
     writeInstallationSuccessfulMessage DataGrip
     ;;
-  D15)
+  D14)
     writeInstallationMessage Mongo-Shell
     wget -O mongosh.deb https://downloads.mongodb.com/compass/mongodb-mongosh_1.2.2_amd64.deb
     dpkg -i ./mongosh.deb
@@ -394,11 +432,16 @@ for choice in $choices; do
     add-apt-repository "deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian bullseye contrib"
     wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | apt-key add -
     wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | apt-key add -
-    apt-get update
+    apt-get -y update
     apt-get -y install virtualbox-6.1
     writeInstallationSuccessfulMessage Virtualbox
     ;;
   F4)
+    writeInstallationMessage Boxes
+    dnf install gnome-boxes
+    writeInstallationSuccessfulMessage Boxes
+    ;;
+  F5)
     writeInstallationMessage Terminator
     apt -y install terminator
     writeInstallationSuccessfulMessage Terminator
@@ -407,10 +450,6 @@ for choice in $choices; do
     writeInstallationMessage Htop
     apt -y install htop
     writeInstallationSuccessfulMessage Htop
-    ;;
-  F7)
-    git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime
-    sh ~/.vim_runtime/install_awesome_vimrc.sh
     ;;
 
   G1)
@@ -423,7 +462,7 @@ for choice in $choices; do
     wget -O droidcam_latest.zip https://files.dev47apps.net/linux/droidcam_${DROIDCAM_VERSION}.zip
     unzip droidcam_latest.zip -d droidcam
     cd droidcam && sudo ./install-client
-    apt -y install linux-headers-`uname -r` gcc make
+    apt -y install linux-headers-$(uname -r) gcc make
     ./install-video
     cd ..
 
@@ -438,8 +477,8 @@ for choice in $choices; do
     writeInstallationMessage TLP
     apt -y install tlp
     writeInstallationSuccessfulMessage TLP
-  ;;
-  *)
+    ;;
+  *) ;;
   esac
 done
 
@@ -447,7 +486,6 @@ printf "\n${BLUE}===============Installing Dependencies========================$
 # Install dependencies
 apt-get -f install
 printf "${GREEN}===============Dependencies are installed successfully!===============${ENDCOLOR}\n"
-
 
 printf "\n${GREEN}"
 cat <<EOL
@@ -457,22 +495,17 @@ Congratulations, everything you wanted to install is installed!
 EOL
 printf "${ENDCOLOR}\n"
 
-
 cat <<EOL
 
 EOL
 
-
 printf ${RED}
 read -p "Are you going to reboot this machine for stability? (y/n): " -n 1 answer
-if [[ $answer =~ ^[Yy]$ ]];then
+if [[ $answer =~ ^[Yy]$ ]]; then
   reboot
 fi
 printf ${ENDCOLOR}
 
-
 cat <<EOL
 
 EOL
-
-

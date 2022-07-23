@@ -18,6 +18,31 @@ EOL
   exit 1
 fi
 
+
+# Get USER name
+USER=$(logname)
+
+# Get HOME folder path
+HOME=/home/$USER
+
+# Go TEMP folder
+cd /tmp
+
+# Add Repository
+apt-add-repository non-free
+apt-add-repository main
+apt-add-repository contrib
+
+# Update
+printf "\n${BLUE}========================Installing Updating========================${ENDCOLOR}\n"
+apt-get -y update
+printf "${GREEN}========================Updated successfully!========================${ENDCOLOR}\n"
+
+# Upgrade
+printf "\n${BLUE}===========================Upgrading===========================${ENDCOLOR}\n"
+apt-get -y upgrade
+printf "${GREEN}==========================Upgared successfully!===========================${ENDCOLOR}\n"
+
 printf "${BLUE}"
 cat <<EOL
 ========================================================================

@@ -35,7 +35,7 @@ wget -O hack-v3.zip https://github.com/source-foundry/Hack/releases/download/v3.
 unzip hack-v3.zip -d hack-v3
 mkdir hack
 mv hack-v3/ttf/* hack
-mv hack /usr/share/fonts/hack
+mv hack /usr/share/fonts/truetype/hack
 fc-cache -f .
 cd -
 
@@ -45,34 +45,34 @@ rm -rf /usr/share/fonts/ubuntu-font-family ubuntu-font-family-0.83
 wget -O ubuntu-font-family.zip https://assets.ubuntu.com/v1/0cef8205-ubuntu-font-family-0.83.zip
 unzip ubuntu-font-family.zip
 mv ubuntu-font-family-0.83 ubuntu-font-family
-mv ubuntu-font-family /usr/share/fonts/ubuntu-font-family
+mv ubuntu-font-family /usr/share/fonts/truetype/ubuntu-font-family
 fc-cache -f .
 cd -
 
 
 # JetBrains Mono Font Family
-rm -rf /usr/share/fonts/jetbrains-mono JetBrainsMono-2.242 jetbrains-mono
+rm -rf /usr/share/fonts/truetype/jetbrains-mono JetBrainsMono-2.242 jetbrains-mono
 wget https://download.jetbrains.com/fonts/JetBrainsMono-2.242.zip
 unzip JetBrainsMono-2.242 -d JetBrainsMono-2.242
 mkdir jetbrains-mono
 mv JetBrainsMono-2.242/fonts/ttf/** jetbrains-mono
-mv jetbrains-mono /usr/share/fonts/jetbrains-mono
+mv jetbrains-mono /usr/share/fonts/truetype/jetbrains-mono
 fc-cache -f .
 cd -
 
 # Install Monaco
-rm -rf /usr/share/fonts/monaco
-mkdir /usr/share/fonts/monaco
-cd /usr/share/fonts/monaco
+rm -rf /usr/share/fonts/truetype/monaco
+mkdir /usr/share/fonts/truetype/monaco
+cd /usr/share/fonts/truetype/monaco
 wget http://www.gringod.com/wp-upload/software/Fonts/Monaco_Linux.ttf
 fc-cache -f .
 cd -
 
 
 # Install MesloLGS
-rm -rf /usr/share/fonts/MesloLGS
-mkdir /usr/share/fonts/MesloLGS
-cd /usr/share/fonts/MesloLGS
+rm -rf /usr/share/fonts/truetype/MesloLGS
+mkdir /usr/share/fonts/truetype/MesloLGS
+cd /usr/share/fonts/truetype/MesloLGS
 wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf
 wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf
 wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf

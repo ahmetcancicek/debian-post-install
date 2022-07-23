@@ -83,7 +83,7 @@ apt-get install -y \
   dialog \
   tree \
   zsh \
-  Htop
+  htop
 
 printf "\n${BLUE}===============Standard packages are installed successfully=============== ${ENDCOLOR}\n"
 
@@ -126,7 +126,7 @@ options=(
   F1 "Dropbox" off
   F2 "KeePassXC" off
   F3 "Virtualbox" off
-  F4 "Gnome Boxes"
+  F4 "Gnome Boxes" off
   F5 "Terminator" off
   F6 "Htop" off
   # G: Image, Video and Audio
@@ -438,7 +438,7 @@ for choice in $choices; do
     ;;
   F4)
     writeInstallationMessage Boxes
-    dnf install gnome-boxes
+    apt -y install gnome-boxes
     writeInstallationSuccessfulMessage Boxes
     ;;
   F5)

@@ -29,6 +29,8 @@ printf "${ENDCOLOR}"
 #
 apt install -y fonts-powerline
 
+cd /tmp
+
 # Hack v3
 rm -rf /usr/share/fonts/hack hack-v3 hack
 wget -O hack-v3.zip https://github.com/source-foundry/Hack/releases/download/v3.003/Hack-v3.003-ttf.zip

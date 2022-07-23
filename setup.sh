@@ -128,7 +128,6 @@ options=(
   F3 "Virtualbox" off
   F4 "Gnome Boxes" off
   F5 "Terminator" off
-  F6 "Htop" off
   # G: Image, Video and Audio
   G1 "GIMP" off
   G2 "Droidcam" off
@@ -168,7 +167,7 @@ for choice in $choices; do
     writeInstallationMessage Spotify
     curl -sS https://download.spotify.com/debian/pubkey_5E3C45D7B312C643.gpg | sudo apt-key add -
     echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
-    apt-get update && sudo apt-get install spotify-client
+    apt -y update && apt -y install spotify-client
     writeInstallationSuccessfulMessage Spotify
     ;;
   B4)
@@ -223,28 +222,12 @@ for choice in $choices; do
     apt -y install default-jdk
     writeInstallationMessage OpenJDK
 
-    writeInstallationMessage JAVA-JDK-18
-    wget https://download.oracle.com/java/18/latest/jdk-18_linux-x64_bin.tar.gz
-    tar xf jdk-18_linux-x64_bin.tar.gz -C /usr/local/java/
-    update-alternatives --install "/usr/bin/java" "java" "/usr/local/java/jdk-18.0.1.1/bin/java" 1
-    update-alternatives --install "/usr/bin/javac" "javac" "/usr/local/java/jdk-18.0.1.1/bin/javac" 1
-    update-alternatives --set java /usr/local/java/jdk-18.0.1.1/bin/java
-    update-alternatives --set javac /usr/local/java/jdk-18.0.1.1/bin/javac
-    echo -e ' \n"# Java Configuration\nexport JAVA_HOME=/opt/jdk-18.0.1.1\nexport PATH=$PATH:$HOME/bin:$JAVA_HOME/bin' >>$HOME/.profile
-    source $HOME/.profile
-    writeInstallationSuccessfulMessage JAVA-JDK-18
-
-    writeInstallationMessage JAVA-JDK-17
-    wget https://download.oracle.com/java/17/archive/jdk-17_linux-x64_bin.tar.gz
-    tar xf jdk-17_linux-x64_bin.tar.gz -C /usr/local/java
-    update-alternatives --install "/usr/bin/java" "java" "/usr/local/java/jdk-17/bin/java" 2
-    update-alternatives --install "/usr/bin/javac" "javac" "/usr/local/java/jdk-17/bin/javac" 2
-    writeInstallationSuccessfulMessage JAVA-JDK-17
 
     writeInstallationMessage Spring-Boot-CLI
     wget https://repo.spring.io/release/org/springframework/boot/spring-boot-cli/2.7.1/spring-boot-cli-2.7.1-bin.tar.gz
     tar xf spring-boot-cli-2.7.1-bin.tar.gz -C /opt
-    echo -e ' \n# Spring Boot CLI\nexport SPRING_HOME=/opt/spring-2.7.1/\nexport PATH=$PATH:$HOME/bin:$SPRING_HOME/bin' >>$HOME/.profile
+    echo " " >> $HOME/.profile
+    echo -e '# Spring Boot CLI\nexport SPRING_HOME=/opt/spring-2.7.1/\nexport PATH=$PATH:$HOME/bin:$SPRING_HOME/bin' >>$HOME/.profile
     source $HOME/.profile
     writeInstallationSuccessfulMessage Spring-Boot-CLI
     ;;
@@ -253,7 +236,7 @@ for choice in $choices; do
     writeInstallationMessage Go
     wget https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz
     rm -rf /usr/local/go && tar -C /usr/local -xzf go${GO_VERSION}.linux-amd64.tar.gz
-    echo ' ' >>$HOME/.profile
+    echo " " >> $HOME/.profile
     echo '# GoLang configuration ' >>$HOME/.profile
     echo 'export PATH="$PATH:/usr/local/go/bin"' >>$HOME/.profile
     echo 'export GOPATH="$HOME/go"' >>$HOME/.profile
@@ -364,7 +347,7 @@ for choice in $choices; do
     mkdir /opt/gradle
     unzip -d /opt/gradle gradle-${MAVEN_VERSION}-bin.zip
     echo ' ' >>$HOME/.profile
-    echo -e ' \n# Gradle Configuration\nexport PATH=$PATH:/opt/gradle/gradle-${GRADLE_VERSION}/bin' >>$HOME/.profile
+    echo -e '# Gradle Configuration\nexport PATH=$PATH:/opt/gradle/gradle-${GRADLE_VERSION}/bin' >>$HOME/.profile
     writeInstallationSuccessfulMessage Gradle
     ;;
 
@@ -445,11 +428,6 @@ for choice in $choices; do
     writeInstallationMessage Terminator
     apt -y install terminator
     writeInstallationSuccessfulMessage Terminator
-    ;;
-  F6)
-    writeInstallationMessage Htop
-    apt -y install htop
-    writeInstallationSuccessfulMessage Htop
     ;;
 
   G1)

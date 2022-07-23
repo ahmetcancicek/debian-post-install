@@ -223,11 +223,33 @@ for choice in $choices; do
     writeInstallationMessage OpenJDK
 
 
+    writeInstallationMessage JAVA-JDK-18
+    wget https://download.oracle.com/java/18/latest/jdk-18.0.2_linux-x64_bin.tar.gz
+    mkdir /usr/local/java/
+    tar xf jdk-18.0.2_linux-x64_bin.tar.gz -C /usr/local/java/
+    update-alternatives --install "/usr/bin/java" "java" "/usr/local/java/jdk-18.0.2/bin/java" 1
+    update-alternatives --install "/usr/bin/javac" "javac" "/usr/local/java/jdk-18.0.2/bin/javac" 1
+    update-alternatives --set java /usr/local/java/jdk-18.0.2/bin/java
+    update-alternatives --set javac /usr/local/java/jdk-18.0.2/bin/javac
+    echo -e '\n# JAVA Configuration' >>$HOME/.profile
+    echo 'JAVA_HOME=/usr/local/java/jdk-18.0.2/bin/java' >>$HOME/.profile
+    source $HOME/.profile
+    writeInstallationSuccessfulMessage JAVA-JDK-18
+
+    writeInstallationMessage JAVA-JDK-17
+    wget https://download.oracle.com/java/17/archive/jdk-17_linux-x64_bin.tar.gz
+    tar xf jdk-17_linux-x64_bin.tar.gz -C /usr/local/java
+    update-alternatives --install "/usr/bin/java" "java" "/usr/local/java/jdk-17/bin/java" 2
+    update-alternatives --install "/usr/bin/javac" "javac" "/usr/local/java/jdk-17/bin/javac" 2
+    writeInstallationSuccessfulMessage JAVA-JDK-17
+    
+    
     writeInstallationMessage Spring-Boot-CLI
     wget https://repo.spring.io/release/org/springframework/boot/spring-boot-cli/2.7.1/spring-boot-cli-2.7.1-bin.tar.gz
     tar xf spring-boot-cli-2.7.1-bin.tar.gz -C /opt
-    echo " " >> $HOME/.profile
-    echo -e '# Spring Boot CLI\nexport SPRING_HOME=/opt/spring-2.7.1/\nexport PATH=$PATH:$HOME/bin:$SPRING_HOME/bin' >>$HOME/.profile
+    echo -e "\n# Spring Boot CLI" >>  $HOME/.profile
+    echo 'export SPRING_HOME=/opt/spring-2.7.1' >>  $HOME/.profile
+    echo 'export PATH=$PATH:$HOME/bin:$SPRING_HOME/bin' >>  $HOME/.profile
     source $HOME/.profile
     writeInstallationSuccessfulMessage Spring-Boot-CLI
     ;;
@@ -236,8 +258,7 @@ for choice in $choices; do
     writeInstallationMessage Go
     wget https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz
     rm -rf /usr/local/go && tar -C /usr/local -xzf go${GO_VERSION}.linux-amd64.tar.gz
-    echo " " >> $HOME/.profile
-    echo '# GoLang configuration ' >>$HOME/.profile
+    echo -e '\n# GoLang configuration ' >>$HOME/.profile
     echo 'export PATH="$PATH:/usr/local/go/bin"' >>$HOME/.profile
     echo 'export GOPATH="$HOME/go"' >>$HOME/.profile
     source $HOME/.profile
@@ -330,12 +351,11 @@ for choice in $choices; do
     ;;
   D9)
     writeInstallationMessage Maven
+    rm -rf /tmp/apache-maven-${MAVEN_VERSION}-bin.tar.gz
     wget https://dlcdn.apache.org/maven/maven-${MAVEN}/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz
     tar -zxvf apache-maven-${MAVEN_VERSION}-bin.tar.gz -C /opt
     ln -s /opt/apache-maven-${MAVEN_VERSION} /opt/maven
-    echo ' ' >>$HOME/.profile
-    echo '# Maven Configuration' >>$HOME/.profile
-    echo 'JAVA_HOME=/usr/lib/jvm/default-java' >>$HOME/.profile
+    echo -e '\n# Maven Configuration' >>$HOME/.profile
     echo "export M2_HOME=/opt/maven" >>$HOME/.profile
     echo 'export PATH=${M2_HOME}/bin:${PATH}' >>$HOME/.profile
     source $HOME/.profile
@@ -343,11 +363,13 @@ for choice in $choices; do
     ;;
   D10)
     writeInstallationMessage Gradle
+    rm -rf gradle-${GRADLE_VERSION}-bin.zip
     wget https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip
     mkdir /opt/gradle
-    unzip -d /opt/gradle gradle-${MAVEN_VERSION}-bin.zip
-    echo ' ' >>$HOME/.profile
-    echo -e '# Gradle Configuration\nexport PATH=$PATH:/opt/gradle/gradle-${GRADLE_VERSION}/bin' >>$HOME/.profile
+    unzip -d /opt/ gradle-${GRADLE_VERSION}-bin.zip
+    ln -s /opt/gradle-${GRADLE_VERSION}/bin /opt/gradle
+    echo -e '\n# Gradle Configuration'  >>$HOME/.profile
+    echo 'export PATH=$PATH:/opt/gradle/bin' >> $HOME/.profile
     writeInstallationSuccessfulMessage Gradle
     ;;
 
@@ -456,7 +478,7 @@ for choice in $choices; do
     apt -y install tlp
     writeInstallationSuccessfulMessage TLP
     ;;
-  *) ;;
+  *)
   esac
 done
 

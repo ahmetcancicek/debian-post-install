@@ -27,7 +27,7 @@ EOL
 printf "${ENDCOLOR}"
 
 #
-apt install -y powerline-fonts
+apt install -y fonts-powerline
 
 # Hack v3
 rm -rf /usr/share/fonts/hack hack-v3 hack
@@ -41,7 +41,7 @@ cd -
 
 
 # Ubuntu Font Family
-rm -rf /usr/share/fonts/ubuntu-font-family ubuntu-font-family-0.83
+rm -rf /usr/share/fonts/ubuntu-font-family /usr/share/fonts/ubuntu-font-family-0.83
 wget -O ubuntu-font-family.zip https://assets.ubuntu.com/v1/0cef8205-ubuntu-font-family-0.83.zip
 unzip ubuntu-font-family.zip
 mv ubuntu-font-family-0.83 ubuntu-font-family

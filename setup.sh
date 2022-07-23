@@ -280,7 +280,6 @@ for choice in $choices; do
     install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
     sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
     rm -f packages.microsoft.gpg
-    apt -y install apt-transport-https
     apt -y update
     apt -y install code # or code-insiders
     writeInstallationSuccessfulMessage vscode
@@ -377,7 +376,7 @@ for choice in $choices; do
     wget https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip
     mkdir /opt/gradle
     unzip -d /opt/ gradle-${GRADLE_VERSION}-bin.zip
-    ln -s /opt/gradle-${GRADLE_VERSION}/bin /opt/gradle
+    ln -s /opt/gradle-${GRADLE_VERSION} /opt/gradle
     echo -e '\n# Gradle Configuration'  >>$HOME/.profile
     echo 'export PATH=$PATH:/opt/gradle/bin' >> $HOME/.profile
     writeInstallationSuccessfulMessage Gradle

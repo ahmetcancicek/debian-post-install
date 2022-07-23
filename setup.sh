@@ -97,6 +97,7 @@ options=(
   B2 "Chromium" off
   B3 "Spotify" off
   B4 "Opera" off
+  B5 "Microsoft Edge" off
   # C: Chat Application
   C1 "Zoom Meeting Client" off
   C2 "Discord" off
@@ -178,6 +179,15 @@ for choice in $choices; do
     apt install -y opera-stable
     writeInstallationSuccessfulMessage Opera
     ;;
+  B5)
+    writeInstallationMessage Microsoft-Edge
+    curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+    install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
+    sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge-dev.list'
+    rm microsoft.gpg
+    apt -y update && apt -y install microsoft-edge-stable
+    writeInstallationSuccessfulMessage Microsoft-Edge
+  ;;
 
   C1)
     writeInstallationMessage Zoom
@@ -481,6 +491,8 @@ for choice in $choices; do
   *)
   esac
 done
+
+
 
 printf "\n${BLUE}===============Installing Dependencies========================${ENDCOLOR}\n"
 # Install dependencies

@@ -1,19 +1,16 @@
 # Debian Post Installation Script
 
-Repository contains simple bash script to installing programs effortless after a Debian based installation. If you want to run the bash script, you can use below code.
+Repository contains simple bash script to installing programs effortless after a Debian based installation. If you want
+to run the bash script, you can use below code.
 
-[![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
+## Run
 
-## Installation
-
-Install dependecies
+Install dependencies
 
 ```bash
 su
 apt -y install curl
 ```
-
-## Run
 
 If you want to need installation the sudo, you can use the below code. Otherwise, skip this step.
 
@@ -30,7 +27,8 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/ahmetcancicek/debia
 
 ## License
 
-[GPLv3.0](https://choosealicense.com/licenses/gpl-3.0/)
+Distributed under the GNU License. See LICENSE.md for more information.
 
+[![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
 
 

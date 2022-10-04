@@ -116,10 +116,11 @@ options=(
   D8 "Docker" off
   D9 "Maven" off
   D10 "Gradle" off
-  D11 "Putty" off
-  D12 "Vim" off
-  D13 "DataGrip" off
-  D14 "Mongo Shell & MongoDB Database Tools" off
+  D11 "Node.js & NPM" off
+  D12 "Putty" off
+  D13 "Vim" off
+  D14 "DataGrip" off
+  D15 "Mongo Shell & MongoDB Database Tools" off
   # E: Gnome Tweaks
   E1 "Gnome Tweak Tool" off
   E2 "Gnome Shell Extensions" off
@@ -381,18 +382,23 @@ for choice in $choices; do
     echo 'export PATH=$PATH:/opt/gradle/bin' >> $HOME/.profile
     writeInstallationSuccessfulMessage Gradle
     ;;
-
   D11)
+    writeInstallationMessage NPM
+    apt install nodejs npm -y
+    node -v
+    writeInstallationSuccessfulMessage NPM
+  ;;
+  D12)
     writeInstallationMessage PuTTY
     apt -y install putty
     writeInstallationSuccessfulMessage PuTTY
     ;;
-  D12)
+  D13)
     writeInstallationMessage Vim
     apt -y install vim
     writeInstallationSuccessfulMessage Vim
     ;;
-  D13)
+  D14)
     writeInstallationMessage DataGrip
     wget https://download.jetbrains.com/datagrip/datagrip-${JETBRAINS_VERSION}.tar.gz
     tar -xzf datagrip-${JETBRAINS_VERSION}.tar.gz -C /opt
@@ -407,7 +413,7 @@ for choice in $choices; do
           Categories=Development;IDE;" >>/usr/share/applications/jetbrains-datagrip.desktop
     writeInstallationSuccessfulMessage DataGrip
     ;;
-  D14)
+  D15)
     writeInstallationMessage Mongo-Shell
     wget -O mongosh.deb https://downloads.mongodb.com/compass/mongodb-mongosh_1.2.2_amd64.deb
     dpkg -i ./mongosh.deb

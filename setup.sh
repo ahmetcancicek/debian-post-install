@@ -379,7 +379,8 @@ for choice in $choices; do
     unzip -d /opt/ gradle-${GRADLE_VERSION}-bin.zip
     ln -s /opt/gradle-${GRADLE_VERSION} /opt/gradle
     echo -e '\n# Gradle Configuration'  >>$HOME/.profile
-    echo 'export PATH=$PATH:/opt/gradle/bin' >> $HOME/.profile
+    echo 'export PATH=$PATH:/opt/gradle/gradle-${GRADLE_VERSION}/bin' >> $HOME/.profile
+    source $HOME/.profile
     writeInstallationSuccessfulMessage Gradle
     ;;
   D11)

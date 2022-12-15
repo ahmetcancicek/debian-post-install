@@ -31,6 +31,78 @@ apt install -y fonts-powerline
 
 cd /tmp
 
+
+# Open Sans
+curl -o open-sans.zip https://fonts.google.com/download?family=Open%20Sans
+unzip open-sans.zip -d open-sans
+rm -rf /usr/share/fonts/open-sans
+mv open-sans /usr/share/fonts/
+
+
+# Roboto
+curl -o roboto.zip https://fonts.google.com/download?family=Roboto
+unzip roboto.zip -d roboto
+rm -rf /usr/share/fonts/roboto
+mv roboto /usr/share/fonts/
+
+
+# Noto Sans
+curl -o noto-sans.zip https://fonts.google.com/download?family=Noto%20Sans
+unzip noto-sans.zip -d noto-sans
+rm -rf /usr/share/fonts/noto-sans
+mv noto-sans /usr/share/fonts/
+
+
+# Fire Mono
+curl -o fira-mono.zip https://fonts.google.com/download?family=Fira%20Mono
+unzip fira-mono.zip -d fira-mono
+rm -rf /usr/share/fonts/fira-mono
+mv fira-mono /usr/share/fonts/
+
+
+# Clear Sans
+curl -o clear-sans.zip https://www.fontsquirrel.com/fonts/download/clear-sans
+unzip clear-sans.zip -d clear-sans
+rm -rf /usr/share/fonts/clear-sans
+mv clear-sans /usr/share/fonts/
+
+
+# Fire Sans
+curl -o fira-sans.zip https://fonts.google.com/download?family=Fira%20Sans
+unzip fira-sans.zip -d fira-sans
+rm -rf /usr/share/fonts/fira_sans
+mv fira-sans /usr/share/fonts/
+
+
+# Roboto Slab
+curl -o roboto-slab.zip https://fonts.google.com/download?family=Roboto%20Slab
+unzip roboto-slab.zip -d roboto-slab
+rm -rf /usr/share/fonts/roboto-slab
+mv roboto-slab /usr/share/fonts/
+
+
+# Overpass
+curl -o overpass.zip https://fonts.google.com/download?family=Overpass
+unzip overpass.zip -d overpass
+rm -rf /usr/share/fonts/overpass
+mv overpass /usr/share/fonts/
+
+
+# Overpass Mono
+curl -o overpass-mono.zip https://fonts.google.com/download?family=Overpass%20Mono
+unzip overpass-mono.zip -d overpass-mono
+rm -rf /usr/share/fonts/overpass-mono
+mv overpass-mono /usr/share/fonts/
+
+
+# Inter
+rm -rf /usr/share/fonts/Inter-3.19
+wget https://github.com/rsms/inter/releases/download/v3.19/Inter-3.19.zip
+unzip Inter-3.19.zip -d Inter-3.19
+rm -rf /usr/share/fonts/inter-3.19
+mv Inter-3.19 /usr/share/fonts/
+
+
 # Hack v3
 rm -rf /usr/share/fonts/hack hack-v3 hack
 wget -O hack-v3.zip https://github.com/source-foundry/Hack/releases/download/v3.003/Hack-v3.003-ttf.zip
@@ -44,10 +116,9 @@ cd -
 
 # Ubuntu Font Family
 rm -rf /usr/share/fonts/ubuntu-font-family /usr/share/fonts/ubuntu-font-family-0.83
-wget -O ubuntu-font-family.zip https://assets.ubuntu.com/v1/0cef8205-ubuntu-font-family-0.83.zip
-unzip ubuntu-font-family.zip
-mv ubuntu-font-family-0.83 ubuntu-font-family
-mv ubuntu-font-family /usr/share/fonts/truetype/ubuntu-font-family
+curl -o ubuntu-font-family.zip https://assets.ubuntu.com/v1/0cef8205-ubuntu-font-family-0.83.zip
+unzip ubuntu-font-family.zip -d ./
+mv ubuntu-font-family-0.83 /usr/share/fonts/truetype
 fc-cache -f .
 cd -
 
@@ -61,6 +132,7 @@ mv JetBrainsMono-2.242/fonts/ttf/** jetbrains-mono
 mv jetbrains-mono /usr/share/fonts/truetype/jetbrains-mono
 fc-cache -f .
 cd -
+
 
 # Install Monaco
 rm -rf /usr/share/fonts/truetype/monaco

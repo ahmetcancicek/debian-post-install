@@ -27,7 +27,7 @@ writeInstallationSuccessfulMessage() {
 }
 
 # Set Version
-JETBRAINS_VERSION=2022.1.3
+JETBRAINS_VERSION=2022.3
 GO_VERSION=1.18.3
 POSTMAN_VERSION=9.20.3
 MAVEN=3
@@ -379,7 +379,7 @@ for choice in $choices; do
     unzip -d /opt/ gradle-${GRADLE_VERSION}-bin.zip
     ln -s /opt/gradle-${GRADLE_VERSION} /opt/gradle
     echo -e '\n# Gradle Configuration'  >>$HOME/.profile
-    echo 'export PATH=$PATH:/opt/gradle/gradle-${GRADLE_VERSION}/bin' >> $HOME/.profile
+    echo 'export PATH=$PATH:/opt/gradle/gradle-7.5/bin' >> $HOME/.profile
     source $HOME/.profile
     writeInstallationSuccessfulMessage Gradle
     ;;

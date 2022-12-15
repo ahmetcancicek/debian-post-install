@@ -33,6 +33,7 @@ POSTMAN_VERSION=9.20.3
 MAVEN=3
 MAVEN_VERSION=3.8.6
 GRADLE_VERSION=7.5
+SPRING_VERSION=3.0.0
 DROIDCAM_VERSION=1.8.1
 DROPBOX_VERSION=2020.03.04
 
@@ -253,13 +254,14 @@ for choice in $choices; do
     update-alternatives --install "/usr/bin/java" "java" "/usr/local/java/jdk-17/bin/java" 2
     update-alternatives --install "/usr/bin/javac" "javac" "/usr/local/java/jdk-17/bin/javac" 2
     writeInstallationSuccessfulMessage JAVA-JDK-17
-    
-    
+
+
     writeInstallationMessage Spring-Boot-CLI
-    wget https://repo.spring.io/release/org/springframework/boot/spring-boot-cli/2.7.1/spring-boot-cli-2.7.1-bin.tar.gz
-    tar xf spring-boot-cli-2.7.1-bin.tar.gz -C /opt
+    wget https://repo.spring.io/release/org/springframework/boot/spring-boot-cli/3.0.0/spring-boot-cli-${SPRING_VERSION}-bin.tar.gz
+    tar xf spring-boot-cli-${SPRING_VERSION}-bin.tar.gz -C /opt
     echo -e "\n# Spring Boot CLI" >>  $HOME/.profile
-    echo 'export SPRING_HOME=/opt/spring-2.7.1' >>  $HOME/.profile
+    echo -ne 'export SPRING_HOME=/opt/spring-' >>  $HOME/.profile
+    echo "${SPRING_VERSION}" >> $HOME/.profile
     echo 'export PATH=$PATH:$HOME/bin:$SPRING_HOME/bin' >>  $HOME/.profile
     source $HOME/.profile
     writeInstallationSuccessfulMessage Spring-Boot-CLI

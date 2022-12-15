@@ -32,7 +32,7 @@ GO_VERSION=1.18.3
 POSTMAN_VERSION=9.20.3
 MAVEN=3
 MAVEN_VERSION=3.8.6
-GRADLE_VERSION=7.5
+GRADLE_VERSION=7.6
 SPRING_VERSION=3.0.0
 DROIDCAM_VERSION=1.8.1
 DROPBOX_VERSION=2020.03.04
@@ -382,7 +382,7 @@ for choice in $choices; do
     ln -s /opt/gradle-${GRADLE_VERSION} /opt/gradle
     echo -e '\n# Gradle Configuration'  >>$HOME/.profile
     echo -ne 'export PATH=$PATH:/opt/gradle' >> $HOME/.profile
-    echo "/${GRADLE_VERSION}/bin" >> $HOME/.profile
+    echo "/gradle-${GRADLE_VERSION}/bin" >> $HOME/.profile
     source $HOME/.profile
     writeInstallationSuccessfulMessage Gradle
     ;;

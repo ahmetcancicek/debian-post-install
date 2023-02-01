@@ -36,63 +36,63 @@ cd /tmp
 curl -o open-sans.zip https://fonts.google.com/download?family=Open%20Sans
 unzip open-sans.zip -d open-sans
 rm -rf /usr/share/fonts/open-sans
-mv open-sans /usr/share/fonts/
+mv open-sans /usr/share/fonts/truetype
 
 
 # Roboto
 curl -o roboto.zip https://fonts.google.com/download?family=Roboto
 unzip roboto.zip -d roboto
 rm -rf /usr/share/fonts/roboto
-mv roboto /usr/share/fonts/
+mv roboto /usr/share/fonts/truetype
 
 
 # Noto Sans
 curl -o noto-sans.zip https://fonts.google.com/download?family=Noto%20Sans
 unzip noto-sans.zip -d noto-sans
 rm -rf /usr/share/fonts/noto-sans
-mv noto-sans /usr/share/fonts/
+mv noto-sans /usr/share/fonts/truetype
 
 
 # Fire Mono
 curl -o fira-mono.zip https://fonts.google.com/download?family=Fira%20Mono
 unzip fira-mono.zip -d fira-mono
 rm -rf /usr/share/fonts/fira-mono
-mv fira-mono /usr/share/fonts/
+mv fira-mono /usr/share/fonts/truetype
 
 
 # Clear Sans
 curl -o clear-sans.zip https://www.fontsquirrel.com/fonts/download/clear-sans
 unzip clear-sans.zip -d clear-sans
 rm -rf /usr/share/fonts/clear-sans
-mv clear-sans /usr/share/fonts/
+mv clear-sans /usr/share/fonts/truetype
 
 
 # Fire Sans
 curl -o fira-sans.zip https://fonts.google.com/download?family=Fira%20Sans
 unzip fira-sans.zip -d fira-sans
 rm -rf /usr/share/fonts/fira_sans
-mv fira-sans /usr/share/fonts/
+mv fira-sans /usr/share/fonts/truetype
 
 
 # Roboto Slab
 curl -o roboto-slab.zip https://fonts.google.com/download?family=Roboto%20Slab
 unzip roboto-slab.zip -d roboto-slab
 rm -rf /usr/share/fonts/roboto-slab
-mv roboto-slab /usr/share/fonts/
+mv roboto-slab /usr/share/fonts/truetype
 
 
 # Overpass
 curl -o overpass.zip https://fonts.google.com/download?family=Overpass
 unzip overpass.zip -d overpass
 rm -rf /usr/share/fonts/overpass
-mv overpass /usr/share/fonts/
+mv overpass /usr/share/fonts/truetype
 
 
 # Overpass Mono
 curl -o overpass-mono.zip https://fonts.google.com/download?family=Overpass%20Mono
 unzip overpass-mono.zip -d overpass-mono
 rm -rf /usr/share/fonts/overpass-mono
-mv overpass-mono /usr/share/fonts/
+mv overpass-mono /usr/share/fonts/truetype
 
 
 # Inter
@@ -100,7 +100,7 @@ rm -rf /usr/share/fonts/Inter-3.19
 wget https://github.com/rsms/inter/releases/download/v3.19/Inter-3.19.zip
 unzip Inter-3.19.zip -d Inter-3.19
 rm -rf /usr/share/fonts/inter-3.19
-mv Inter-3.19 /usr/share/fonts/
+mv Inter-3.19 /usr/share/fonts/truetype
 
 
 # Hack v3

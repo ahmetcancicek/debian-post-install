@@ -27,14 +27,14 @@ writeInstallationSuccessfulMessage() {
 }
 
 # Set Version
-JETBRAINS_VERSION=2022.3
+JETBRAINS_VERSION=2022.3.2
 GO_VERSION=1.18.3
-POSTMAN_VERSION=9.20.3
+POSTMAN_VERSION=10.0.8
 MAVEN=3
-MAVEN_VERSION=3.8.6
+MAVEN_VERSION=3.8.7
 GRADLE_VERSION=7.6
 SPRING_VERSION=3.0.0
-DROIDCAM_VERSION=1.8.1
+DROIDCAM_VERSION=1.8.2
 DROPBOX_VERSION=2020.03.04
 
 # Get USER name
@@ -168,7 +168,7 @@ for choice in $choices; do
     ;;
   B3)
     writeInstallationMessage Spotify
-    curl -sS https://download.spotify.com/debian/pubkey_5E3C45D7B312C643.gpg | sudo apt-key add -
+    curl -sS https://download.spotify.com/debian/pubkey_7A3A762FAFD4A51F.gpg | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg
     echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
     apt -y update && apt -y install spotify-client
     writeInstallationSuccessfulMessage Spotify

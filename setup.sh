@@ -132,6 +132,7 @@ options=(
   F4 "Gnome Boxes" off
   F5 "Terminator" off
   F6 "Web Apps" off
+  F7 "OpenVPN" off
   # G: Image, Video and Audio
   G1 "GIMP" off
   G2 "Droidcam" off
@@ -477,6 +478,13 @@ for choice in $choices; do
     sudo dpkg -i webapp-manager_1.2.8_all.deb
     writeInstallationSuccessfulMessage Web-Apps
     ;;
+  F7)
+    writeInstallationMessage OpenVPN
+    apt-get install -y openvpn
+    apt-get install -y network-manager-openvpn-gnome
+    writeInstallationSuccessfulMessage OpenVPN
+    ;;
+
   G1)
     writeInstallationMessage Gimp
     apt -y install gimp

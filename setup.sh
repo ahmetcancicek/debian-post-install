@@ -131,6 +131,7 @@ options=(
   F3 "Virtualbox" off
   F4 "Gnome Boxes" off
   F5 "Terminator" off
+  F6 "Web Apps" off
   # G: Image, Video and Audio
   G1 "GIMP" off
   G2 "Droidcam" off
@@ -470,7 +471,12 @@ for choice in $choices; do
     apt -y install terminator
     writeInstallationSuccessfulMessage Terminator
     ;;
-
+  F6)
+    writeInstallationMessage Web-Apps
+    wget http://packages.linuxmint.com/pool/main/w/webapp-manager/webapp-manager_1.2.8_all.deb
+    sudo dpkg -i webapp-manager_1.2.8_all.deb
+    writeInstallationSuccessfulMessage Web-Apps
+    ;;
   G1)
     writeInstallationMessage Gimp
     apt -y install gimp

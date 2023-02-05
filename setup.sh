@@ -133,6 +133,7 @@ options=(
   F5 "Terminator" off
   F6 "Web Apps" off
   F7 "OpenVPN" off
+  F8 "VeraCrypt" off
   # G: Image, Video and Audio
   G1 "GIMP" off
   G2 "Droidcam" off
@@ -483,6 +484,12 @@ for choice in $choices; do
     apt-get install -y openvpn
     apt-get install -y network-manager-openvpn-gnome
     writeInstallationSuccessfulMessage OpenVPN
+    ;;
+  F8)
+    writeInstallationMessage VeraCrypt
+    wget -O veracrypt.deb https://launchpad.net/veracrypt/trunk/1.25.9/+download/veracrypt-1.25.9-Debian-11-amd64.deb
+    dpkg -i veracrypt.deb
+    writeInstallationSuccessfulMessage VeraCrypt
     ;;
 
   G1)

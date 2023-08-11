@@ -28,10 +28,6 @@ HOME=/home/$USER
 # Go TEMP folder
 cd /tmp
 
-# Add Repository
-apt-add-repository non-free
-apt-add-repository main
-apt-add-repository contrib
 
 # Update
 printf "\n${BLUE}========================Installing Updating========================${ENDCOLOR}\n"
@@ -41,53 +37,48 @@ printf "${GREEN}========================Updated successfully!===================
 # Upgrade
 printf "\n${BLUE}===========================Upgrading===========================${ENDCOLOR}\n"
 apt-get -y upgrade
-printf "${GREEN}==========================Upgared successfully!===========================${ENDCOLOR}\n"
+printf "${GREEN}==========================Upgraded successfully!===========================${ENDCOLOR}\n"
 
-printf "${BLUE}"
+
+# Install driver
+declare -A driver
+drivers=(
+  firmware-atheros
+  firmware-realtek
+  nvidia-detect
+  nvidia-driver
+  nvidia-settings
+)
+
+printf "\n${BLUE}========================Installing drivers $1========================${ENDCOLOR}\n"
+for key in "${drivers[@]}"; do
+  apt install -y $key
+done
+printf "\n${BLUE}===============Drivers are installed successfully=============== ${ENDCOLOR}\n"
+
+
+# Bluetooth visible off
+hciconfig hci0 noscan
+
+
+printf "\n${GREEN}"
 cat <<EOL
-========================================================================
-Drivers is installing!
-========================================================================
-EOL
-printf "${ENDCOLOR}"
-
-#
-apt-get install -y firmware-atheros
-
-#
-apt-get install -y firmware-realtek
-
-#
-apt install -y nvidia-detect
-
-#
-apt install -y nvidia-driver
-
-#
-apt install -y nvidia-settings
-
-#
-hiconfig hci0 noscan
-
-
-printf "${GREEN}"
-cat <<EOL
-========================================================================
+===========================================================================
 Congratulations, everything you wanted to install is installed!
-========================================================================
+===========================================================================
 EOL
-printf "${ENDCOLOR}"
+printf "${ENDCOLOR}\n"
 
 cat <<EOL
 
 EOL
 
-printf "${BLUE}"
+printf ${RED}
 read -p "Are you going to reboot this machine for stability? (y/n): " -n 1 answer
-printf "${ENDCOLOR}"
 if [[ $answer =~ ^[Yy]$ ]]; then
   reboot
 fi
+printf ${ENDCOLOR}
 
 cat <<EOL
 

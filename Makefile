@@ -9,4 +9,4 @@ install-fonts:
 	./install-fonts.sh
 install-drivers:
 	chmod +x ./install-drivers.sh
-	./install-drivers
+	./install-drivers.sh

@@ -18,12 +18,13 @@ EOL
   exit 1
 fi
 
-#
+# Install sudo
 apt -y install sudo
 
 # Get USER name
 USER=$(logname)
 
+# Print
 cat >> /etc/sudoers << EOF
 
 # User privilege specification

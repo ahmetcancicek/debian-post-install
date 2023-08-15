@@ -209,7 +209,7 @@ install_javaJDK() {
   print_installation_message_success JAVA-JDK-17
 
   print_installation_message Spring-Boot-CLI
-  wget https://repo.spring.io/release/org/springframework/boot/spring-boot-cli/3.0.0/spring-boot-cli-${SPRING_VERSION}-bin.tar.gz
+  wget https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-cli/${SPRING_VERSION}/spring-boot-cli-${SPRING_VERSION}-bin.tar.gz
   tar xf spring-boot-cli-${SPRING_VERSION}-bin.tar.gz -C /opt
   echo -e "\n# Spring Boot CLI" >>$HOME/.profile
   echo -ne 'export SPRING_HOME=/opt/spring-' >>$HOME/.profile

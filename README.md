@@ -70,6 +70,7 @@ to run the bash script, you can use below code.
 * TLP
 
 </details>
+
 ---
 
 ## 📂 Repository Structure
@@ -127,6 +128,8 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/ahmetcancicek/debian-pos
 ```sh
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/ahmetcancicek/debian-post-install/main/main.sh)" 
 ```
+
+---
 
 ## License
 

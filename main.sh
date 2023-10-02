@@ -417,9 +417,9 @@ install_keepassxc() {
 # VirtualBox
 install_virtualbox() {
   # TODO:
-  print_installation_message Virtualbox
+  print_installation_message VirtualBox
 
-  print_installation_message_success Virtualbox
+  print_installation_message_success VirtualBox
 }
 
 # Gnome Boxes

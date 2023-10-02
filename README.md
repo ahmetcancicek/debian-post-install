@@ -129,6 +129,19 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/ahmetcancicek/debian-pos
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/ahmetcancicek/debian-post-install/main/main.sh)" 
 ```
 
+**For Fonts**
+
+```sh
+sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/ahmetcancicek/debian-post-install/main/install-fonts.sh)" 
+```
+
+**For Drivers**
+
+```sh
+sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/ahmetcancicek/debian-post-install/main/install-drivers.sh)" 
+```
+
+
 ---
 
 ## License

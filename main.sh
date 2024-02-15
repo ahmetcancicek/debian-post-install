@@ -5,10 +5,9 @@ RED="\e[31m"
 GREEN="\e[32m"
 BLUE="\e[34m"
 ENDCOLOR="\e[0m"
-
 # Set Version
 JETBRAINS_VERSION=2023.3.4
-GO_VERSION=1.21.0
+GO_VERSION=1.22
 POSTMAN_VERSION=10.17
 MAVEN=3
 MAVEN_VERSION=3.9.4
@@ -224,6 +223,7 @@ install_go() {
   print_installation_message Go
   wget https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz
   rm -rf /usr/local/go && tar -C /usr/local -xzf go${GO_VERSION}.linux-amd64.tar.gz
+  
   echo -e '\n# GoLang configuration ' >>$HOME/.profile
   echo 'export PATH="$PATH:/usr/local/go/bin"' >>$HOME/.profile
   echo 'export GOPATH="$HOME/go"' >>$HOME/.profile

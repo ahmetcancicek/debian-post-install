@@ -457,7 +457,7 @@ install_openvpn() {
 # VeraCrypt
 install_veracrypt() {
   print_installation_message VeraCrypt
-  wget -O veracrypt.deb https://launchpad.net/veracrypt/trunk/1.25.9/+download/veracrypt-1.25.9-Debian-11-amd64.deb
+  wget -O veracrypt.deb https://launchpad.net/veracrypt/trunk/1.26.7/+download/veracrypt-1.26.7-Debian-12-amd64.deb
   dpkg -i veracrypt.deb
   print_installation_message_success VeraCrypt
 }

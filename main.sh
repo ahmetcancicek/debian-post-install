@@ -17,6 +17,7 @@ GRADLE_VERSION=8.2.1
 SPRING_VERSION=3.2.2
 DROIDCAM_VERSION=2.1.2
 DROPBOX_VERSION=2024.01.22
+WEBAPPMANAGER_VERSION=1.3.4
 
 # For root control
 if [ "$(id -u)" != 0 ]; then
@@ -441,8 +442,8 @@ install_terminator() {
 # Web-Apps
 install_web_apps() {
   print_installation_message Web-Apps
-  wget http://packages.linuxmint.com/pool/main/w/webapp-manager/webapp-manager_1.3.4_all.deb
-  dpkg -i webapp-manager_1.2.8_all.deb
+  wget http://packages.linuxmint.com/pool/main/w/webapp-manager/webapp-manager_${WEBAPPMANAGER_VERSION}_all.deb
+  dpkg -i webapp-manager_${WEBAPPMANAGER_VERSION}_all.deb
   print_installation_message_success Web-Apps
 }
 

@@ -5,12 +5,14 @@ RED="\e[31m"
 GREEN="\e[32m"
 BLUE="\e[34m"
 ENDCOLOR="\e[0m"
+
 # Set Version
 JETBRAINS_VERSION=2023.3.4
 GO_VERSION=1.22
 POSTMAN_VERSION=10.23
 MAVEN=3
 MAVEN_VERSION=3.9.6
+ANKI_VERSION=23.12.1
 GRADLE_VERSION=8.2.1
 SPRING_VERSION=3.2.2
 DROIDCAM_VERSION=2.1.2
@@ -492,6 +494,66 @@ install_tlp() {
   print_installation_message_success TLP
 }
 
+# Timeshift
+install_timeshift(){
+  print_installation_message Timeshift
+  apt -y install timeshift
+  print_installation_message_success Timeshift
+}
+
+# Gparted
+install_gparted(){
+  print_installation_message Gparted
+  apt -y install gparted
+  print_installation_message_success Gparted
+}
+
+# Kdenlive
+install_kdenlive(){
+  print_installation_message Kdenlive
+  apt -y install kdenlive
+  print_installation_message_success Kdenlive
+}
+
+# Krita
+install_krita(){
+  print_installation_message Krita
+  apt -y install krita
+  print_installation_message_success Krita
+}
+
+# Inkscape
+install_inkscape(){
+  print_installation_message Inkscape
+  apt -y install inkscape
+  print_installation_message_success Inkscape
+}
+
+# Anki
+install_anki(){
+  print_installation_message Anki
+  apt -y install zstd
+  wget https://github.com/ankitects/anki/releases/download/23.12.1/anki-${ANKI_VERSION}-linux-qt6.tar.zst -O anki.tar.zst
+  tar xaf anki.tar.zst
+  cd anki-${ANKI_VERSION}-linux-qt6
+  sudo ./install.sh
+  print_installation_message_success Anki
+}
+
+# LibreOffice
+install_libreoffice(){
+  print_installation_message LibreOffice
+  apt -y install libreoffice
+  print_installation_message_success LibreOffice
+}
+
+# Raindrop
+install_raindrop(){
+  print_installation_message Raindrop
+  snap install raindrop
+  print_installation_message_success Raindrop
+}
+
 cmd=(dialog --title "Debian 11 Installer" --separate-output --checklist 'Please choose: ' 27 76 16)
 options=(
   # A: Software Repositories
@@ -533,10 +595,19 @@ options=(
   F6 "Web Apps" off
   F7 "OpenVPN" off
   F8 "VeraCrypt" off
+  F9 "Timeshift" off
+  F10 "Gparted" off
   # G: Image, Video and Audio
   G1 "GIMP" off
   G2 "Droidcam" off
-  G3 "TLP" off
+  G3 "Kdenlive" off
+  G4 "Krita" off
+  G5 "Inkscape" off
+  G6 "TLP" off
+  # H: Productivity
+  H1 "LibreOffice" off
+  H2 "Raindrop" off
+  H3 "Anki" off
 )
 
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
@@ -649,6 +720,12 @@ for choice in $choices; do
   F8)
     install_veracrypt
     ;;
+  F9)
+    install_timeshift
+    ;;
+  F10)
+    install_gparted
+    ;;
 
   G1)
     install_gimp
@@ -657,7 +734,26 @@ for choice in $choices; do
     install_droidcam
     ;;
   G3)
+    install_kdenlive
+    ;;
+  G4)
+    install_krita
+    ;;
+  G5)
+    install_inkscape
+    ;;
+  G6)
     install_tlp
+    ;;
+
+  H1)
+    install_libreoffice
+    ;;
+  H2)
+    install_raindrop
+    ;;
+  H3)
+    install_anki
     ;;
   *)
   esac

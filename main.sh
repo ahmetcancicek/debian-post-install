@@ -441,7 +441,7 @@ install_terminator() {
 # Web-Apps
 install_web_apps() {
   print_installation_message Web-Apps
-  wget http://packages.linuxmint.com/pool/main/w/webapp-manager/webapp-manager_1.2.8_all.deb
+  wget http://packages.linuxmint.com/pool/main/w/webapp-manager/webapp-manager_1.3.4_all.deb
   dpkg -i webapp-manager_1.2.8_all.deb
   print_installation_message_success Web-Apps
 }
@@ -452,14 +452,6 @@ install_openvpn() {
   apt install -y openvpn
   apt- install -y network-manager-openvpn-gnome
   print_installation_message_success OpenVPN
-}
-
-# VeraCrypt
-install_veracrypt() {
-  print_installation_message VeraCrypt
-  wget -O veracrypt.deb https://launchpad.net/veracrypt/trunk/1.26.7/+download/veracrypt-1.26.7-Debian-12-amd64.deb
-  dpkg -i veracrypt.deb
-  print_installation_message_success VeraCrypt
 }
 
 # Gimp
@@ -594,9 +586,8 @@ options=(
   F5 "Terminator" off
   F6 "Web Apps" off
   F7 "OpenVPN" off
-  F8 "VeraCrypt" off
-  F9 "Timeshift" off
-  F10 "Gparted" off
+  F8 "Timeshift" off
+  F8 "Gparted" off
   # G: Image, Video and Audio
   G1 "GIMP" off
   G2 "Droidcam" off
@@ -718,12 +709,9 @@ for choice in $choices; do
 
     ;;
   F8)
-    install_veracrypt
-    ;;
-  F9)
     install_timeshift
     ;;
-  F10)
+  F9)
     install_gparted
     ;;
 

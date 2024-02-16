@@ -588,7 +588,7 @@ options=(
   F6 "Web Apps" off
   F7 "OpenVPN" off
   F8 "Timeshift" off
-  F8 "Gparted" off
+  F9 "Gparted" off
   # G: Image, Video and Audio
   G1 "GIMP" off
   G2 "Droidcam" off

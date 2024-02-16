@@ -557,6 +557,17 @@ install_raindrop(){
   print_installation_message_success Raindrop
 }
 
+# Brave
+install_brave(){
+  print_installation_message Brave
+  apt -y install curl
+  curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
+  echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main"|sudo tee /etc/apt/sources.list.d/brave-browser-release.list
+  apt -y update
+  apt -y install brave-browser
+  print_installation_message_success Brave
+}
+
 cmd=(dialog --title "Debian 11 Installer" --separate-output --checklist 'Please choose: ' 27 76 16)
 options=(
   # A: Software Repositories
@@ -568,6 +579,7 @@ options=(
   B3 "Spotify" off
   B4 "Opera" off
   B5 "Microsoft Edge" off
+  B6 "Brave" off
   # C: Chat Application
   C1 "Zoom Meeting Client" off
   C2 "Discord" off
@@ -637,6 +649,9 @@ for choice in $choices; do
     ;;
   B5)
     install_microsoft_edge
+    ;;
+  B6)
+    install_brave
     ;;
 
   C1)

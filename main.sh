@@ -419,9 +419,16 @@ install_keepassxc() {
 
 # VirtualBox
 install_virtualbox() {
-  # TODO:
   print_installation_message VirtualBox
-
+  apt -y install gnupg2 lsb-release
+  curl -fsSL https://www.virtualbox.org/download/oracle_vbox_2016.asc|sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/vbox.gpg
+  curl -fsSL https://www.virtualbox.org/download/oracle_vbox.asc|sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/oracle_vbox.gpg
+  echo "deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) contrib" | sudo tee /etc/apt/sources.list.d/virtualbox.list
+  apt -y update
+  apt install linux-headers-$(uname -r) dkms -y
+  sudo apt install virtualbox-7.0 -y
+  usermod -aG vboxusers $USER
+  newgrp vboxusers
   print_installation_message_success VirtualBox
 }
 
@@ -707,7 +714,6 @@ for choice in $choices; do
     ;;
   F7)
     install_openvpn
-
     ;;
   F8)
     install_timeshift

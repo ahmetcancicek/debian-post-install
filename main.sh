@@ -429,6 +429,8 @@ install_virtualbox() {
   apt install virtualbox-7.0 -y
   groupadd vboxusers
   usermod -aG vboxusers $USER
+  wget https://download.virtualbox.org/virtualbox/7.0.10/Oracle_VM_VirtualBox_Extension_Pack-7.0.10.vbox-extpack
+  vboxmanage extpack install Oracle_VM_VirtualBox_Extension_Pack-7.0.10.vbox-extpack
   print_installation_message_success VirtualBox
 }
 

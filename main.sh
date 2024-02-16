@@ -479,13 +479,6 @@ install_droidcam() {
   cd droidcam && sudo ./install-client
   apt -y install linux-headers-$(uname -r) gcc make
   ./install-video
-  cd ..
-
-  wget https://files.dev47apps.net/linux/libindicator3-7_0.5.0-4_amd64.deb
-  sudo dpkg -i libindicator3-7_0.5.0-4_amd64.deb
-
-  wget https://files.dev47apps.net/linux/libappindicator3-1_0.4.92-7_amd64.deb
-  sudo dpkg -i libappindicator3-1_0.4.92-7_amd64.deb
   print_installation_message_success Droidcam
 }
 

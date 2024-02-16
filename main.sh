@@ -188,7 +188,7 @@ install_openJDK() {
 
 }
 
-# ORACLE JAVA JDK 18 & ORACLE JAVA JDK 17 && SPRING BOOT CLI
+# ORACLE JAVA JDK 18 &  ORACLE JAVA JDK 21 & ORACLE JAVA JDK 17 && SPRING BOOT CLI
 install_javaJDK() {
   print_installation_message JAVA-JDK-18
   wget https://download.oracle.com/java/18/latest/jdk-18.0.2_linux-x64_bin.tar.gz
@@ -203,11 +203,18 @@ install_javaJDK() {
   source $HOME/.profile
   print_installation_message_success JAVA-JDK-18
 
+  print_installation_message JAVA-JDK-21
+  wget https://download.oracle.com/java/21/latest/jdk-21_linux-x64_bin.tar.gz
+  tar xf jdk-21_linux-x64_bin.tar.gz -C /usr/local/java/
+  update-alternatives --install "/usr/bin/java" "java" "/usr/local/java/jdk-17/bin/java" 2
+  update-alternatives --install "/usr/bin/javac" "javac" "/usr/local/java/jdk-17/bin/javac" 2
+  print_installation_message_success JAVA-JDK-21
+
   print_installation_message JAVA-JDK-17
   wget https://download.oracle.com/java/17/archive/jdk-17_linux-x64_bin.tar.gz
   tar xf jdk-17_linux-x64_bin.tar.gz -C /usr/local/java
-  update-alternatives --install "/usr/bin/java" "java" "/usr/local/java/jdk-17/bin/java" 2
-  update-alternatives --install "/usr/bin/javac" "javac" "/usr/local/java/jdk-17/bin/javac" 2
+  update-alternatives --install "/usr/bin/java" "java" "/usr/local/java/jdk-17/bin/java" 3
+  update-alternatives --install "/usr/bin/javac" "javac" "/usr/local/java/jdk-17/bin/javac" 3
   print_installation_message_success JAVA-JDK-17
 
   print_installation_message Spring-Boot-CLI
@@ -453,6 +460,7 @@ install_web_apps() {
   print_installation_message Web-Apps
   wget http://packages.linuxmint.com/pool/main/w/webapp-manager/webapp-manager_${WEBAPPMANAGER_VERSION}_all.deb
   dpkg -i webapp-manager_${WEBAPPMANAGER_VERSION}_all.deb
+  apt apt-get -f install -y
   print_installation_message_success Web-Apps
 }
 

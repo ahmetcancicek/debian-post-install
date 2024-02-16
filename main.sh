@@ -426,9 +426,9 @@ install_virtualbox() {
   echo "deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) contrib" | sudo tee /etc/apt/sources.list.d/virtualbox.list
   apt -y update
   apt install linux-headers-$(uname -r) dkms -y
-  sudo apt install virtualbox-7.0 -y
+  apt install virtualbox-7.0 -y
+  groupadd vboxusers
   usermod -aG vboxusers $USER
-  newgrp vboxusers
   print_installation_message_success VirtualBox
 }
 

@@ -759,7 +759,7 @@ done
 
 printf "\n${BLUE}===============Installing Dependencies========================${ENDCOLOR}\n"
 # Install dependencies
-apt-get -f install
+apt-get -f install -y
 printf "${GREEN}===============Dependencies are installed successfully!===============${ENDCOLOR}\n"
 
 printf "\n${GREEN}"

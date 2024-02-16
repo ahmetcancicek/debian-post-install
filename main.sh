@@ -460,7 +460,7 @@ install_web_apps() {
   print_installation_message Web-Apps
   wget http://packages.linuxmint.com/pool/main/w/webapp-manager/webapp-manager_${WEBAPPMANAGER_VERSION}_all.deb
   dpkg -i webapp-manager_${WEBAPPMANAGER_VERSION}_all.deb
-  apt apt-get -f install -y
+  apt-get -f install -y
   print_installation_message_success Web-Apps
 }
 

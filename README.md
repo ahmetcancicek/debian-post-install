@@ -38,12 +38,14 @@ to run the bash script, you can use below code.
 * Spotify
 * Opera
 * Microsoft Edge
+* Brave
 * Zoom
 * Discord
 * Thunderbird
 * GIT
 * OpenJDK
 * Oracle Java JDK
+* Spring CLI
 * Go
 * VSCODE
 * IntelliJ IDEA Ultimate
@@ -64,10 +66,15 @@ to run the bash script, you can use below code.
 * Terminator
 * Web Apps
 * OpenVPN
-* VeraCrypt
+* Timeshift
+* Gparted
 * GIMP
 * Droidcam
+* Kdenlive
+* Krita
+* Inkscape
 * TLP
+* LibreOffice
 
 </details>
 

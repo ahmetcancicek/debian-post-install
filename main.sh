@@ -12,9 +12,9 @@ GO_VERSION=1.22.0
 POSTMAN_VERSION=10.23
 MAVEN=3
 MAVEN_VERSION=3.9.6
-ANKI_VERSION=23.12.1
 GRADLE_VERSION=8.2.1
 SPRING_VERSION=3.2.2
+ANKI_VERSION=23.12.1
 DROIDCAM_VERSION=2.1.2
 DROPBOX_VERSION=2024.01.22
 WEBAPPMANAGER_VERSION=1.3.4
@@ -257,20 +257,21 @@ install_vscode() {
 install_intellij_idea() {
   print_installation_message IntelliJ-IDEA
   wget https://download.jetbrains.com/idea/ideaIU-${JETBRAINS_VERSION}.tar.gz -O ideaIU.tar.gz
-  tar -xzf ideaIU.tar.gz -C /opt
+  tar -xf ideaIU.tar.gz -C /opt
   mv /opt/idea-IU-* /opt/idea-IU-${JETBRAINS_VERSION}
-  ln -s /opt/idea-IU-${JETBRAINS_VERSION}/bin/idea.sh /usr/local/bin/idea
+  ln -s /opt/idea-IU-${JETBRAINS_VERSION} /opt/idea
+  ln -s /opt/idea/bin/idea.sh /usr/local/bin/idea
   echo "[Desktop Entry]
-          Version=1.0
-          Type=Application
-          Name=IntelliJ IDEA Ultimate Edition
-          Icon=/opt/idea-IU-${JETBRAINS_VERSION}/bin/idea.svg
-          Exec=/opt/idea-IU-${JETBRAINS_VERSION}/bin/idea.sh %f
-          Comment=Capable and Ergonomic IDE for JVM
-          Categories=Development;IDE;
-          Terminal=false
-          StartupWMClass=jetbrains-idea
-          StartupNotify=true;" >>/usr/share/applications/jetbrains-idea.desktop
+            Version=1.0
+            Type=Application
+            Name=IntelliJ IDEA Ultimate Edition
+            Icon=/opt/idea/bin/idea.svg
+            Exec=/opt/idea/bin/idea.sh %f
+            Comment=Capable and Ergonomic IDE for JVM
+            Categories=Development;IDE;
+            Terminal=false
+            StartupWMClass=jetbrains-idea
+            StartupNotify=true;" >>/usr/share/applications/jetbrains-idea.desktop
   print_installation_message_success IntelliJ-IDEA
 }
 
@@ -279,7 +280,9 @@ install_goland() {
   print_installation_message GoLand
   wget https://download.jetbrains.com/go/goland-${JETBRAINS_VERSION}.tar.gz -O goland.tar.gz
   tar -xzf goland.tar.gz -C /opt
-  ln -s /opt/GoLand-${JETBRAINS_VERSION}/bin/goland.sh /usr/local/bin/goland
+  mv /opt/GoLand-* /opt/GoLand-${JETBRAINS_VERSION}
+  ln -s /opt/GoLand-${JETBRAINS_VERSION} /opt/goland
+  ln -s /opt/goland/bin/goland.sh /usr/local/bin/goland
   echo "[Desktop Entry]
           Version=1.0
           Type=Application
@@ -389,13 +392,15 @@ install_datagrip() {
   print_installation_message DataGrip
   wget https://download.jetbrains.com/datagrip/datagrip-${JETBRAINS_VERSION}.tar.gz
   tar -xzf datagrip-${JETBRAINS_VERSION}.tar.gz -C /opt
-  ln -s /opt/DataGrip-${JETBRAINS_VERSION}/bin/datagrip.sh /usr/local/bin/datagrip
+  mv /opt/DataGrip-* /opt/DataGrip-${JETBRAINS_VERSION}
+  ln -s /opt/DataGrip-${JETBRAINS_VERSION} /opt/datagrip
+  ln -s /opt/datagrip/bin/datagrip.sh /usr/local/bin/datagrip
   echo "[Desktop Entry]
           Version=1.0
           Type=Application
           Name=DataGrip
-          Icon=/opt/DataGrip-${JETBRAINS_VERSION}/bin/datagrip.png
-          Exec=/opt/DataGrip-${JETBRAINS_VERSION}/bin/datagrip.sh
+          Icon=/opt/datagrip/bin/datagrip.png
+          Exec=/opt/datagrip/bin/datagrip.sh
           Terminal=false
           Categories=Development;IDE;" >>/usr/share/applications/jetbrains-datagrip.desktop
   print_installation_message_success DataGrip

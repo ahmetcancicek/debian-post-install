@@ -1,6 +1,6 @@
 run:
-	chmod +x ./setup.sh
-	./setup.sh
+	chmod +x ./main.sh
+	./main.sh
 install-sudo:
 	chmod +x ./install-sudo.sh
 	./install-sudo.sh

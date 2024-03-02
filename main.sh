@@ -573,7 +573,7 @@ install_brave(){
   print_installation_message_success Brave
 }
 
-cmd=(dialog --title "Debian 11 Installer" --separate-output --checklist 'Please choose: ' 27 76 16)
+cmd=(dialog --title "Debian 12 Installer" --separate-output --checklist 'Please choose: ' 27 76 16)
 options=(
   # A: Software Repositories
   A1 "Install Snap Repository" off

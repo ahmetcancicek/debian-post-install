@@ -392,7 +392,7 @@ install_datagrip() {
   print_installation_message DataGrip
   wget https://download.jetbrains.com/datagrip/datagrip-${JETBRAINS_VERSION}.tar.gz
   tar -xzf datagrip-${JETBRAINS_VERSION}.tar.gz -C /opt
-  mv /opt/DataGrip-* /opt/DataGrip-${JETBRAINS_VERSION}
+  # mv /opt/DataGrip-* /opt/DataGrip-${JETBRAINS_VERSION}
   ln -s /opt/DataGrip-${JETBRAINS_VERSION} /opt/datagrip
   ln -s /opt/datagrip/bin/datagrip.sh /usr/local/bin/datagrip
   echo "[Desktop Entry]

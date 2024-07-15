@@ -7,17 +7,18 @@ BLUE="\e[34m"
 ENDCOLOR="\e[0m"
 
 # Set Version
-JETBRAINS_VERSION=2023.3.4
-GO_VERSION=1.22.0
-POSTMAN_VERSION=10.23
+JETBRAINS_VERSION=2024.1.4
+GO_VERSION=1.22.5
+POSTMAN_VERSION=11.3.2
 MAVEN=3
-MAVEN_VERSION=3.9.6
-GRADLE_VERSION=8.2.1
-SPRING_VERSION=3.2.2
-ANKI_VERSION=23.12.1
+MAVEN_VERSION=3.9.8
+GRADLE_VERSION=8.9
+SPRING_VERSION=3.3.1
+ANKI_VERSION=24.06.3
 DROIDCAM_VERSION=2.1.3
 DROPBOX_VERSION=2024.01.22
-WEBAPPMANAGER_VERSION=1.3.4
+WEBAPPMANAGER_VERSION=1.3.6
+
 
 # For root control
 if [ "$(id -u)" != 0 ]; then
@@ -206,8 +207,8 @@ install_javaJDK() {
   print_installation_message JAVA-JDK-21
   wget https://download.oracle.com/java/21/latest/jdk-21_linux-x64_bin.tar.gz
   tar xf jdk-21_linux-x64_bin.tar.gz -C /usr/local/java/
-  update-alternatives --install "/usr/bin/java" "java" "/usr/local/java/jdk-17/bin/java" 2
-  update-alternatives --install "/usr/bin/javac" "javac" "/usr/local/java/jdk-17/bin/javac" 2
+  update-alternatives --install "/usr/bin/java" "java" "/usr/local/java/jdk-21/bin/java" 2
+  update-alternatives --install "/usr/bin/javac" "javac" "/usr/local/java/jdk-21/bin/javac" 2
   print_installation_message_success JAVA-JDK-21
 
   print_installation_message JAVA-JDK-17

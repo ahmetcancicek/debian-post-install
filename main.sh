@@ -1,4 +1,4 @@
-#!/bin/bash
+  #!/bin/bash
 
 # Set Color
 RED="\e[31m"
@@ -7,7 +7,9 @@ BLUE="\e[34m"
 ENDCOLOR="\e[0m"
 
 # Set Version
-JETBRAINS_VERSION=2024.1.4
+IntelliJIDEA_VERSION=2024.2.0.2
+GoLand_VERSION=2024.2.0.2
+DataGrip_VERSION=2024.2.1
 GO_VERSION=1.22.5
 POSTMAN_VERSION=11.3.2
 MAVEN=3
@@ -257,10 +259,10 @@ install_vscode() {
 # Intellij-IDEA
 install_intellij_idea() {
   print_installation_message IntelliJ-IDEA
-  wget https://download.jetbrains.com/idea/ideaIU-${JETBRAINS_VERSION}.tar.gz -O ideaIU.tar.gz
+  wget https://download.jetbrains.com/idea/ideaIU-${IntelliJIDEA_VERSION}.tar.gz -O ideaIU.tar.gz
   tar -xf ideaIU.tar.gz -C /opt
-  mv /opt/idea-IU-* /opt/idea-IU-${JETBRAINS_VERSION}
-  ln -s /opt/idea-IU-${JETBRAINS_VERSION} /opt/idea
+  mv /opt/idea-IU-* /opt/idea-IU-${IntelliJIDEA_VERSION}
+  ln -s /opt/idea-IU-${IntelliJIDEA_VERSION} /opt/idea
   ln -s /opt/idea/bin/idea.sh /usr/local/bin/idea
   echo "[Desktop Entry]
             Version=1.0
@@ -279,17 +281,17 @@ install_intellij_idea() {
 # GoLand
 install_goland() {
   print_installation_message GoLand
-  wget https://download.jetbrains.com/go/goland-${JETBRAINS_VERSION}.tar.gz -O goland.tar.gz
+  wget https://download.jetbrains.com/go/goland-${GoLand_VERSION}.tar.gz -O goland.tar.gz
   tar -xzf goland.tar.gz -C /opt
-  mv /opt/GoLand-* /opt/GoLand-${JETBRAINS_VERSION}
-  ln -s /opt/GoLand-${JETBRAINS_VERSION} /opt/goland
+  mv /opt/GoLand-* /opt/GoLand-${GoLand_VERSION}
+  ln -s /opt/GoLand-${GoLand_VERSION} /opt/goland
   ln -s /opt/goland/bin/goland.sh /usr/local/bin/goland
   echo "[Desktop Entry]
           Version=1.0
           Type=Application
           Name=GoLand
-          Icon=/opt/GoLand-${JETBRAINS_VERSION}/bin/goland.png
-          Exec=/opt/GoLand-${JETBRAINS_VERSION}/bin/goland.sh
+          Icon=/opt/GoLand-${GoLand_VERSION}/bin/goland.png
+          Exec=/opt/GoLand-${GoLand_VERSION}/bin/goland.sh
           Terminal=false
           Categories=Development;IDE;" >>/usr/share/applications/jetbrains-goland.desktop
   print_installation_message_success GoLand
@@ -391,10 +393,10 @@ install_vim() {
 # DataGrip
 install_datagrip() {
   print_installation_message DataGrip
-  wget https://download.jetbrains.com/datagrip/datagrip-${JETBRAINS_VERSION}.tar.gz
-  tar -xzf datagrip-${JETBRAINS_VERSION}.tar.gz -C /opt
-  # mv /opt/DataGrip-* /opt/DataGrip-${JETBRAINS_VERSION}
-  ln -s /opt/DataGrip-${JETBRAINS_VERSION} /opt/datagrip
+  wget https://download.jetbrains.com/datagrip/datagrip-${DataGrip_VERSION}.tar.gz
+  tar -xzf datagrip-${DataGrip_VERSION}.tar.gz -C /opt
+  # mv /opt/DataGrip-* /opt/DataGrip-${DataGrip_VERSION}
+  ln -s /opt/DataGrip-${DataGrip_VERSION} /opt/datagrip
   ln -s /opt/datagrip/bin/datagrip.sh /usr/local/bin/datagrip
   echo "[Desktop Entry]
           Version=1.0

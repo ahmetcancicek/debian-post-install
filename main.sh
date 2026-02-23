@@ -68,6 +68,29 @@ install_apt_package() {
   print_installation_message_success "$app_name"
 }
 
+# Add configuration to .profile if not exists
+add_to_profile() {
+  local marker="$1"
+  local content="$2"
+
+  if ! grep -qF "$marker" "$HOME/.profile"; then
+    echo -e "\n$marker" >> "$HOME/.profile"
+    echo -e "$content" >> "$HOME/.profile"
+    source "$HOME/.profile"
+  fi
+}
+
+# Cleanup downloaded files
+cleanup() {
+  print_installation_message "Cleanup"
+  rm -f /tmp/*.deb
+  rm -f /tmp/*.tar.gz
+  rm -f /tmp/*.zip
+  rm -f /tmp/*.gpg
+  rm -f /tmp/*.asc
+  print_installation_message_success "Cleanup"
+}
+
 # ==========================================
 # 3. System Setup & Updates
 # ==========================================
@@ -205,9 +228,8 @@ install_javaJDK() {
   update-alternatives --install "/usr/bin/javac" "javac" "/usr/local/java/jdk-18.0.2/bin/javac" 1
   update-alternatives --set java /usr/local/java/jdk-18.0.2/bin/java
   update-alternatives --set javac /usr/local/java/jdk-18.0.2/bin/javac
-  echo -e '\n# JAVA Configuration' >>$HOME/.profile
-  echo 'JAVA_HOME=/usr/local/java/jdk-18.0.2/bin/java' >>$HOME/.profile
-  source $HOME/.profile
+
+  add_to_profile "# JAVA Configuration" "JAVA_HOME=/usr/local/java/jdk-18.0.2/bin/java"
   print_installation_message_success JAVA-JDK-18
 
   print_installation_message JAVA-JDK-21
@@ -227,11 +249,8 @@ install_javaJDK() {
   print_installation_message Spring-Boot-CLI
   wget https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-cli/${SPRING_VERSION}/spring-boot-cli-${SPRING_VERSION}-bin.tar.gz
   tar xf spring-boot-cli-${SPRING_VERSION}-bin.tar.gz -C /opt
-  echo -e "\n# Spring Boot CLI" >>$HOME/.profile
-  echo -ne 'export SPRING_HOME=/opt/spring-' >>$HOME/.profile
-  echo "${SPRING_VERSION}" >>$HOME/.profile
-  echo 'export PATH=$PATH:$HOME/bin:$SPRING_HOME/bin' >>$HOME/.profile
-  source $HOME/.profile
+
+  add_to_profile "# Spring Boot CLI" "export SPRING_HOME=/opt/spring-${SPRING_VERSION}\nexport PATH=\$PATH:\$HOME/bin:\$SPRING_HOME/bin"
   print_installation_message_success Spring-Boot-CLI
 }
 
@@ -241,10 +260,7 @@ install_go() {
   wget https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz
   rm -rf /usr/local/go && tar -C /usr/local -xzf go${GO_VERSION}.linux-amd64.tar.gz
 
-  echo -e '\n# GoLang configuration ' >>$HOME/.profile
-  echo 'export PATH="$PATH:/usr/local/go/bin"' >>$HOME/.profile
-  echo 'export GOPATH="$HOME/go"' >>$HOME/.profile
-  source $HOME/.profile
+  add_to_profile "# GoLang configuration" "export PATH=\"\$PATH:/usr/local/go/bin\"\nexport GOPATH=\"\$HOME/go\""
   print_installation_message_success Go
 }
 
@@ -352,10 +368,8 @@ install_maven() {
   wget https://dlcdn.apache.org/maven/maven-${MAVEN}/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz
   tar -zxvf apache-maven-${MAVEN_VERSION}-bin.tar.gz -C /opt
   ln -s /opt/apache-maven-${MAVEN_VERSION} /opt/maven
-  echo -e '\n# Maven Configuration' >>$HOME/.profile
-  echo "export M2_HOME=/opt/maven" >>$HOME/.profile
-  echo 'export PATH=${M2_HOME}/bin:${PATH}' >>$HOME/.profile
-  source $HOME/.profile
+
+  add_to_profile "# Maven Configuration" "export M2_HOME=/opt/maven\nexport PATH=\${M2_HOME}/bin:\${PATH}"
   print_installation_message_success Maven
 }
 
@@ -366,9 +380,8 @@ install_gradle() {
   wget https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip
   unzip -d /opt/ gradle-${GRADLE_VERSION}-bin.zip
   ln -s /opt/gradle-${GRADLE_VERSION} /opt/gradle
-  echo -e '\n# Gradle Configuration' >>$HOME/.profile
-  echo -ne 'export PATH=$PATH:/opt/gradle/bin' >>$HOME/.profile
-  source $HOME/.profile
+
+  add_to_profile "# Gradle Configuration" "export PATH=\$PATH:/opt/gradle/bin"
   print_installation_message_success Gradle
 }
 
@@ -690,6 +703,9 @@ printf "\n${BLUE}===============Installing Dependencies========================$
 # Install dependencies
 apt-get -f install -y
 printf "${GREEN}===============Dependencies are installed successfully!===============${ENDCOLOR}\n"
+
+# Cleanup
+cleanup
 
 printf "\n${GREEN}"
 cat <<EOL

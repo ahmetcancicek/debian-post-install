@@ -1,47 +1,86 @@
-  #!/bin/bash
+#!/bin/bash
 
-# Set Color
+# ==========================================
+# 1. Constants & Configuration
+# ==========================================
+
+# Colors
 RED="\e[31m"
 GREEN="\e[32m"
 BLUE="\e[34m"
 ENDCOLOR="\e[0m"
 
-# Set Version
-IntelliJIDEA_VERSION=2024.2.1
-DataGrip_VERSION=2024.2.2
-GoLand_VERSION=2024.2.1.1
-GO_VERSION=1.23.1
-POSTMAN_VERSION=11.12
-MAVEN=3
-MAVEN_VERSION=3.9.9
-GRADLE_VERSION=8.10.1
-SPRING_VERSION=3.3.3
-ANKI_VERSION=24.06.3
-DROIDCAM_VERSION=2.1.3
-DROPBOX_VERSION=2024.04.17
-WEBAPPMANAGER_VERSION=1.3.7
+# Versions
+IntelliJIDEA_VERSION="2024.2.1"
+DataGrip_VERSION="2024.2.2"
+GoLand_VERSION="2024.2.1.1"
+GO_VERSION="1.23.1"
+POSTMAN_VERSION="11.12"
+MAVEN="3"
+MAVEN_VERSION="3.9.9"
+GRADLE_VERSION="8.10.1"
+SPRING_VERSION="3.3.3"
+ANKI_VERSION="24.06.3"
+DROIDCAM_VERSION="2.1.3"
+DROPBOX_VERSION="2024.04.17"
+WEBAPPMANAGER_VERSION="1.3.7"
 
+# ==========================================
+# 2. Helper Functions
+# ==========================================
 
-# For root control
-if [ "$(id -u)" != 0 ]; then
-  printf "${RED}"
-  cat <<EOL
+# Check if the user is root
+check_root() {
+  if [ "$(id -u)" != 0 ]; then
+    printf "${RED}"
+    cat <<EOL
 ========================================================================
 You are not root! This script must be run as root!
 ========================================================================
 EOL
-  printf "${ENDCOLOR}"
-  exit 1
-fi
+    printf "${ENDCOLOR}"
+    exit 1
+  fi
+}
 
-# Get USER name
+# Go to temporary directory
+go_temp() {
+  cd /tmp || exit
+}
+
+# Print installation start message
+print_installation_message() {
+  printf "\n${BLUE}===============================Installing %s==============================${ENDCOLOR}\n" "$1"
+}
+
+# Print installation success message
+print_installation_message_success() {
+  printf "${GREEN}========================%s is installed successfully!========================${ENDCOLOR}\n" "$1"
+  go_temp
+}
+
+# Generic APT package installer
+install_apt_package() {
+  local app_name=$1
+  local package_name=$2
+  print_installation_message "$app_name"
+  apt-get -y install "$package_name"
+  print_installation_message_success "$app_name"
+}
+
+# ==========================================
+# 3. System Setup & Updates
+# ==========================================
+
+# Check Root
+check_root
+
+# Get USER name and HOME folder
 USER=$(logname)
-
-# Get HOME folder path
-HOME=/home/$USER
+HOME="/home/$USER"
 
 # Go TEMP folder
-cd /tmp
+go_temp
 
 # Update
 printf "\n${BLUE}========================Installing Updating========================${ENDCOLOR}\n"
@@ -53,7 +92,7 @@ printf "\n${BLUE}===========================Upgrading===========================
 apt-get -y upgrade
 printf "${GREEN}==========================Upgraded successfully!===========================${ENDCOLOR}\n"
 
-# Install standard package
+# Install standard packages
 declare -A essential
 essentials=(
   apt-transport-https
@@ -67,34 +106,21 @@ essentials=(
   zsh
   htop
 )
-printf "\n${BLUE}========================Installing standard package $1========================${ENDCOLOR}\n"
+
+printf "\n${BLUE}========================Installing standard packages========================${ENDCOLOR}\n"
 for key in "${essentials[@]}"; do
-  apt install -y $key
+  apt-get install -y "$key"
 done
 printf "\n${BLUE}===============Standard packages are installed successfully=============== ${ENDCOLOR}\n"
 
-# Go /tmp
-go_temp() {
-  cd /tmp
-}
-
-
-# Installation Message
-print_installation_message() {
-  printf "\n${BLUE}===============================Installing $1==============================${ENDCOLOR}\n"
-}
-
-# Installation Success Message
-print_installation_message_success() {
-  printf "${GREEN}========================$1 is installed successfully!========================${ENDCOLOR}\n"
-  go_temp
-}
-
+# ==========================================
+# 4. Installation Functions
+# ==========================================
 
 # Snap Repository
 install_snap() {
   print_installation_message Snap
-  apt -y install snapd
+  apt-get -y install snapd
   snap install snap-store
   print_installation_message_success Snap
 }
@@ -102,8 +128,8 @@ install_snap() {
 # Flatpak Repository
 install_flatpak() {
   print_installation_message Flatpak-Repository
-  apt -y install flatpak
-  apt -y install gnome-software-plugin-flatpak
+  apt-get -y install flatpak
+  apt-get -y install gnome-software-plugin-flatpak
   flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
   print_installation_message_success Flatpak-Repository
 }
@@ -112,15 +138,8 @@ install_flatpak() {
 install_google_chrome() {
   print_installation_message Google-Chrome
   wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-  apt -y install ./google-chrome-stable_current_amd64.deb
+  apt-get -y install ./google-chrome-stable_current_amd64.deb
   print_installation_message_success Google-Chrome
-}
-
-# Chromium
-install_chromium() {
-  print_installation_message Chromium
-  apt -y install chromium
-  print_installation_message_success Chromium
 }
 
 # Spotify
@@ -128,7 +147,7 @@ install_spotify() {
   print_installation_message Spotify
   curl -sS https://download.spotify.com/debian/pubkey_6224F9941A8AA6D1.gpg | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg
   echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
-  apt -y update && apt -y install spotify-client
+  apt-get -y update && apt-get -y install spotify-client
   print_installation_message_success Spotify
 }
 
@@ -137,8 +156,8 @@ install_opera() {
   print_installation_message Opera
   curl -fSsL https://deb.opera.com/archive.key | gpg --dearmor | sudo tee /usr/share/keyrings/opera.gpg >/dev/null
   echo deb [arch=amd64 signed-by=/usr/share/keyrings/opera.gpg] https://deb.opera.com/opera-stable/ stable non-free | sudo tee /etc/apt/sources.list.d/opera.list
-  apt -y update
-  apt -y install opera-stable
+  apt-get -y update
+  apt-get -y install opera-stable
   print_installation_message_success Opera
 }
 
@@ -149,7 +168,7 @@ install_microsoft_edge() {
   install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
   sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge-dev.list'
   rm microsoft.gpg
-  apt -y update && apt -y install microsoft-edge-stable
+  apt-get -y update && apt-get -y install microsoft-edge-stable
   print_installation_message_success Microsoft-Edge
 }
 
@@ -157,7 +176,7 @@ install_microsoft_edge() {
 install_zoom() {
   print_installation_message Zoom
   wget https://zoom.us/client/latest/zoom_amd64.deb
-  apt -y install ./zoom_amd64.deb
+  apt-get -y install ./zoom_amd64.deb
   print_installation_message_success Zoom
 }
 
@@ -169,26 +188,11 @@ install_discord() {
   print_installation_message_success Discord
 }
 
-# Thunderbird
-install_thunderbird() {
-  print_installation_message Thunderbird
-  apt -y install thunderbird
-  print_installation_message_success Thunderbird
-}
-
-# GIT
-install_git() {
-  print_installation_message GIT
-  apt -y install git
-  print_installation_message_success GIT
-}
-
 # OpenJDK
 install_openJDK() {
   print_installation_message OpenJDK
-  apt -y install default-jdk
+  apt-get -y install default-jdk
   print_installation_message OpenJDK
-
 }
 
 # ORACLE JAVA JDK 18 &  ORACLE JAVA JDK 21 & ORACLE JAVA JDK 17 && SPRING BOOT CLI
@@ -251,8 +255,8 @@ install_vscode() {
   install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
   sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
   rm -f packages.microsoft.gpg
-  apt -y update
-  apt -y install code # or code-insiders
+  apt-get -y update
+  apt-get -y install code # or code-insiders
   print_installation_message_success vscode
 }
 
@@ -371,23 +375,9 @@ install_gradle() {
 # NPM
 install_npm() {
   print_installation_message NPM
-  apt install nodejs npm -y
+  apt-get install nodejs npm -y
   node -v
   print_installation_message_success NPM
-}
-
-# PuTTY
-install_putty() {
-  print_installation_message PuTTY
-  apt -y install putty
-  print_installation_message_success PuTTY
-}
-
-# Vim
-install_vim() {
-  print_installation_message Vim
-  apt -y install vim
-  print_installation_message_success Vim
 }
 
 # DataGrip
@@ -412,8 +402,8 @@ install_datagrip() {
 # Gnome
 install_gnome_tool() {
   print_installation_message Gnome-Tweak-Tool
-  apt -y install gnome-tweak-tool
-  apt -y install gnome-shell-extensions
+  apt-get -y install gnome-tweak-tool
+  apt-get -y install gnome-shell-extensions
   print_installation_message_success Gnome-Tweak-Tool
 }
 
@@ -421,46 +411,25 @@ install_gnome_tool() {
 install_dropbox() {
   print_installation_message Dropbox
   wget -O dropbox.deb https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_${DROPBOX_VERSION}_amd64.deb
-  apt -y install ./dropbox.deb
+  apt-get -y install ./dropbox.deb
   print_installation_message_success Dropbox
-}
-
-# KeePassXC
-install_keepassxc() {
-  print_installation_message KeePassXC
-  apt-get -y install keepassxc
-  print_installation_message_success KeePassXC
 }
 
 # VirtualBox
 install_virtualbox() {
   print_installation_message VirtualBox
-  apt -y install gnupg2 lsb-release
+  apt-get -y install gnupg2 lsb-release
   curl -fsSL https://www.virtualbox.org/download/oracle_vbox_2016.asc|sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/vbox.gpg
   curl -fsSL https://www.virtualbox.org/download/oracle_vbox.asc|sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/oracle_vbox.gpg
   echo "deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) contrib" | sudo tee /etc/apt/sources.list.d/virtualbox.list
-  apt -y update
-  apt install linux-headers-$(uname -r) dkms -y
-  apt install virtualbox-7.0 -y
+  apt-get -y update
+  apt-get install linux-headers-$(uname -r) dkms -y
+  apt-get install virtualbox-7.0 -y
   groupadd vboxusers
   usermod -aG vboxusers $USER
   wget https://download.virtualbox.org/virtualbox/7.0.10/Oracle_VM_VirtualBox_Extension_Pack-7.0.10.vbox-extpack
   vboxmanage extpack install Oracle_VM_VirtualBox_Extension_Pack-7.0.10.vbox-extpack
   print_installation_message_success VirtualBox
-}
-
-# Gnome Boxes
-install_gnome_boxes() {
-  print_installation_message Boxes
-  apt -y install gnome-boxes
-  print_installation_message_success Boxes
-}
-
-# Terminator
-install_terminator() {
-  print_installation_message Terminator
-  apt -y install terminator
-  print_installation_message_success Terminator
 }
 
 # Web-Apps
@@ -472,78 +441,21 @@ install_web_apps() {
   print_installation_message_success Web-Apps
 }
 
-# OpenVPN
-install_openvpn() {
-  print_installation_message OpenVPN
-  apt install -y openvpn
-  apt- install -y network-manager-openvpn-gnome
-  print_installation_message_success OpenVPN
-}
-
-# Gimp
-install_gimp() {
-  print_installation_message Gimp
-  apt -y install gimp
-  print_installation_message_success Gimp
-}
-
 # Droidcam
 install_droidcam() {
   print_installation_message Droidcam
   wget -O droidcam_latest.zip https://files.dev47apps.net/linux/droidcam_${DROIDCAM_VERSION}.zip
   unzip droidcam_latest.zip -d droidcam
   cd droidcam && sudo ./install-client
-  apt -y install linux-headers-$(uname -r) gcc make
+  apt-get -y install linux-headers-$(uname -r) gcc make
   ./install-video
   print_installation_message_success Droidcam
 }
 
-# TLP
-install_tlp() {
-  print_installation_message TLP
-  apt -y install tlp
-  print_installation_message_success TLP
-}
-
-# Timeshift
-install_timeshift(){
-  print_installation_message Timeshift
-  apt -y install timeshift
-  print_installation_message_success Timeshift
-}
-
-# Gparted
-install_gparted(){
-  print_installation_message Gparted
-  apt -y install gparted
-  print_installation_message_success Gparted
-}
-
-# Kdenlive
-install_kdenlive(){
-  print_installation_message Kdenlive
-  apt -y install kdenlive
-  print_installation_message_success Kdenlive
-}
-
-# Krita
-install_krita(){
-  print_installation_message Krita
-  apt -y install krita
-  print_installation_message_success Krita
-}
-
-# Inkscape
-install_inkscape(){
-  print_installation_message Inkscape
-  apt -y install inkscape
-  print_installation_message_success Inkscape
-}
-
 # Anki
-install_anki(){
+install_anki() {
   print_installation_message Anki
-  apt -y install zstd
+  apt-get -y install zstd
   wget https://github.com/ankitects/anki/releases/download/23.12.1/anki-${ANKI_VERSION}-linux-qt6.tar.zst -O anki.tar.zst
   tar xaf anki.tar.zst
   cd anki-${ANKI_VERSION}-linux-qt6
@@ -551,28 +463,21 @@ install_anki(){
   print_installation_message_success Anki
 }
 
-# LibreOffice
-install_libreoffice(){
-  print_installation_message LibreOffice
-  apt -y install libreoffice
-  print_installation_message_success LibreOffice
-}
-
 # Raindrop
-install_raindrop(){
+install_raindrop() {
   print_installation_message Raindrop
   snap install raindrop
   print_installation_message_success Raindrop
 }
 
 # Brave
-install_brave(){
+install_brave() {
   print_installation_message Brave
-  apt -y install curl
+  apt-get -y install curl
   curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
   echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main"|sudo tee /etc/apt/sources.list.d/brave-browser-release.list
-  apt -y update
-  apt -y install brave-browser
+  apt-get -y update
+  apt-get -y install brave-browser
   print_installation_message_success Brave
 }
 
@@ -647,7 +552,7 @@ for choice in $choices; do
     install_google_chrome
     ;;
   B2)
-    install_chromium
+    install_apt_package "Chromium" "chromium"
     ;;
   B3)
     install_spotify
@@ -669,11 +574,11 @@ for choice in $choices; do
     install_discord
     ;;
   C3)
-    install_thunderbird
+    install_apt_package "Thunderbird" "thunderbird"
     ;;
 
   D1)
-    install_git
+    install_apt_package "GIT" "git"
     ;;
   D2)
     install_openJDK
@@ -707,10 +612,10 @@ for choice in $choices; do
     install_npm
     ;;
   D12)
-    install_putty
+    install_apt_package "PuTTY" "putty"
     ;;
   D13)
-    install_vim
+    install_apt_package "Vim" "vim"
     ;;
   D14)
     install_datagrip
@@ -724,51 +629,52 @@ for choice in $choices; do
     install_dropbox
     ;;
   F2)
-    install_keepassxc
+    install_apt_package "KeePassXC" "keepassxc"
     ;;
   F3)
     install_virtualbox
     ;;
   F4)
-    install_gnome_boxes
+    install_apt_package "Gnome Boxes" "gnome-boxes"
     ;;
   F5)
-    install_terminator
+    install_apt_package "Terminator" "terminator"
     ;;
   F6)
     install_web_apps
     ;;
   F7)
-    install_openvpn
+    install_apt_package "OpenVPN" "openvpn"
+    install_apt_package "Network Manager OpenVPN" "network-manager-openvpn-gnome"
     ;;
   F8)
-    install_timeshift
+    install_apt_package "Timeshift" "timeshift"
     ;;
   F9)
-    install_gparted
+    install_apt_package "Gparted" "gparted"
     ;;
 
   G1)
-    install_gimp
+    install_apt_package "Gimp" "gimp"
     ;;
   G2)
     install_droidcam
     ;;
   G3)
-    install_kdenlive
+    install_apt_package "Kdenlive" "kdenlive"
     ;;
   G4)
-    install_krita
+    install_apt_package "Krita" "krita"
     ;;
   G5)
-    install_inkscape
+    install_apt_package "Inkscape" "inkscape"
     ;;
   G6)
-    install_tlp
+    install_apt_package "TLP" "tlp"
     ;;
 
   H1)
-    install_libreoffice
+    install_apt_package "LibreOffice" "libreoffice"
     ;;
   H2)
     install_raindrop

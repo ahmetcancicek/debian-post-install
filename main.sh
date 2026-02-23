@@ -65,6 +65,20 @@ EOL
   fi
 }
 
+# Check if the OS is Debian/Ubuntu based
+check_os() {
+  if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    if [[ "$ID" != "debian" && "$ID" != "ubuntu" && "$ID_LIKE" != *"debian"* && "$ID_LIKE" != *"ubuntu"* ]]; then
+      printf "${RED}Error: This script is designed for Debian/Ubuntu based systems only.${ENDCOLOR}\n"
+      exit 1
+    fi
+  else
+    printf "${RED}Error: Cannot determine OS distribution.${ENDCOLOR}\n"
+    exit 1
+  fi
+}
+
 # Go to temporary directory
 go_temp() {
   cd /tmp || exit
@@ -119,6 +133,9 @@ cleanup() {
 
 # Check Root
 check_root
+
+# Check OS
+check_os
 
 # Get USER name and HOME folder
 USER=$(logname)
@@ -495,6 +512,11 @@ install_anki() {
 
 # Raindrop
 install_raindrop() {
+  if ! command -v snap &> /dev/null; then
+    print_installation_message "Snap (Dependency for Raindrop)"
+    install_snap
+  fi
+
   print_installation_message Raindrop
   snap install raindrop
   print_installation_message_success Raindrop

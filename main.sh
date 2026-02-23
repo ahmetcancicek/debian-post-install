@@ -25,6 +25,28 @@ DROIDCAM_VERSION="2.1.3"
 DROPBOX_VERSION="2024.04.17"
 WEBAPPMANAGER_VERSION="1.3.7"
 
+# URLs
+CHROME_URL="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
+ZOOM_URL="https://zoom.us/client/latest/zoom_amd64.deb"
+DISCORD_URL="https://discordapp.com/api/download?platform=linux&format=deb"
+VSCODE_KEY_URL="https://packages.microsoft.com/keys/microsoft.asc"
+VSCODE_REPO_URL="https://packages.microsoft.com/repos/code"
+INTELLIJ_URL="https://download.jetbrains.com/idea/ideaIU-${IntelliJIDEA_VERSION}.tar.gz"
+GOLAND_URL="https://download.jetbrains.com/go/goland-${GoLand_VERSION}.tar.gz"
+DATAGRIP_URL="https://download.jetbrains.com/datagrip/datagrip-${DataGrip_VERSION}.tar.gz"
+POSTMAN_URL="https://dl.pstmn.io/download/latest/linux64"
+DOCKER_GPG_URL="https://download.docker.com/linux/debian/gpg"
+DOCKER_REPO_URL="https://download.docker.com/linux/debian"
+DOCKER_COMPOSE_URL="https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)"
+MAVEN_URL="https://dlcdn.apache.org/maven/maven-${MAVEN}/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz"
+GRADLE_URL="https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip"
+DROPBOX_URL="https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_${DROPBOX_VERSION}_amd64.deb"
+WEBAPPMANAGER_URL="http://packages.linuxmint.com/pool/main/w/webapp-manager/webapp-manager_${WEBAPPMANAGER_VERSION}_all.deb"
+DROIDCAM_URL="https://files.dev47apps.net/linux/droidcam_${DROIDCAM_VERSION}.zip"
+ANKI_URL="https://github.com/ankitects/anki/releases/download/23.12.1/anki-${ANKI_VERSION}-linux-qt6.tar.zst"
+BRAVE_KEY_URL="https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg"
+BRAVE_REPO_URL="https://brave-browser-apt-release.s3.brave.com/"
+
 # ==========================================
 # 2. Helper Functions
 # ==========================================
@@ -143,7 +165,7 @@ printf "\n${BLUE}===============Standard packages are installed successfully====
 # Snap Repository
 install_snap() {
   print_installation_message Snap
-  apt-get -y install snapd
+  apt-get -y install snapd && \
   snap install snap-store
   print_installation_message_success Snap
 }
@@ -151,8 +173,8 @@ install_snap() {
 # Flatpak Repository
 install_flatpak() {
   print_installation_message Flatpak-Repository
-  apt-get -y install flatpak
-  apt-get -y install gnome-software-plugin-flatpak
+  apt-get -y install flatpak && \
+  apt-get -y install gnome-software-plugin-flatpak && \
   flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
   print_installation_message_success Flatpak-Repository
 }
@@ -160,7 +182,7 @@ install_flatpak() {
 # Google Chrome
 install_google_chrome() {
   print_installation_message Google-Chrome
-  wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+  wget "$CHROME_URL" && \
   apt-get -y install ./google-chrome-stable_current_amd64.deb
   print_installation_message_success Google-Chrome
 }
@@ -168,8 +190,8 @@ install_google_chrome() {
 # Spotify
 install_spotify() {
   print_installation_message Spotify
-  curl -sS https://download.spotify.com/debian/pubkey_6224F9941A8AA6D1.gpg | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg
-  echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
+  curl -sS https://download.spotify.com/debian/pubkey_6224F9941A8AA6D1.gpg | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg && \
+  echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list && \
   apt-get -y update && apt-get -y install spotify-client
   print_installation_message_success Spotify
 }
@@ -177,9 +199,9 @@ install_spotify() {
 # Opera
 install_opera() {
   print_installation_message Opera
-  curl -fSsL https://deb.opera.com/archive.key | gpg --dearmor | sudo tee /usr/share/keyrings/opera.gpg >/dev/null
-  echo deb [arch=amd64 signed-by=/usr/share/keyrings/opera.gpg] https://deb.opera.com/opera-stable/ stable non-free | sudo tee /etc/apt/sources.list.d/opera.list
-  apt-get -y update
+  curl -fSsL https://deb.opera.com/archive.key | gpg --dearmor | sudo tee /usr/share/keyrings/opera.gpg >/dev/null && \
+  echo deb [arch=amd64 signed-by=/usr/share/keyrings/opera.gpg] https://deb.opera.com/opera-stable/ stable non-free | sudo tee /etc/apt/sources.list.d/opera.list && \
+  apt-get -y update && \
   apt-get -y install opera-stable
   print_installation_message_success Opera
 }
@@ -187,10 +209,10 @@ install_opera() {
 # Microsoft-Edge
 install_microsoft_edge() {
   print_installation_message Microsoft-Edge
-  curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor >microsoft.gpg
-  install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
-  sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge-dev.list'
-  rm microsoft.gpg
+  curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor >microsoft.gpg && \
+  install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/ && \
+  sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge-dev.list' && \
+  rm microsoft.gpg && \
   apt-get -y update && apt-get -y install microsoft-edge-stable
   print_installation_message_success Microsoft-Edge
 }
@@ -198,7 +220,7 @@ install_microsoft_edge() {
 # Zoom
 install_zoom() {
   print_installation_message Zoom
-  wget https://zoom.us/client/latest/zoom_amd64.deb
+  wget "$ZOOM_URL" && \
   apt-get -y install ./zoom_amd64.deb
   print_installation_message_success Zoom
 }
@@ -206,7 +228,7 @@ install_zoom() {
 # Discord
 install_discord() {
   print_installation_message Discord
-  wget -O discord.deb "https://discordapp.com/api/download?platform=linux&format=deb"
+  wget -O discord.deb "$DISCORD_URL" && \
   dpkg -i discord.deb
   print_installation_message_success Discord
 }
@@ -221,35 +243,33 @@ install_openJDK() {
 # ORACLE JAVA JDK 18 &  ORACLE JAVA JDK 21 & ORACLE JAVA JDK 17 && SPRING BOOT CLI
 install_javaJDK() {
   print_installation_message JAVA-JDK-18
-  wget https://download.oracle.com/java/18/latest/jdk-18.0.2_linux-x64_bin.tar.gz
-  mkdir /usr/local/java/
-  tar xf jdk-18.0.2_linux-x64_bin.tar.gz -C /usr/local/java/
-  update-alternatives --install "/usr/bin/java" "java" "/usr/local/java/jdk-18.0.2/bin/java" 1
-  update-alternatives --install "/usr/bin/javac" "javac" "/usr/local/java/jdk-18.0.2/bin/javac" 1
-  update-alternatives --set java /usr/local/java/jdk-18.0.2/bin/java
-  update-alternatives --set javac /usr/local/java/jdk-18.0.2/bin/javac
-
+  wget https://download.oracle.com/java/18/latest/jdk-18.0.2_linux-x64_bin.tar.gz && \
+  mkdir -p /usr/local/java/ && \
+  tar xf jdk-18.0.2_linux-x64_bin.tar.gz -C /usr/local/java/ && \
+  update-alternatives --install "/usr/bin/java" "java" "/usr/local/java/jdk-18.0.2/bin/java" 1 && \
+  update-alternatives --install "/usr/bin/javac" "javac" "/usr/local/java/jdk-18.0.2/bin/javac" 1 && \
+  update-alternatives --set java /usr/local/java/jdk-18.0.2/bin/java && \
+  update-alternatives --set javac /usr/local/java/jdk-18.0.2/bin/javac && \
   add_to_profile "# JAVA Configuration" "JAVA_HOME=/usr/local/java/jdk-18.0.2/bin/java"
   print_installation_message_success JAVA-JDK-18
 
   print_installation_message JAVA-JDK-21
-  wget https://download.oracle.com/java/21/latest/jdk-21_linux-x64_bin.tar.gz
-  tar xf jdk-21_linux-x64_bin.tar.gz -C /usr/local/java/
-  update-alternatives --install "/usr/bin/java" "java" "/usr/local/java/jdk-21/bin/java" 2
+  wget https://download.oracle.com/java/21/latest/jdk-21_linux-x64_bin.tar.gz && \
+  tar xf jdk-21_linux-x64_bin.tar.gz -C /usr/local/java/ && \
+  update-alternatives --install "/usr/bin/java" "java" "/usr/local/java/jdk-21/bin/java" 2 && \
   update-alternatives --install "/usr/bin/javac" "javac" "/usr/local/java/jdk-21/bin/javac" 2
   print_installation_message_success JAVA-JDK-21
 
   print_installation_message JAVA-JDK-17
-  wget https://download.oracle.com/java/17/archive/jdk-17_linux-x64_bin.tar.gz
-  tar xf jdk-17_linux-x64_bin.tar.gz -C /usr/local/java
-  update-alternatives --install "/usr/bin/java" "java" "/usr/local/java/jdk-17/bin/java" 3
+  wget https://download.oracle.com/java/17/archive/jdk-17_linux-x64_bin.tar.gz && \
+  tar xf jdk-17_linux-x64_bin.tar.gz -C /usr/local/java && \
+  update-alternatives --install "/usr/bin/java" "java" "/usr/local/java/jdk-17/bin/java" 3 && \
   update-alternatives --install "/usr/bin/javac" "javac" "/usr/local/java/jdk-17/bin/javac" 3
   print_installation_message_success JAVA-JDK-17
 
   print_installation_message Spring-Boot-CLI
-  wget https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-cli/${SPRING_VERSION}/spring-boot-cli-${SPRING_VERSION}-bin.tar.gz
-  tar xf spring-boot-cli-${SPRING_VERSION}-bin.tar.gz -C /opt
-
+  wget https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-cli/${SPRING_VERSION}/spring-boot-cli-${SPRING_VERSION}-bin.tar.gz && \
+  tar xf spring-boot-cli-${SPRING_VERSION}-bin.tar.gz -C /opt && \
   add_to_profile "# Spring Boot CLI" "export SPRING_HOME=/opt/spring-${SPRING_VERSION}\nexport PATH=\$PATH:\$HOME/bin:\$SPRING_HOME/bin"
   print_installation_message_success Spring-Boot-CLI
 }
@@ -257,9 +277,8 @@ install_javaJDK() {
 # GO
 install_go() {
   print_installation_message Go
-  wget https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz
-  rm -rf /usr/local/go && tar -C /usr/local -xzf go${GO_VERSION}.linux-amd64.tar.gz
-
+  wget https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz && \
+  rm -rf /usr/local/go && tar -C /usr/local -xzf go${GO_VERSION}.linux-amd64.tar.gz && \
   add_to_profile "# GoLang configuration" "export PATH=\"\$PATH:/usr/local/go/bin\"\nexport GOPATH=\"\$HOME/go\""
   print_installation_message_success Go
 }
@@ -267,11 +286,11 @@ install_go() {
 # VSCODE
 install_vscode() {
   print_installation_message vscode
-  wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor >packages.microsoft.gpg
-  install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
-  sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
-  rm -f packages.microsoft.gpg
-  apt-get -y update
+  wget -qO- "$VSCODE_KEY_URL" | gpg --dearmor >packages.microsoft.gpg && \
+  install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/ && \
+  sh -c "echo \"deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] $VSCODE_REPO_URL stable main\" > /etc/apt/sources.list.d/vscode.list" && \
+  rm -f packages.microsoft.gpg && \
+  apt-get -y update && \
   apt-get -y install code # or code-insiders
   print_installation_message_success vscode
 }
@@ -279,11 +298,11 @@ install_vscode() {
 # Intellij-IDEA
 install_intellij_idea() {
   print_installation_message IntelliJ-IDEA
-  wget https://download.jetbrains.com/idea/ideaIU-${IntelliJIDEA_VERSION}.tar.gz -O ideaIU.tar.gz
-  tar -xf ideaIU.tar.gz -C /opt
-  mv /opt/idea-IU-* /opt/idea-IU-${IntelliJIDEA_VERSION}
-  ln -s /opt/idea-IU-${IntelliJIDEA_VERSION} /opt/idea
-  ln -s /opt/idea/bin/idea.sh /usr/local/bin/idea
+  wget "$INTELLIJ_URL" -O ideaIU.tar.gz && \
+  tar -xf ideaIU.tar.gz -C /opt && \
+  mv /opt/idea-IU-* /opt/idea-IU-${IntelliJIDEA_VERSION} && \
+  ln -s /opt/idea-IU-${IntelliJIDEA_VERSION} /opt/idea && \
+  ln -s /opt/idea/bin/idea.sh /usr/local/bin/idea && \
   echo "[Desktop Entry]
             Version=1.0
             Type=Application
@@ -301,11 +320,11 @@ install_intellij_idea() {
 # GoLand
 install_goland() {
   print_installation_message GoLand
-  wget https://download.jetbrains.com/go/goland-${GoLand_VERSION}.tar.gz -O goland.tar.gz
-  tar -xzf goland.tar.gz -C /opt
-  mv /opt/GoLand-* /opt/GoLand-${GoLand_VERSION}
-  ln -s /opt/GoLand-${GoLand_VERSION} /opt/goland
-  ln -s /opt/goland/bin/goland.sh /usr/local/bin/goland
+  wget "$GOLAND_URL" -O goland.tar.gz && \
+  tar -xzf goland.tar.gz -C /opt && \
+  mv /opt/GoLand-* /opt/GoLand-${GoLand_VERSION} && \
+  ln -s /opt/GoLand-${GoLand_VERSION} /opt/goland && \
+  ln -s /opt/goland/bin/goland.sh /usr/local/bin/goland && \
   echo "[Desktop Entry]
           Version=1.0
           Type=Application
@@ -320,8 +339,8 @@ install_goland() {
 # Postman
 install_postman() {
   print_installation_message Postman
-  curl https://dl.pstmn.io/download/latest/linux64 --output postman-${POSTMAN_VERSION}-linux-x64.tar.gz
-  tar -xzf postman-${POSTMAN_VERSION}-linux-x64.tar.gz -C /opt
+  curl "$POSTMAN_URL" --output postman-${POSTMAN_VERSION}-linux-x64.tar.gz && \
+  tar -xzf postman-${POSTMAN_VERSION}-linux-x64.tar.gz -C /opt && \
   echo "[Desktop Entry]
           Encoding=UTF-8
           Name=Postman
@@ -341,22 +360,22 @@ install_docker() {
     ca-certificates \
     curl \
     gnupg \
-    lsb-release
-  curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+    lsb-release && \
+  curl -fsSL "$DOCKER_GPG_URL" | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg && \
   echo \
-    "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian \
-      $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list >/dev/null
-  apt-get update
-  apt-get -y install docker-ce docker-ce-cli containerd.io
-  docker run hello-world
-  groupadd docker
+    "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] $DOCKER_REPO_URL \
+      $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list >/dev/null && \
+  apt-get update && \
+  apt-get -y install docker-ce docker-ce-cli containerd.io && \
+  docker run hello-world && \
+  groupadd docker && \
   usermod -aG docker $USER
   print_installation_message_success Docker
 
   print_installation_message docker-compose
-  curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-  chmod +x /usr/local/bin/docker-compose
-  ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+  curl -L "$DOCKER_COMPOSE_URL" -o /usr/local/bin/docker-compose && \
+  chmod +x /usr/local/bin/docker-compose && \
+  ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose && \
   docker-compose --version
   print_installation_message_success docker-compose
 }
@@ -365,10 +384,9 @@ install_docker() {
 install_maven() {
   print_installation_message Maven
   rm -rf /tmp/apache-maven-${MAVEN_VERSION}-bin.tar.gz
-  wget https://dlcdn.apache.org/maven/maven-${MAVEN}/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz
-  tar -zxvf apache-maven-${MAVEN_VERSION}-bin.tar.gz -C /opt
-  ln -s /opt/apache-maven-${MAVEN_VERSION} /opt/maven
-
+  wget "$MAVEN_URL" && \
+  tar -zxvf apache-maven-${MAVEN_VERSION}-bin.tar.gz -C /opt && \
+  ln -s /opt/apache-maven-${MAVEN_VERSION} /opt/maven && \
   add_to_profile "# Maven Configuration" "export M2_HOME=/opt/maven\nexport PATH=\${M2_HOME}/bin:\${PATH}"
   print_installation_message_success Maven
 }
@@ -377,10 +395,9 @@ install_maven() {
 install_gradle() {
   print_installation_message Gradle
   rm -rf gradle-${GRADLE_VERSION}-bin.zip
-  wget https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip
-  unzip -d /opt/ gradle-${GRADLE_VERSION}-bin.zip
-  ln -s /opt/gradle-${GRADLE_VERSION} /opt/gradle
-
+  wget "$GRADLE_URL" && \
+  unzip -d /opt/ gradle-${GRADLE_VERSION}-bin.zip && \
+  ln -s /opt/gradle-${GRADLE_VERSION} /opt/gradle && \
   add_to_profile "# Gradle Configuration" "export PATH=\$PATH:/opt/gradle/bin"
   print_installation_message_success Gradle
 }
@@ -388,7 +405,7 @@ install_gradle() {
 # NPM
 install_npm() {
   print_installation_message NPM
-  apt-get install nodejs npm -y
+  apt-get install nodejs npm -y && \
   node -v
   print_installation_message_success NPM
 }
@@ -396,11 +413,11 @@ install_npm() {
 # DataGrip
 install_datagrip() {
   print_installation_message DataGrip
-  wget https://download.jetbrains.com/datagrip/datagrip-${DataGrip_VERSION}.tar.gz
-  tar -xzf datagrip-${DataGrip_VERSION}.tar.gz -C /opt
+  wget "$DATAGRIP_URL" && \
+  tar -xzf datagrip-${DataGrip_VERSION}.tar.gz -C /opt && \
   # mv /opt/DataGrip-* /opt/DataGrip-${DataGrip_VERSION}
-  ln -s /opt/DataGrip-${DataGrip_VERSION} /opt/datagrip
-  ln -s /opt/datagrip/bin/datagrip.sh /usr/local/bin/datagrip
+  ln -s /opt/DataGrip-${DataGrip_VERSION} /opt/datagrip && \
+  ln -s /opt/datagrip/bin/datagrip.sh /usr/local/bin/datagrip && \
   echo "[Desktop Entry]
           Version=1.0
           Type=Application
@@ -415,7 +432,7 @@ install_datagrip() {
 # Gnome
 install_gnome_tool() {
   print_installation_message Gnome-Tweak-Tool
-  apt-get -y install gnome-tweak-tool
+  apt-get -y install gnome-tweak-tool && \
   apt-get -y install gnome-shell-extensions
   print_installation_message_success Gnome-Tweak-Tool
 }
@@ -423,7 +440,7 @@ install_gnome_tool() {
 # Dropbox
 install_dropbox() {
   print_installation_message Dropbox
-  wget -O dropbox.deb https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_${DROPBOX_VERSION}_amd64.deb
+  wget -O dropbox.deb "$DROPBOX_URL" && \
   apt-get -y install ./dropbox.deb
   print_installation_message_success Dropbox
 }
@@ -431,16 +448,16 @@ install_dropbox() {
 # VirtualBox
 install_virtualbox() {
   print_installation_message VirtualBox
-  apt-get -y install gnupg2 lsb-release
-  curl -fsSL https://www.virtualbox.org/download/oracle_vbox_2016.asc|sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/vbox.gpg
-  curl -fsSL https://www.virtualbox.org/download/oracle_vbox.asc|sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/oracle_vbox.gpg
-  echo "deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) contrib" | sudo tee /etc/apt/sources.list.d/virtualbox.list
-  apt-get -y update
-  apt-get install linux-headers-$(uname -r) dkms -y
-  apt-get install virtualbox-7.0 -y
-  groupadd vboxusers
-  usermod -aG vboxusers $USER
-  wget https://download.virtualbox.org/virtualbox/7.0.10/Oracle_VM_VirtualBox_Extension_Pack-7.0.10.vbox-extpack
+  apt-get -y install gnupg2 lsb-release && \
+  curl -fsSL https://www.virtualbox.org/download/oracle_vbox_2016.asc|sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/vbox.gpg && \
+  curl -fsSL https://www.virtualbox.org/download/oracle_vbox.asc|sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/oracle_vbox.gpg && \
+  echo "deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) contrib" | sudo tee /etc/apt/sources.list.d/virtualbox.list && \
+  apt-get -y update && \
+  apt-get install linux-headers-$(uname -r) dkms -y && \
+  apt-get install virtualbox-7.0 -y && \
+  groupadd vboxusers && \
+  usermod -aG vboxusers $USER && \
+  wget https://download.virtualbox.org/virtualbox/7.0.10/Oracle_VM_VirtualBox_Extension_Pack-7.0.10.vbox-extpack && \
   vboxmanage extpack install Oracle_VM_VirtualBox_Extension_Pack-7.0.10.vbox-extpack
   print_installation_message_success VirtualBox
 }
@@ -448,8 +465,8 @@ install_virtualbox() {
 # Web-Apps
 install_web_apps() {
   print_installation_message Web-Apps
-  wget http://packages.linuxmint.com/pool/main/w/webapp-manager/webapp-manager_${WEBAPPMANAGER_VERSION}_all.deb
-  dpkg -i webapp-manager_${WEBAPPMANAGER_VERSION}_all.deb
+  wget "$WEBAPPMANAGER_URL" && \
+  dpkg -i webapp-manager_${WEBAPPMANAGER_VERSION}_all.deb && \
   apt-get -f install -y
   print_installation_message_success Web-Apps
 }
@@ -457,10 +474,10 @@ install_web_apps() {
 # Droidcam
 install_droidcam() {
   print_installation_message Droidcam
-  wget -O droidcam_latest.zip https://files.dev47apps.net/linux/droidcam_${DROIDCAM_VERSION}.zip
-  unzip droidcam_latest.zip -d droidcam
-  cd droidcam && sudo ./install-client
-  apt-get -y install linux-headers-$(uname -r) gcc make
+  wget -O droidcam_latest.zip "$DROIDCAM_URL" && \
+  unzip droidcam_latest.zip -d droidcam && \
+  cd droidcam && sudo ./install-client && \
+  apt-get -y install linux-headers-$(uname -r) gcc make && \
   ./install-video
   print_installation_message_success Droidcam
 }
@@ -468,10 +485,10 @@ install_droidcam() {
 # Anki
 install_anki() {
   print_installation_message Anki
-  apt-get -y install zstd
-  wget https://github.com/ankitects/anki/releases/download/23.12.1/anki-${ANKI_VERSION}-linux-qt6.tar.zst -O anki.tar.zst
-  tar xaf anki.tar.zst
-  cd anki-${ANKI_VERSION}-linux-qt6
+  apt-get -y install zstd && \
+  wget "$ANKI_URL" -O anki.tar.zst && \
+  tar xaf anki.tar.zst && \
+  cd anki-${ANKI_VERSION}-linux-qt6 && \
   sudo ./install.sh
   print_installation_message_success Anki
 }
@@ -486,10 +503,10 @@ install_raindrop() {
 # Brave
 install_brave() {
   print_installation_message Brave
-  apt-get -y install curl
-  curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
-  echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main"|sudo tee /etc/apt/sources.list.d/brave-browser-release.list
-  apt-get -y update
+  apt-get -y install curl && \
+  curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg "$BRAVE_KEY_URL" && \
+  echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] $BRAVE_REPO_URL stable main"|sudo tee /etc/apt/sources.list.d/brave-browser-release.list && \
+  apt-get -y update && \
   apt-get -y install brave-browser
   print_installation_message_success Brave
 }

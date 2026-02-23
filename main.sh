@@ -145,14 +145,14 @@ HOME="/home/$USER"
 go_temp
 
 # Update
-printf "\n${BLUE}========================Installing Updating========================${ENDCOLOR}\n"
+print_installation_message "System Update"
 apt-get -y update
-printf "${GREEN}========================Updated successfully!========================${ENDCOLOR}\n"
+print_installation_message_success "System Update"
 
 # Upgrade
-printf "\n${BLUE}===========================Upgrading===========================${ENDCOLOR}\n"
+print_installation_message "System Upgrade"
 apt-get -y upgrade
-printf "${GREEN}==========================Upgraded successfully!===========================${ENDCOLOR}\n"
+print_installation_message_success "System Upgrade"
 
 # Install standard packages
 declare -A essential
@@ -169,11 +169,11 @@ essentials=(
   htop
 )
 
-printf "\n${BLUE}========================Installing standard packages========================${ENDCOLOR}\n"
+print_installation_message "Standard Packages"
 for key in "${essentials[@]}"; do
   apt-get install -y "$key"
 done
-printf "\n${BLUE}===============Standard packages are installed successfully=============== ${ENDCOLOR}\n"
+print_installation_message_success "Standard Packages"
 
 # ==========================================
 # 4. Installation Functions

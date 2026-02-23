@@ -47,6 +47,14 @@ ANKI_URL="https://github.com/ankitects/anki/releases/download/23.12.1/anki-${ANK
 BRAVE_KEY_URL="https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg"
 BRAVE_REPO_URL="https://brave-browser-apt-release.s3.brave.com/"
 
+# Java Configuration
+JDK18_URL="https://download.oracle.com/java/18/latest/jdk-18.0.2_linux-x64_bin.tar.gz"
+JDK18_DIR="jdk-18.0.2"
+JDK21_URL="https://download.oracle.com/java/21/latest/jdk-21_linux-x64_bin.tar.gz"
+JDK21_DIR="jdk-21"
+JDK17_URL="https://download.oracle.com/java/17/archive/jdk-17_linux-x64_bin.tar.gz"
+JDK17_DIR="jdk-17"
+
 # ==========================================
 # 2. Helper Functions
 # ==========================================
@@ -114,6 +122,32 @@ add_to_profile() {
     echo -e "$content" >> "$HOME/.profile"
     source "$HOME/.profile"
   fi
+}
+
+# Helper function to install Oracle JDK
+install_oracle_jdk_helper() {
+  local version="$1"
+  local url="$2"
+  local dir_name="$3"
+  local priority="$4"
+  local tar_file="jdk-${version}_linux-x64_bin.tar.gz"
+
+  print_installation_message "JAVA-JDK-${version}"
+
+  wget "$url" -O "$tar_file" && \
+  mkdir -p /usr/local/java/ && \
+  tar xf "$tar_file" -C /usr/local/java/ && \
+  update-alternatives --install "/usr/bin/java" "java" "/usr/local/java/${dir_name}/bin/java" "$priority" && \
+  update-alternatives --install "/usr/bin/javac" "javac" "/usr/local/java/${dir_name}/bin/javac" "$priority"
+
+  # Set as default if priority is 1 (or customize logic)
+  if [ "$priority" -eq 1 ]; then
+      update-alternatives --set java "/usr/local/java/${dir_name}/bin/java"
+      update-alternatives --set javac "/usr/local/java/${dir_name}/bin/javac"
+      add_to_profile "# JAVA Configuration" "JAVA_HOME=/usr/local/java/${dir_name}/bin/java"
+  fi
+
+  print_installation_message_success "JAVA-JDK-${version}"
 }
 
 # Cleanup downloaded files
@@ -259,31 +293,12 @@ install_openJDK() {
 
 # ORACLE JAVA JDK 18 &  ORACLE JAVA JDK 21 & ORACLE JAVA JDK 17 && SPRING BOOT CLI
 install_javaJDK() {
-  print_installation_message JAVA-JDK-18
-  wget https://download.oracle.com/java/18/latest/jdk-18.0.2_linux-x64_bin.tar.gz && \
-  mkdir -p /usr/local/java/ && \
-  tar xf jdk-18.0.2_linux-x64_bin.tar.gz -C /usr/local/java/ && \
-  update-alternatives --install "/usr/bin/java" "java" "/usr/local/java/jdk-18.0.2/bin/java" 1 && \
-  update-alternatives --install "/usr/bin/javac" "javac" "/usr/local/java/jdk-18.0.2/bin/javac" 1 && \
-  update-alternatives --set java /usr/local/java/jdk-18.0.2/bin/java && \
-  update-alternatives --set javac /usr/local/java/jdk-18.0.2/bin/javac && \
-  add_to_profile "# JAVA Configuration" "JAVA_HOME=/usr/local/java/jdk-18.0.2/bin/java"
-  print_installation_message_success JAVA-JDK-18
+  # Install JDKs using helper function
+  install_oracle_jdk_helper "18" "$JDK18_URL" "$JDK18_DIR" 1
+  install_oracle_jdk_helper "21" "$JDK21_URL" "$JDK21_DIR" 2
+  install_oracle_jdk_helper "17" "$JDK17_URL" "$JDK17_DIR" 3
 
-  print_installation_message JAVA-JDK-21
-  wget https://download.oracle.com/java/21/latest/jdk-21_linux-x64_bin.tar.gz && \
-  tar xf jdk-21_linux-x64_bin.tar.gz -C /usr/local/java/ && \
-  update-alternatives --install "/usr/bin/java" "java" "/usr/local/java/jdk-21/bin/java" 2 && \
-  update-alternatives --install "/usr/bin/javac" "javac" "/usr/local/java/jdk-21/bin/javac" 2
-  print_installation_message_success JAVA-JDK-21
-
-  print_installation_message JAVA-JDK-17
-  wget https://download.oracle.com/java/17/archive/jdk-17_linux-x64_bin.tar.gz && \
-  tar xf jdk-17_linux-x64_bin.tar.gz -C /usr/local/java && \
-  update-alternatives --install "/usr/bin/java" "java" "/usr/local/java/jdk-17/bin/java" 3 && \
-  update-alternatives --install "/usr/bin/javac" "javac" "/usr/local/java/jdk-17/bin/javac" 3
-  print_installation_message_success JAVA-JDK-17
-
+  # Spring Boot CLI
   print_installation_message Spring-Boot-CLI
   wget https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-cli/${SPRING_VERSION}/spring-boot-cli-${SPRING_VERSION}-bin.tar.gz && \
   tar xf spring-boot-cli-${SPRING_VERSION}-bin.tar.gz -C /opt && \
